@@ -714,4 +714,37 @@
       upd_date = #{updDate,jdbcType=TIMESTAMP}
     where contract = #{contract,jdbcType=CHAR}
   </update>
+  
+  <select id="getPerformance" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		money,type
+		FROM t_information
+		WHERE contract =
+		#{contract}
+	</select>
+
+	<select id="getInterest" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		periods,rate,interest_all,interest_month
+		FROM t_information
+		WHERE contract = #{contract}
+	</select>
+
+	<update id="updateInterest" parameterType="java.lang.String">
+		UPDATE t_information
+		SET
+		<if test="interest_all != null">interest_all = #{interest_all}</if>
+		,<if test="interest_month != null">interest_month = #{interest_month}</if>
+		WHERE contract = #{contract}
+	</update>
+
+    <select id="getBank" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		bank,branch,card_no,card_name,card_province,card_city,card_line
+		FROM t_information
+		WHERE contract = #{contract}
+	</select>
 </mapper>

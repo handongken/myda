@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>更新用户</title>
+</head>
+<body>
+<form action="http://localhost:8080/updateUser" method="POST" enctype="multipart/form-data">
+    	<input type="hidden" name="userId" value="userId" th:value="${user.userId}"/>
+    	用户名:<input type="text" value="name" th:value="${user.name}" name="name" /><br/>
+    	密码:<input type="text" value="password" th:value="${user.password}" name="password"/><br/>
+    	电话:<input type="text" value="tel" th:value="${user.tel}" name="tel"/><br/>
+    	<input type="submit" value="更新"/>
+    </form>
+</body>
+</html>
