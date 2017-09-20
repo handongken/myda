@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bqhx.yyb.dao.InformationVOMapper">
+  <resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.InformationVO">
+    <id column="contract" jdbcType="CHAR" property="contract" />
+    <result column="money" jdbcType="INTEGER" property="money" />
+    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="zb_ratio" jdbcType="DECIMAL" property="zbRatio" />
+    <result column="jx_achievement" jdbcType="DECIMAL" property="jxAchievement" />
+    <result column="lc_manager" jdbcType="VARCHAR" property="lcManager" />
+    <result column="lc_id" jdbcType="VARCHAR" property="lcId" />
+    <result column="t_manager" jdbcType="VARCHAR" property="tManager" />
+    <result column="yyb" jdbcType="VARCHAR" property="yyb" />
+    <result column="yyb_manager" jdbcType="VARCHAR" property="yybManager" />
+    <result column="fgs" jdbcType="VARCHAR" property="fgs" />
+    <result column="fgs_manager" jdbcType="VARCHAR" property="fgsManager" />
+    <result column="dq" jdbcType="VARCHAR" property="dq" />
+    <result column="dq_manager" jdbcType="VARCHAR" property="dqManager" />
+    <result column="syb" jdbcType="VARCHAR" property="syb" />
+    <result column="syb_manager" jdbcType="VARCHAR" property="sybManager" />
+    <result column="periods" jdbcType="INTEGER" property="periods" />
+    <result column="rate" jdbcType="DECIMAL" property="rate" />
+    <result column="interest_all" jdbcType="DECIMAL" property="interestAll" />
+    <result column="interest_month" jdbcType="DECIMAL" property="interestMonth" />
+    <result column="payment_date" jdbcType="TIMESTAMP" property="paymentDate" />
+    <result column="start_date" jdbcType="DATE" property="startDate" />
+    <result column="end_date" jdbcType="DATE" property="endDate" />
+    <result column="statement_date" jdbcType="CHAR" property="statementDate" />
+    <result column="surplus_date" jdbcType="INTEGER" property="surplusDate" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="pos_no" jdbcType="CHAR" property="posNo" />
+    <result column="tender_name" jdbcType="CHAR" property="tenderName" />
+    <result column="id_type" jdbcType="CHAR" property="idType" />
+    <result column="id_no" jdbcType="CHAR" property="idNo" />
+    <result column="continue_flg" jdbcType="CHAR" property="continueFlg" />
+    <result column="tel" jdbcType="CHAR" property="tel" />
+    <result column="spread_type" jdbcType="CHAR" property="spreadType" />
+    <result column="bank" jdbcType="CHAR" property="bank" />
+    <result column="branch" jdbcType="CHAR" property="branch" />
+    <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="card_name" jdbcType="VARCHAR" property="cardName" />
+    <result column="card_province" jdbcType="VARCHAR" property="cardProvince" />
+    <result column="card_city" jdbcType="VARCHAR" property="cardCity" />
+    <result column="card_line" jdbcType="VARCHAR" property="cardLine" />
+    <result column="in_bank" jdbcType="VARCHAR" property="inBank" />
+    <result column="in_branch" jdbcType="VARCHAR" property="inBranch" />
+    <result column="in_card_no" jdbcType="VARCHAR" property="inCardNo" />
+    <result column="in_card_name" jdbcType="VARCHAR" property="inCardName" />
+    <result column="in_card_province" jdbcType="VARCHAR" property="inCardProvince" />
+    <result column="in_card_city" jdbcType="VARCHAR" property="inCardCity" />
+    <result column="borrow_address" jdbcType="VARCHAR" property="borrowAddress" />
+    <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+    <result column="contact_tel" jdbcType="VARCHAR" property="contactTel" />
+    <result column="contact_relationship" jdbcType="VARCHAR" property="contactRelationship" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="manager_no" jdbcType="CHAR" property="managerNo" />
+    <result column="manager_status" jdbcType="CHAR" property="managerStatus" />
+    <result column="del_flg" jdbcType="CHAR" property="delFlg" />
+    <result column="ins_user" jdbcType="CHAR" property="insUser" />
+    <result column="ins_date" jdbcType="TIMESTAMP" property="insDate" />
+    <result column="upd_user" jdbcType="CHAR" property="updUser" />
+    <result column="upd_date" jdbcType="TIMESTAMP" property="updDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    contract, money, type, zb_ratio, jx_achievement, lc_manager, lc_id, t_manager, yyb, 
+    yyb_manager, fgs, fgs_manager, dq, dq_manager, syb, syb_manager, periods, rate, interest_all, 
+    interest_month, payment_date, start_date, end_date, statement_date, surplus_date, 
+    status, pos_no, tender_name, id_type, id_no, continue_flg, tel, spread_type, bank, 
+    branch, card_no, card_name, card_province, card_city, card_line, in_bank, in_branch, 
+    in_card_no, in_card_name, in_card_province, in_card_city, borrow_address, contact_name, 
+    contact_tel, contact_relationship, remark, manager_no, manager_status, del_flg, ins_user, 
+    ins_date, upd_user, upd_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_information
+    where contract = #{contract,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_information
+    where contract = #{contract,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bqhx.yyb.vo.InformationVO">
+    insert into t_information (contract, money, type, 
+      zb_ratio, jx_achievement, lc_manager, 
+      lc_id, t_manager, yyb, 
+      yyb_manager, fgs, fgs_manager, 
+      dq, dq_manager, syb, 
+      syb_manager, periods, rate, 
+      interest_all, interest_month, payment_date, 
+      start_date, end_date, statement_date, 
+      surplus_date, status, pos_no, 
+      tender_name, id_type, id_no, continue_flg, 
+      tel, spread_type, bank, branch, 
+      card_no, card_name, card_province, 
+      card_city, card_line, in_bank, 
+      in_branch, in_card_no, in_card_name, 
+      in_card_province, in_card_city, borrow_address, 
+      contact_name, contact_tel, contact_relationship, 
+      remark, manager_no, manager_status, 
+      del_flg, ins_user, ins_date, 
+      upd_user, upd_date)
+    values (#{contract,jdbcType=CHAR}, #{money,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, 
+      #{zbRatio,jdbcType=DECIMAL}, #{jxAchievement,jdbcType=DECIMAL}, #{lcManager,jdbcType=VARCHAR}, 
+      #{lcId,jdbcType=VARCHAR}, #{tManager,jdbcType=VARCHAR}, #{yyb,jdbcType=VARCHAR}, 
+      #{yybManager,jdbcType=VARCHAR}, #{fgs,jdbcType=VARCHAR}, #{fgsManager,jdbcType=VARCHAR}, 
+      #{dq,jdbcType=VARCHAR}, #{dqManager,jdbcType=VARCHAR}, #{syb,jdbcType=VARCHAR}, 
+      #{sybManager,jdbcType=VARCHAR}, #{periods,jdbcType=INTEGER}, #{rate,jdbcType=DECIMAL}, 
+      #{interestAll,jdbcType=DECIMAL}, #{interestMonth,jdbcType=DECIMAL}, #{paymentDate,jdbcType=TIMESTAMP}, 
+      #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{statementDate,jdbcType=CHAR}, 
+      #{surplusDate,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{posNo,jdbcType=CHAR}, 
+      #{tenderName,jdbcType=CHAR}, #{idType,jdbcType=CHAR}, #{idNo,jdbcType=CHAR}, #{continueFlg,jdbcType=CHAR}, 
+      #{tel,jdbcType=CHAR}, #{spreadType,jdbcType=CHAR}, #{bank,jdbcType=CHAR}, #{branch,jdbcType=CHAR}, 
+      #{cardNo,jdbcType=VARCHAR}, #{cardName,jdbcType=VARCHAR}, #{cardProvince,jdbcType=VARCHAR}, 
+      #{cardCity,jdbcType=VARCHAR}, #{cardLine,jdbcType=VARCHAR}, #{inBank,jdbcType=VARCHAR}, 
+      #{inBranch,jdbcType=VARCHAR}, #{inCardNo,jdbcType=VARCHAR}, #{inCardName,jdbcType=VARCHAR}, 
+      #{inCardProvince,jdbcType=VARCHAR}, #{inCardCity,jdbcType=VARCHAR}, #{borrowAddress,jdbcType=VARCHAR}, 
+      #{contactName,jdbcType=VARCHAR}, #{contactTel,jdbcType=VARCHAR}, #{contactRelationship,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{managerNo,jdbcType=CHAR}, #{managerStatus,jdbcType=CHAR}, 
+      #{delFlg,jdbcType=CHAR}, #{insUser,jdbcType=CHAR}, #{insDate,jdbcType=TIMESTAMP}, 
+      #{updUser,jdbcType=CHAR}, #{updDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bqhx.yyb.vo.InformationVO">
+    insert into t_information
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="contract != null">
+        contract,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="zbRatio != null">
+        zb_ratio,
+      </if>
+      <if test="jxAchievement != null">
+        jx_achievement,
+      </if>
+      <if test="lcManager != null">
+        lc_manager,
+      </if>
+      <if test="lcId != null">
+        lc_id,
+      </if>
+      <if test="tManager != null">
+        t_manager,
+      </if>
+      <if test="yyb != null">
+        yyb,
+      </if>
+      <if test="yybManager != null">
+        yyb_manager,
+      </if>
+      <if test="fgs != null">
+        fgs,
+      </if>
+      <if test="fgsManager != null">
+        fgs_manager,
+      </if>
+      <if test="dq != null">
+        dq,
+      </if>
+      <if test="dqManager != null">
+        dq_manager,
+      </if>
+      <if test="syb != null">
+        syb,
+      </if>
+      <if test="sybManager != null">
+        syb_manager,
+      </if>
+      <if test="periods != null">
+        periods,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="interestAll != null">
+        interest_all,
+      </if>
+      <if test="interestMonth != null">
+        interest_month,
+      </if>
+      <if test="paymentDate != null">
+        payment_date,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="statementDate != null">
+        statement_date,
+      </if>
+      <if test="surplusDate != null">
+        surplus_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="posNo != null">
+        pos_no,
+      </if>
+      <if test="tenderName != null">
+        tender_name,
+      </if>
+      <if test="idType != null">
+        id_type,
+      </if>
+      <if test="idNo != null">
+        id_no,
+      </if>
+      <if test="continueFlg != null">
+        continue_flg,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="spreadType != null">
+        spread_type,
+      </if>
+      <if test="bank != null">
+        bank,
+      </if>
+      <if test="branch != null">
+        branch,
+      </if>
+      <if test="cardNo != null">
+        card_no,
+      </if>
+      <if test="cardName != null">
+        card_name,
+      </if>
+      <if test="cardProvince != null">
+        card_province,
+      </if>
+      <if test="cardCity != null">
+        card_city,
+      </if>
+      <if test="cardLine != null">
+        card_line,
+      </if>
+      <if test="inBank != null">
+        in_bank,
+      </if>
+      <if test="inBranch != null">
+        in_branch,
+      </if>
+      <if test="inCardNo != null">
+        in_card_no,
+      </if>
+      <if test="inCardName != null">
+        in_card_name,
+      </if>
+      <if test="inCardProvince != null">
+        in_card_province,
+      </if>
+      <if test="inCardCity != null">
+        in_card_city,
+      </if>
+      <if test="borrowAddress != null">
+        borrow_address,
+      </if>
+      <if test="contactName != null">
+        contact_name,
+      </if>
+      <if test="contactTel != null">
+        contact_tel,
+      </if>
+      <if test="contactRelationship != null">
+        contact_relationship,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="managerNo != null">
+        manager_no,
+      </if>
+      <if test="managerStatus != null">
+        manager_status,
+      </if>
+      <if test="delFlg != null">
+        del_flg,
+      </if>
+      <if test="insUser != null">
+        ins_user,
+      </if>
+      <if test="insDate != null">
+        ins_date,
+      </if>
+      <if test="updUser != null">
+        upd_user,
+      </if>
+      <if test="updDate != null">
+        upd_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="contract != null">
+        #{contract,jdbcType=CHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="zbRatio != null">
+        #{zbRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="jxAchievement != null">
+        #{jxAchievement,jdbcType=DECIMAL},
+      </if>
+      <if test="lcManager != null">
+        #{lcManager,jdbcType=VARCHAR},
+      </if>
+      <if test="lcId != null">
+        #{lcId,jdbcType=VARCHAR},
+      </if>
+      <if test="tManager != null">
+        #{tManager,jdbcType=VARCHAR},
+      </if>
+      <if test="yyb != null">
+        #{yyb,jdbcType=VARCHAR},
+      </if>
+      <if test="yybManager != null">
+        #{yybManager,jdbcType=VARCHAR},
+      </if>
+      <if test="fgs != null">
+        #{fgs,jdbcType=VARCHAR},
+      </if>
+      <if test="fgsManager != null">
+        #{fgsManager,jdbcType=VARCHAR},
+      </if>
+      <if test="dq != null">
+        #{dq,jdbcType=VARCHAR},
+      </if>
+      <if test="dqManager != null">
+        #{dqManager,jdbcType=VARCHAR},
+      </if>
+      <if test="syb != null">
+        #{syb,jdbcType=VARCHAR},
+      </if>
+      <if test="sybManager != null">
+        #{sybManager,jdbcType=VARCHAR},
+      </if>
+      <if test="periods != null">
+        #{periods,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="interestAll != null">
+        #{interestAll,jdbcType=DECIMAL},
+      </if>
+      <if test="interestMonth != null">
+        #{interestMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentDate != null">
+        #{paymentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=DATE},
+      </if>
+      <if test="statementDate != null">
+        #{statementDate,jdbcType=CHAR},
+      </if>
+      <if test="surplusDate != null">
+        #{surplusDate,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="posNo != null">
+        #{posNo,jdbcType=CHAR},
+      </if>
+      <if test="tenderName != null">
+        #{tenderName,jdbcType=CHAR},
+      </if>
+      <if test="idType != null">
+        #{idType,jdbcType=CHAR},
+      </if>
+      <if test="idNo != null">
+        #{idNo,jdbcType=CHAR},
+      </if>
+      <if test="continueFlg != null">
+        #{continueFlg,jdbcType=CHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=CHAR},
+      </if>
+      <if test="spreadType != null">
+        #{spreadType,jdbcType=CHAR},
+      </if>
+      <if test="bank != null">
+        #{bank,jdbcType=CHAR},
+      </if>
+      <if test="branch != null">
+        #{branch,jdbcType=CHAR},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardName != null">
+        #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardProvince != null">
+        #{cardProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cardCity != null">
+        #{cardCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cardLine != null">
+        #{cardLine,jdbcType=VARCHAR},
+      </if>
+      <if test="inBank != null">
+        #{inBank,jdbcType=VARCHAR},
+      </if>
+      <if test="inBranch != null">
+        #{inBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="inCardNo != null">
+        #{inCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="inCardName != null">
+        #{inCardName,jdbcType=VARCHAR},
+      </if>
+      <if test="inCardProvince != null">
+        #{inCardProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="inCardCity != null">
+        #{inCardCity,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowAddress != null">
+        #{borrowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null">
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTel != null">
+        #{contactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="contactRelationship != null">
+        #{contactRelationship,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="managerNo != null">
+        #{managerNo,jdbcType=CHAR},
+      </if>
+      <if test="managerStatus != null">
+        #{managerStatus,jdbcType=CHAR},
+      </if>
+      <if test="delFlg != null">
+        #{delFlg,jdbcType=CHAR},
+      </if>
+      <if test="insUser != null">
+        #{insUser,jdbcType=CHAR},
+      </if>
+      <if test="insDate != null">
+        #{insDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updUser != null">
+        #{updUser,jdbcType=CHAR},
+      </if>
+      <if test="updDate != null">
+        #{updDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bqhx.yyb.vo.InformationVO">
+    update t_information
+    <set>
+      <if test="money != null">
+        money = #{money,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="zbRatio != null">
+        zb_ratio = #{zbRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="jxAchievement != null">
+        jx_achievement = #{jxAchievement,jdbcType=DECIMAL},
+      </if>
+      <if test="lcManager != null">
+        lc_manager = #{lcManager,jdbcType=VARCHAR},
+      </if>
+      <if test="lcId != null">
+        lc_id = #{lcId,jdbcType=VARCHAR},
+      </if>
+      <if test="tManager != null">
+        t_manager = #{tManager,jdbcType=VARCHAR},
+      </if>
+      <if test="yyb != null">
+        yyb = #{yyb,jdbcType=VARCHAR},
+      </if>
+      <if test="yybManager != null">
+        yyb_manager = #{yybManager,jdbcType=VARCHAR},
+      </if>
+      <if test="fgs != null">
+        fgs = #{fgs,jdbcType=VARCHAR},
+      </if>
+      <if test="fgsManager != null">
+        fgs_manager = #{fgsManager,jdbcType=VARCHAR},
+      </if>
+      <if test="dq != null">
+        dq = #{dq,jdbcType=VARCHAR},
+      </if>
+      <if test="dqManager != null">
+        dq_manager = #{dqManager,jdbcType=VARCHAR},
+      </if>
+      <if test="syb != null">
+        syb = #{syb,jdbcType=VARCHAR},
+      </if>
+      <if test="sybManager != null">
+        syb_manager = #{sybManager,jdbcType=VARCHAR},
+      </if>
+      <if test="periods != null">
+        periods = #{periods,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+      <if test="interestAll != null">
+        interest_all = #{interestAll,jdbcType=DECIMAL},
+      </if>
+      <if test="interestMonth != null">
+        interest_month = #{interestMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentDate != null">
+        payment_date = #{paymentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=DATE},
+      </if>
+      <if test="statementDate != null">
+        statement_date = #{statementDate,jdbcType=CHAR},
+      </if>
+      <if test="surplusDate != null">
+        surplus_date = #{surplusDate,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="posNo != null">
+        pos_no = #{posNo,jdbcType=CHAR},
+      </if>
+      <if test="tenderName != null">
+        tender_name = #{tenderName,jdbcType=CHAR},
+      </if>
+      <if test="idType != null">
+        id_type = #{idType,jdbcType=CHAR},
+      </if>
+      <if test="idNo != null">
+        id_no = #{idNo,jdbcType=CHAR},
+      </if>
+      <if test="continueFlg != null">
+        continue_flg = #{continueFlg,jdbcType=CHAR},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=CHAR},
+      </if>
+      <if test="spreadType != null">
+        spread_type = #{spreadType,jdbcType=CHAR},
+      </if>
+      <if test="bank != null">
+        bank = #{bank,jdbcType=CHAR},
+      </if>
+      <if test="branch != null">
+        branch = #{branch,jdbcType=CHAR},
+      </if>
+      <if test="cardNo != null">
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardName != null">
+        card_name = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardProvince != null">
+        card_province = #{cardProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="cardCity != null">
+        card_city = #{cardCity,jdbcType=VARCHAR},
+      </if>
+      <if test="cardLine != null">
+        card_line = #{cardLine,jdbcType=VARCHAR},
+      </if>
+      <if test="inBank != null">
+        in_bank = #{inBank,jdbcType=VARCHAR},
+      </if>
+      <if test="inBranch != null">
+        in_branch = #{inBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="inCardNo != null">
+        in_card_no = #{inCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="inCardName != null">
+        in_card_name = #{inCardName,jdbcType=VARCHAR},
+      </if>
+      <if test="inCardProvince != null">
+        in_card_province = #{inCardProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="inCardCity != null">
+        in_card_city = #{inCardCity,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowAddress != null">
+        borrow_address = #{borrowAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null">
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTel != null">
+        contact_tel = #{contactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="contactRelationship != null">
+        contact_relationship = #{contactRelationship,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="managerNo != null">
+        manager_no = #{managerNo,jdbcType=CHAR},
+      </if>
+      <if test="managerStatus != null">
+        manager_status = #{managerStatus,jdbcType=CHAR},
+      </if>
+      <if test="delFlg != null">
+        del_flg = #{delFlg,jdbcType=CHAR},
+      </if>
+      <if test="insUser != null">
+        ins_user = #{insUser,jdbcType=CHAR},
+      </if>
+      <if test="insDate != null">
+        ins_date = #{insDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updUser != null">
+        upd_user = #{updUser,jdbcType=CHAR},
+      </if>
+      <if test="updDate != null">
+        upd_date = #{updDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where contract = #{contract,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bqhx.yyb.vo.InformationVO">
+    update t_information
+    set money = #{money,jdbcType=INTEGER},
+      type = #{type,jdbcType=CHAR},
+      zb_ratio = #{zbRatio,jdbcType=DECIMAL},
+      jx_achievement = #{jxAchievement,jdbcType=DECIMAL},
+      lc_manager = #{lcManager,jdbcType=VARCHAR},
+      lc_id = #{lcId,jdbcType=VARCHAR},
+      t_manager = #{tManager,jdbcType=VARCHAR},
+      yyb = #{yyb,jdbcType=VARCHAR},
+      yyb_manager = #{yybManager,jdbcType=VARCHAR},
+      fgs = #{fgs,jdbcType=VARCHAR},
+      fgs_manager = #{fgsManager,jdbcType=VARCHAR},
+      dq = #{dq,jdbcType=VARCHAR},
+      dq_manager = #{dqManager,jdbcType=VARCHAR},
+      syb = #{syb,jdbcType=VARCHAR},
+      syb_manager = #{sybManager,jdbcType=VARCHAR},
+      periods = #{periods,jdbcType=INTEGER},
+      rate = #{rate,jdbcType=DECIMAL},
+      interest_all = #{interestAll,jdbcType=DECIMAL},
+      interest_month = #{interestMonth,jdbcType=DECIMAL},
+      payment_date = #{paymentDate,jdbcType=TIMESTAMP},
+      start_date = #{startDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      statement_date = #{statementDate,jdbcType=CHAR},
+      surplus_date = #{surplusDate,jdbcType=INTEGER},
+      status = #{status,jdbcType=CHAR},
+      pos_no = #{posNo,jdbcType=CHAR},
+      tender_name = #{tenderName,jdbcType=CHAR},
+      id_type = #{idType,jdbcType=CHAR},
+      id_no = #{idNo,jdbcType=CHAR},
+      continue_flg = #{continueFlg,jdbcType=CHAR},
+      tel = #{tel,jdbcType=CHAR},
+      spread_type = #{spreadType,jdbcType=CHAR},
+      bank = #{bank,jdbcType=CHAR},
+      branch = #{branch,jdbcType=CHAR},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      card_name = #{cardName,jdbcType=VARCHAR},
+      card_province = #{cardProvince,jdbcType=VARCHAR},
+      card_city = #{cardCity,jdbcType=VARCHAR},
+      card_line = #{cardLine,jdbcType=VARCHAR},
+      in_bank = #{inBank,jdbcType=VARCHAR},
+      in_branch = #{inBranch,jdbcType=VARCHAR},
+      in_card_no = #{inCardNo,jdbcType=VARCHAR},
+      in_card_name = #{inCardName,jdbcType=VARCHAR},
+      in_card_province = #{inCardProvince,jdbcType=VARCHAR},
+      in_card_city = #{inCardCity,jdbcType=VARCHAR},
+      borrow_address = #{borrowAddress,jdbcType=VARCHAR},
+      contact_name = #{contactName,jdbcType=VARCHAR},
+      contact_tel = #{contactTel,jdbcType=VARCHAR},
+      contact_relationship = #{contactRelationship,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      manager_no = #{managerNo,jdbcType=CHAR},
+      manager_status = #{managerStatus,jdbcType=CHAR},
+      del_flg = #{delFlg,jdbcType=CHAR},
+      ins_user = #{insUser,jdbcType=CHAR},
+      ins_date = #{insDate,jdbcType=TIMESTAMP},
+      upd_user = #{updUser,jdbcType=CHAR},
+      upd_date = #{updDate,jdbcType=TIMESTAMP}
+    where contract = #{contract,jdbcType=CHAR}
+  </update>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+    <!DOCTYPE generatorConfiguration 
+     PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+      "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+    
+     <generatorConfiguration>
+         <!--数据库驱动路径-->
+      <classPathEntry location="D:\repository\mysql\mysql-connector-java\5.1.43\mysql-connector-java-5.1.43.jar" />
+  <context id="DB2Tables" targetRuntime="MyBatis3">
+     <commentGenerator>
+       <property name="suppressAllComments" value="true"/>
+     </commentGenerator>
+      <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://192.168.1.87:3306/bq_da?useUnicode=true"
+            userId="root" password="123456">
+       </jdbcConnection>
+      <javaTypeResolver>
+         <property name="forceBigDecimals" value="false"/>
+      </javaTypeResolver>
+     <!--域模型层,生成的目标包,项目目标源文件-->
+       <javaModelGenerator targetPackage="com.bqhx.yyb.vo" targetProject="DA">
+         <property name="enableSubPackages" value="true"/>
+           <property name="trimStrings" value="true"/>
+       </javaModelGenerator>
+       <!--XML映射文件,生成的位置（目标包）,源代码文件夹-->
+      <sqlMapGenerator targetPackage="com.bqhx.yyb.mapper" targetProject="DA">
+            <property name="enableSubPackages" value="true"/>
+      </sqlMapGenerator>
+       <!--XML对应的Mapper类-->
+      <javaClientGenerator type="XMLMAPPER" targetPackage="com.bqhx.yyb.dao" targetProject="DA">
+         <property name="enableSubPackages" value="true"/>
+       </javaClientGenerator>
+         <!--下面是数据库表名和项目中需要生成类的名称，建议和数据库保持一致，如果有多个表，添加多个节点即可-->
+
+       <table  tableName="t_information" domainObjectName="InformationVO" enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"></table>
+        </context>
+   </generatorConfiguration>
