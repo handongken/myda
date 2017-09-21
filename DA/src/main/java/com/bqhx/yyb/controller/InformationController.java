@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.bqhx.yyb.dao.InformationVOMapper;
 import com.bqhx.yyb.vo.InformationVO;
@@ -22,6 +23,44 @@ public class InformationController {
 
 	@Autowired
 	private InformationVOMapper informationVOMapper;
+	private int flag = 1;
+	
+	@RequestMapping(value = "/deleteByPrimaryKey", method = RequestMethod.POST)
+	int deleteByPrimaryKey(String contract){
+		informationVOMapper.deleteByPrimaryKey(contract);		
+		return flag;
+	}
+	
+	@RequestMapping(value = "/insert", method = RequestMethod.POST)
+	int insert(InformationVO record){
+		informationVOMapper.insert(record);
+		return flag;
+	}
+	
+	@RequestMapping(value = "/insertSelective", method = RequestMethod.POST)
+	int insertSelective(InformationVO record){
+		informationVOMapper.insertSelective(record);
+		return flag;
+	}
+	
+	@RequestMapping(value = "/selectByPrimaryKey", method = RequestMethod.GET)
+	InformationVO selectByPrimaryKey(String contract){
+		InformationVO informationVO = informationVOMapper.selectByPrimaryKey(contract);
+		return informationVO;
+	}
+	
+	@RequestMapping(value = "/updateByPrimaryKeySelective", method = RequestMethod.POST)
+	int updateByPrimaryKeySelective(InformationVO record){
+		informationVOMapper.updateByPrimaryKeySelective(record);
+		return flag;
+	}
+	
+	@RequestMapping(value = "/updateByPrimaryKey", method = RequestMethod.POST)
+	int updateByPrimaryKey(InformationVO record){
+		informationVOMapper.updateByPrimaryKey(record);
+		return flag;
+	}
+	
 	/**
 	 * @author Administrator
 	 * 获取绩效
