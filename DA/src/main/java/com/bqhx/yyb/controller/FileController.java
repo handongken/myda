@@ -26,7 +26,7 @@ public class FileController {
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	  public void testUploadFile(HttpServletRequest req,
 	      MultipartHttpServletRequest multiReq) {
-	    // 获取上传文件的路径
+	    // 获取上传文件的路径1
 	    String uploadFilePath = multiReq.getFile("file1").getOriginalFilename();
 	    System.out.println("uploadFlePath:" + uploadFilePath );
 	    // 截取上传文件的文件名
