@@ -12,7 +12,7 @@ import com.bqhx.yyb.dao.InformationVOMapper;
 import com.bqhx.yyb.vo.InformationVO;
 
 /**
- * @author Administrator InformationController111
+ * @author Administrator InformationController1112
  */
 
 @RestController
