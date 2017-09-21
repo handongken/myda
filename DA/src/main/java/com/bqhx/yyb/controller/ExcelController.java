@@ -33,7 +33,7 @@ public class ExcelController {
 		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, "web-info-template.xls",
 				new FileOutputStream("D:/temp/out.xls"), list, DataVO.class, true);
 		mv.setViewName("Success");
-		return mv;
+		return mv; 
 	}
 
 	private String getDate() {
