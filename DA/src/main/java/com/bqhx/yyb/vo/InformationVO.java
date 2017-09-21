@@ -4,583 +4,585 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class InformationVO {
-    private String contract;
 
-    private Integer money;
-
-    private String type;
-
-    private BigDecimal zbRatio;
-
-    private BigDecimal jxAchievement;
-
-    private String lcManager;
-
-    private String lcId;
-
-    private String tManager;
-
-    private String yyb;
-
-    private String yybManager;
-
-    private String fgs;
-
-    private String fgsManager;
-
-    private String dq;
-
-    private String dqManager;
-
-    private String syb;
-
-    private String sybManager;
-
-    private Integer periods;
-
-    private BigDecimal rate;
-
-    private BigDecimal interestAll;
-
+	// 合同编号
+	private String contract;
+	// 出借金额
+	private Integer money;
+	// 产品名称
+	private String type;
+	// 折标系数
+	private BigDecimal zbRatio;
+	// 绩效业绩
+	private BigDecimal jxAchievement;
+	// 理财经理
+	private String lcManager;
+	// 理财经理id
+	private String lcId;
+	// 团队经理
+	private String tManager;
+	// 营业部
+	private String yyb;
+	// 营业部经理
+	private String yybManager;
+	// 分公司
+	private String fgs;
+	// 分公司经理
+	private String fgsManager;
+	// 大区
+	private String dq;
+	// 大区经理
+	private String dqManager;
+	// 事业部
+	private String syb;
+	// 事业部经理
+	private String sybManager;
+	// 期数
+	private Integer periods;
+	// 年化收益
+	private BigDecimal rate;
+	// 利息总额
+	private BigDecimal interestAll;
+	//月付利息
     private BigDecimal interestMonth;
+    //划扣日期
+	private Date paymentDate;
+	// 初始出借日期
+	private Date startDate;
+	// 到期日
+	private Date endDate;
+	// 账单日
+	private String statementDate;
+	// 即将到期天数
+	private Integer surplusDate;
+	// 状态
+	private String status;
+	// pos机终端号
+	private String posNo;
+	// 出借人
+	private String tenderName;
+	// 证件类型
+	private String idType;
+	// 身份证号
+	private String idNo;
+	// 非续投/续投
+	private String continueFlg;
+	// 联系方式
+	private String tel;
+	// 推广渠道
+	private String spreadType;
+	// 汇入银行
+	private String bank;
+	// 银行支行名称
+	private String branch;
+	// 账号
+	private String cardNo;
+	// 开户人姓名
+	private String cardName;
+	// 开卡省份
+	private String cardProvince;
+	// 开卡城市
+	private String cardCity;
+	// 银行行号
+	private String cardLine;
+	// 回款银行
+	private String inBank;
+	// 银行支行名称
+	private String inBranch;
+	// 账号
+	private String inCardNo;
+	// 开户人姓名
+	private String inCardName;
+	// 开卡省份
+	private String inCardProvince;
+	// 开卡城市
+	private String inCardCity;
+	// 出借人地址
+	private String borrowAddress;
+	// 紧急联系人
+	private String contactName;
+	// 紧急联系人电话
+	private String contactTel;
+	// 与出借人关系
+	private String contactRelationship;
+	// remark
+	private String remark;
+	// 审批者
+	private String managerNo;
+	// 审批状态
+	private String managerStatus;
+	// 删除flg
+	private String delFlg;
+
+	private String insUser;
+
+	private Date insDate;
+
+	private String updUser;
+
+	private Date updDate;
+
+	public String getContract() {
+		return contract;
+	}
+
+	public void setContract(String contract) {
+		this.contract = contract == null ? null : contract.trim();
+	}
+
+	public Integer getMoney() {
+		return money;
+	}
+
+	public void setMoney(Integer money) {
+		this.money = money;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type == null ? null : type.trim();
+	}
+
+	public BigDecimal getZbRatio() {
+		return zbRatio;
+	}
 
-    private Date paymentDate;
+	public void setZbRatio(BigDecimal zbRatio) {
+		this.zbRatio = zbRatio;
+	}
 
-    private Date startDate;
+	public BigDecimal getJxAchievement() {
+		return jxAchievement;
+	}
 
-    private Date endDate;
+	public void setJxAchievement(BigDecimal jxAchievement) {
+		this.jxAchievement = jxAchievement;
+	}
 
-    private String statementDate;
+	public String getLcManager() {
+		return lcManager;
+	}
 
-    private Integer surplusDate;
+	public void setLcManager(String lcManager) {
+		this.lcManager = lcManager == null ? null : lcManager.trim();
+	}
 
-    private String status;
+	public String getLcId() {
+		return lcId;
+	}
 
-    private String posNo;
+	public void setLcId(String lcId) {
+		this.lcId = lcId == null ? null : lcId.trim();
+	}
 
-    private String tenderName;
+	public String gettManager() {
+		return tManager;
+	}
 
-    private String idType;
+	public void settManager(String tManager) {
+		this.tManager = tManager == null ? null : tManager.trim();
+	}
 
-    private String idNo;
+	public String getYyb() {
+		return yyb;
+	}
 
-    private String continueFlg;
+	public void setYyb(String yyb) {
+		this.yyb = yyb == null ? null : yyb.trim();
+	}
 
-    private String tel;
+	public String getYybManager() {
+		return yybManager;
+	}
 
-    private String spreadType;
+	public void setYybManager(String yybManager) {
+		this.yybManager = yybManager == null ? null : yybManager.trim();
+	}
 
-    private String bank;
+	public String getFgs() {
+		return fgs;
+	}
 
-    private String branch;
+	public void setFgs(String fgs) {
+		this.fgs = fgs == null ? null : fgs.trim();
+	}
 
-    private String cardNo;
+	public String getFgsManager() {
+		return fgsManager;
+	}
 
-    private String cardName;
+	public void setFgsManager(String fgsManager) {
+		this.fgsManager = fgsManager == null ? null : fgsManager.trim();
+	}
 
-    private String cardProvince;
+	public String getDq() {
+		return dq;
+	}
 
-    private String cardCity;
+	public void setDq(String dq) {
+		this.dq = dq == null ? null : dq.trim();
+	}
 
-    private String cardLine;
+	public String getDqManager() {
+		return dqManager;
+	}
 
-    private String inBank;
+	public void setDqManager(String dqManager) {
+		this.dqManager = dqManager == null ? null : dqManager.trim();
+	}
 
-    private String inBranch;
+	public String getSyb() {
+		return syb;
+	}
 
-    private String inCardNo;
+	public void setSyb(String syb) {
+		this.syb = syb == null ? null : syb.trim();
+	}
 
-    private String inCardName;
+	public String getSybManager() {
+		return sybManager;
+	}
 
-    private String inCardProvince;
+	public void setSybManager(String sybManager) {
+		this.sybManager = sybManager == null ? null : sybManager.trim();
+	}
 
-    private String inCardCity;
+	public Integer getPeriods() {
+		return periods;
+	}
 
-    private String borrowAddress;
+	public void setPeriods(Integer periods) {
+		this.periods = periods;
+	}
 
-    private String contactName;
+	public BigDecimal getRate() {
+		return rate;
+	}
 
-    private String contactTel;
+	public void setRate(BigDecimal rate) {
+		this.rate = rate;
+	}
 
-    private String contactRelationship;
+	public BigDecimal getInterestAll() {
+		return interestAll;
+	}
 
-    private String remark;
+	public void setInterestAll(BigDecimal interestAll) {
+		this.interestAll = interestAll;
+	}
 
-    private String managerNo;
+	public BigDecimal getInterestMonth() {
+		return interestMonth;
+	}
 
-    private String managerStatus;
+	public void setInterestMonth(BigDecimal interestMonth) {
+		this.interestMonth = interestMonth;
+	}
 
-    private String delFlg;
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
 
-    private String insUser;
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
+	}
 
-    private Date insDate;
+	public Date getStartDate() {
+		return startDate;
+	}
 
-    private String updUser;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 
-    private Date updDate;
+	public Date getEndDate() {
+		return endDate;
+	}
 
-    public String getContract() {
-        return contract;
-    }
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 
-    public void setContract(String contract) {
-        this.contract = contract == null ? null : contract.trim();
-    }
+	public String getStatementDate() {
+		return statementDate;
+	}
 
-    public Integer getMoney() {
-        return money;
-    }
+	public void setStatementDate(String statementDate) {
+		this.statementDate = statementDate == null ? null : statementDate.trim();
+	}
 
-    public void setMoney(Integer money) {
-        this.money = money;
-    }
+	public Integer getSurplusDate() {
+		return surplusDate;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setSurplusDate(Integer surplusDate) {
+		this.surplusDate = surplusDate;
+	}
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public BigDecimal getZbRatio() {
-        return zbRatio;
-    }
+	public void setStatus(String status) {
+		this.status = status == null ? null : status.trim();
+	}
 
-    public void setZbRatio(BigDecimal zbRatio) {
-        this.zbRatio = zbRatio;
-    }
+	public String getPosNo() {
+		return posNo;
+	}
 
-    public BigDecimal getJxAchievement() {
-        return jxAchievement;
-    }
+	public void setPosNo(String posNo) {
+		this.posNo = posNo == null ? null : posNo.trim();
+	}
 
-    public void setJxAchievement(BigDecimal jxAchievement) {
-        this.jxAchievement = jxAchievement;
-    }
+	public String getTenderName() {
+		return tenderName;
+	}
 
-    public String getLcManager() {
-        return lcManager;
-    }
+	public void setTenderName(String tenderName) {
+		this.tenderName = tenderName == null ? null : tenderName.trim();
+	}
 
-    public void setLcManager(String lcManager) {
-        this.lcManager = lcManager == null ? null : lcManager.trim();
-    }
+	public String getIdType() {
+		return idType;
+	}
 
-    public String getLcId() {
-        return lcId;
-    }
+	public void setIdType(String idType) {
+		this.idType = idType == null ? null : idType.trim();
+	}
 
-    public void setLcId(String lcId) {
-        this.lcId = lcId == null ? null : lcId.trim();
-    }
+	public String getIdNo() {
+		return idNo;
+	}
 
-    public String gettManager() {
-        return tManager;
-    }
+	public void setIdNo(String idNo) {
+		this.idNo = idNo == null ? null : idNo.trim();
+	}
 
-    public void settManager(String tManager) {
-        this.tManager = tManager == null ? null : tManager.trim();
-    }
+	public String getContinueFlg() {
+		return continueFlg;
+	}
 
-    public String getYyb() {
-        return yyb;
-    }
+	public void setContinueFlg(String continueFlg) {
+		this.continueFlg = continueFlg == null ? null : continueFlg.trim();
+	}
 
-    public void setYyb(String yyb) {
-        this.yyb = yyb == null ? null : yyb.trim();
-    }
+	public String getTel() {
+		return tel;
+	}
 
-    public String getYybManager() {
-        return yybManager;
-    }
+	public void setTel(String tel) {
+		this.tel = tel == null ? null : tel.trim();
+	}
 
-    public void setYybManager(String yybManager) {
-        this.yybManager = yybManager == null ? null : yybManager.trim();
-    }
+	public String getSpreadType() {
+		return spreadType;
+	}
 
-    public String getFgs() {
-        return fgs;
-    }
+	public void setSpreadType(String spreadType) {
+		this.spreadType = spreadType == null ? null : spreadType.trim();
+	}
 
-    public void setFgs(String fgs) {
-        this.fgs = fgs == null ? null : fgs.trim();
-    }
+	public String getBank() {
+		return bank;
+	}
 
-    public String getFgsManager() {
-        return fgsManager;
-    }
+	public void setBank(String bank) {
+		this.bank = bank == null ? null : bank.trim();
+	}
 
-    public void setFgsManager(String fgsManager) {
-        this.fgsManager = fgsManager == null ? null : fgsManager.trim();
-    }
+	public String getBranch() {
+		return branch;
+	}
 
-    public String getDq() {
-        return dq;
-    }
+	public void setBranch(String branch) {
+		this.branch = branch == null ? null : branch.trim();
+	}
 
-    public void setDq(String dq) {
-        this.dq = dq == null ? null : dq.trim();
-    }
+	public String getCardNo() {
+		return cardNo;
+	}
 
-    public String getDqManager() {
-        return dqManager;
-    }
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo == null ? null : cardNo.trim();
+	}
 
-    public void setDqManager(String dqManager) {
-        this.dqManager = dqManager == null ? null : dqManager.trim();
-    }
+	public String getCardName() {
+		return cardName;
+	}
 
-    public String getSyb() {
-        return syb;
-    }
+	public void setCardName(String cardName) {
+		this.cardName = cardName == null ? null : cardName.trim();
+	}
 
-    public void setSyb(String syb) {
-        this.syb = syb == null ? null : syb.trim();
-    }
+	public String getCardProvince() {
+		return cardProvince;
+	}
 
-    public String getSybManager() {
-        return sybManager;
-    }
+	public void setCardProvince(String cardProvince) {
+		this.cardProvince = cardProvince == null ? null : cardProvince.trim();
+	}
 
-    public void setSybManager(String sybManager) {
-        this.sybManager = sybManager == null ? null : sybManager.trim();
-    }
+	public String getCardCity() {
+		return cardCity;
+	}
 
-    public Integer getPeriods() {
-        return periods;
-    }
+	public void setCardCity(String cardCity) {
+		this.cardCity = cardCity == null ? null : cardCity.trim();
+	}
 
-    public void setPeriods(Integer periods) {
-        this.periods = periods;
-    }
+	public String getCardLine() {
+		return cardLine;
+	}
 
-    public BigDecimal getRate() {
-        return rate;
-    }
+	public void setCardLine(String cardLine) {
+		this.cardLine = cardLine == null ? null : cardLine.trim();
+	}
 
-    public void setRate(BigDecimal rate) {
-        this.rate = rate;
-    }
+	public String getInBank() {
+		return inBank;
+	}
 
-    public BigDecimal getInterestAll() {
-        return interestAll;
-    }
+	public void setInBank(String inBank) {
+		this.inBank = inBank == null ? null : inBank.trim();
+	}
 
-    public void setInterestAll(BigDecimal interestAll) {
-        this.interestAll = interestAll;
-    }
+	public String getInBranch() {
+		return inBranch;
+	}
 
-    public BigDecimal getInterestMonth() {
-        return interestMonth;
-    }
+	public void setInBranch(String inBranch) {
+		this.inBranch = inBranch == null ? null : inBranch.trim();
+	}
 
-    public void setInterestMonth(BigDecimal interestMonth) {
-        this.interestMonth = interestMonth;
-    }
+	public String getInCardNo() {
+		return inCardNo;
+	}
 
-    public Date getPaymentDate() {
-        return paymentDate;
-    }
+	public void setInCardNo(String inCardNo) {
+		this.inCardNo = inCardNo == null ? null : inCardNo.trim();
+	}
 
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
-    }
+	public String getInCardName() {
+		return inCardName;
+	}
 
-    public Date getStartDate() {
-        return startDate;
-    }
+	public void setInCardName(String inCardName) {
+		this.inCardName = inCardName == null ? null : inCardName.trim();
+	}
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
+	public String getInCardProvince() {
+		return inCardProvince;
+	}
 
-    public Date getEndDate() {
-        return endDate;
-    }
+	public void setInCardProvince(String inCardProvince) {
+		this.inCardProvince = inCardProvince == null ? null : inCardProvince.trim();
+	}
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
+	public String getInCardCity() {
+		return inCardCity;
+	}
 
-    public String getStatementDate() {
-        return statementDate;
-    }
+	public void setInCardCity(String inCardCity) {
+		this.inCardCity = inCardCity == null ? null : inCardCity.trim();
+	}
 
-    public void setStatementDate(String statementDate) {
-        this.statementDate = statementDate == null ? null : statementDate.trim();
-    }
+	public String getBorrowAddress() {
+		return borrowAddress;
+	}
 
-    public Integer getSurplusDate() {
-        return surplusDate;
-    }
+	public void setBorrowAddress(String borrowAddress) {
+		this.borrowAddress = borrowAddress == null ? null : borrowAddress.trim();
+	}
 
-    public void setSurplusDate(Integer surplusDate) {
-        this.surplusDate = surplusDate;
-    }
+	public String getContactName() {
+		return contactName;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public void setContactName(String contactName) {
+		this.contactName = contactName == null ? null : contactName.trim();
+	}
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
-    }
+	public String getContactTel() {
+		return contactTel;
+	}
 
-    public String getPosNo() {
-        return posNo;
-    }
+	public void setContactTel(String contactTel) {
+		this.contactTel = contactTel == null ? null : contactTel.trim();
+	}
 
-    public void setPosNo(String posNo) {
-        this.posNo = posNo == null ? null : posNo.trim();
-    }
+	public String getContactRelationship() {
+		return contactRelationship;
+	}
 
-    public String getTenderName() {
-        return tenderName;
-    }
+	public void setContactRelationship(String contactRelationship) {
+		this.contactRelationship = contactRelationship == null ? null : contactRelationship.trim();
+	}
 
-    public void setTenderName(String tenderName) {
-        this.tenderName = tenderName == null ? null : tenderName.trim();
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public String getIdType() {
-        return idType;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark == null ? null : remark.trim();
+	}
 
-    public void setIdType(String idType) {
-        this.idType = idType == null ? null : idType.trim();
-    }
+	public String getManagerNo() {
+		return managerNo;
+	}
 
-    public String getIdNo() {
-        return idNo;
-    }
+	public void setManagerNo(String managerNo) {
+		this.managerNo = managerNo == null ? null : managerNo.trim();
+	}
 
-    public void setIdNo(String idNo) {
-        this.idNo = idNo == null ? null : idNo.trim();
-    }
+	public String getManagerStatus() {
+		return managerStatus;
+	}
 
-    public String getContinueFlg() {
-        return continueFlg;
-    }
+	public void setManagerStatus(String managerStatus) {
+		this.managerStatus = managerStatus == null ? null : managerStatus.trim();
+	}
 
-    public void setContinueFlg(String continueFlg) {
-        this.continueFlg = continueFlg == null ? null : continueFlg.trim();
-    }
+	public String getDelFlg() {
+		return delFlg;
+	}
 
-    public String getTel() {
-        return tel;
-    }
+	public void setDelFlg(String delFlg) {
+		this.delFlg = delFlg == null ? null : delFlg.trim();
+	}
 
-    public void setTel(String tel) {
-        this.tel = tel == null ? null : tel.trim();
-    }
+	public String getInsUser() {
+		return insUser;
+	}
 
-    public String getSpreadType() {
-        return spreadType;
-    }
+	public void setInsUser(String insUser) {
+		this.insUser = insUser == null ? null : insUser.trim();
+	}
 
-    public void setSpreadType(String spreadType) {
-        this.spreadType = spreadType == null ? null : spreadType.trim();
-    }
+	public Date getInsDate() {
+		return insDate;
+	}
 
-    public String getBank() {
-        return bank;
-    }
+	public void setInsDate(Date insDate) {
+		this.insDate = insDate;
+	}
 
-    public void setBank(String bank) {
-        this.bank = bank == null ? null : bank.trim();
-    }
+	public String getUpdUser() {
+		return updUser;
+	}
 
-    public String getBranch() {
-        return branch;
-    }
+	public void setUpdUser(String updUser) {
+		this.updUser = updUser == null ? null : updUser.trim();
+	}
 
-    public void setBranch(String branch) {
-        this.branch = branch == null ? null : branch.trim();
-    }
+	public Date getUpdDate() {
+		return updDate;
+	}
 
-    public String getCardNo() {
-        return cardNo;
-    }
-
-    public void setCardNo(String cardNo) {
-        this.cardNo = cardNo == null ? null : cardNo.trim();
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName == null ? null : cardName.trim();
-    }
-
-    public String getCardProvince() {
-        return cardProvince;
-    }
-
-    public void setCardProvince(String cardProvince) {
-        this.cardProvince = cardProvince == null ? null : cardProvince.trim();
-    }
-
-    public String getCardCity() {
-        return cardCity;
-    }
-
-    public void setCardCity(String cardCity) {
-        this.cardCity = cardCity == null ? null : cardCity.trim();
-    }
-
-    public String getCardLine() {
-        return cardLine;
-    }
-
-    public void setCardLine(String cardLine) {
-        this.cardLine = cardLine == null ? null : cardLine.trim();
-    }
-
-    public String getInBank() {
-        return inBank;
-    }
-
-    public void setInBank(String inBank) {
-        this.inBank = inBank == null ? null : inBank.trim();
-    }
-
-    public String getInBranch() {
-        return inBranch;
-    }
-
-    public void setInBranch(String inBranch) {
-        this.inBranch = inBranch == null ? null : inBranch.trim();
-    }
-
-    public String getInCardNo() {
-        return inCardNo;
-    }
-
-    public void setInCardNo(String inCardNo) {
-        this.inCardNo = inCardNo == null ? null : inCardNo.trim();
-    }
-
-    public String getInCardName() {
-        return inCardName;
-    }
-
-    public void setInCardName(String inCardName) {
-        this.inCardName = inCardName == null ? null : inCardName.trim();
-    }
-
-    public String getInCardProvince() {
-        return inCardProvince;
-    }
-
-    public void setInCardProvince(String inCardProvince) {
-        this.inCardProvince = inCardProvince == null ? null : inCardProvince.trim();
-    }
-
-    public String getInCardCity() {
-        return inCardCity;
-    }
-
-    public void setInCardCity(String inCardCity) {
-        this.inCardCity = inCardCity == null ? null : inCardCity.trim();
-    }
-
-    public String getBorrowAddress() {
-        return borrowAddress;
-    }
-
-    public void setBorrowAddress(String borrowAddress) {
-        this.borrowAddress = borrowAddress == null ? null : borrowAddress.trim();
-    }
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName == null ? null : contactName.trim();
-    }
-
-    public String getContactTel() {
-        return contactTel;
-    }
-
-    public void setContactTel(String contactTel) {
-        this.contactTel = contactTel == null ? null : contactTel.trim();
-    }
-
-    public String getContactRelationship() {
-        return contactRelationship;
-    }
-
-    public void setContactRelationship(String contactRelationship) {
-        this.contactRelationship = contactRelationship == null ? null : contactRelationship.trim();
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    public String getManagerNo() {
-        return managerNo;
-    }
-
-    public void setManagerNo(String managerNo) {
-        this.managerNo = managerNo == null ? null : managerNo.trim();
-    }
-
-    public String getManagerStatus() {
-        return managerStatus;
-    }
-
-    public void setManagerStatus(String managerStatus) {
-        this.managerStatus = managerStatus == null ? null : managerStatus.trim();
-    }
-
-    public String getDelFlg() {
-        return delFlg;
-    }
-
-    public void setDelFlg(String delFlg) {
-        this.delFlg = delFlg == null ? null : delFlg.trim();
-    }
-
-    public String getInsUser() {
-        return insUser;
-    }
-
-    public void setInsUser(String insUser) {
-        this.insUser = insUser == null ? null : insUser.trim();
-    }
-
-    public Date getInsDate() {
-        return insDate;
-    }
-
-    public void setInsDate(Date insDate) {
-        this.insDate = insDate;
-    }
-
-    public String getUpdUser() {
-        return updUser;
-    }
-
-    public void setUpdUser(String updUser) {
-        this.updUser = updUser == null ? null : updUser.trim();
-    }
-
-    public Date getUpdDate() {
-        return updDate;
-    }
-
-    public void setUpdDate(Date updDate) {
-        this.updDate = updDate;
-    }
+	public void setUpdDate(Date updDate) {
+		this.updDate = updDate;
+	}
 }
