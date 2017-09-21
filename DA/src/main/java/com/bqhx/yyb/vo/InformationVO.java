@@ -108,7 +108,7 @@ public class InformationVO {
 
     private String managerNo;
 
-    private String managerStatus;
+    private String managerStatus;   
 
     private String delFlg;
 
