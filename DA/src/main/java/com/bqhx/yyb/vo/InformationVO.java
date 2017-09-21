@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class InformationVO {
 
-	// 合同编号
+	// 合同编号1
 	private String contract;
 	// 出借金额
 	private Integer money;
