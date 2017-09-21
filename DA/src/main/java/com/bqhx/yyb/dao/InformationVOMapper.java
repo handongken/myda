@@ -37,4 +37,5 @@ public interface InformationVOMapper {
     InformationVO getBank(String contract);
     
     void updateInterest(@Param("contract")String contract,@Param("interest_all")BigDecimal interest_all,@Param("interest_month")BigDecimal interest_month);
+
 }

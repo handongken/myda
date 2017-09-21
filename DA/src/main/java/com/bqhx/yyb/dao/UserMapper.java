@@ -21,4 +21,5 @@ public interface UserMapper {
 			@Param("tel") String tel);
 
 	void deleteUserById(String userId);
+
 }
