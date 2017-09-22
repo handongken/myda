@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>所有用户</title>
+</head>
+<body>
+<table style="margin:auto auto">
+        <thead>
+            <tr>
+                <th>编号</th>
+                <th>用户名</th>
+                <th>密码</th>
+                <th>电话</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user:${userList}">
+                <td th:text="${user.userId}">编号</td>
+                <td th:text="${user.name}">用户名</td>
+                <td th:text="${user.password}">密码</td>
+                <td th:text="${user.tel}">phone</td>
+             <td><a href="#" th:href="@{findOne(userId=${user.userId})}">更新</a></td>
+             <td><form id="delete-form"  th:action="@{deleteUserById(userId=${user.userId})}"  method="POST"><input type="submit" value = "delete"/></form></td>
+            </tr>          
+        </tbody>
+    </table>
+    <table style="margin:auto auto">
+        <thead>
+            <tr>
+                <th>编号</th>
+                <th>用户名</th>
+                <th>密码</th>
+                <th>电话</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user:${user}">
+                <td th:text="${user.userId}">编号</td>
+                <td th:text="${user.name}">用户名</td>
+                <td th:text="${user.password}">密码</td>
+                <td th:text="${user.tel}">phone</td>
+                <!-- <td><a href="findOne?userId=<%=user.userId%>">更新</a></td> -->
+                <td><a href="#" th:href="@{findOne(userId=${user.userId})}">更新</a></td>
+                <td><form id="delete-form"  th:action="@{deleteUserById(userId=${user.userId})}"  method="POST"><input type="submit" value = "delete"/></form></td>
+            </tr>          
+        </tbody>
+    </table>
+</body>
+</html>

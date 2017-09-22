@@ -39,5 +39,22 @@
        WHERE user_id = #{userId}
     </select>
 
-
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="userId" parameterType="java.lang.String">
+    	INSERT INTO t_user(user_id,name,password,tel)
+    	values(#{userId},#{name},#{password},#{tel})
+    </insert>
+    
+    <update id="updateUser" parameterType="java.lang.String">
+    	UPDATE t_user
+    	SET
+    	<if test="name != null">name = #{name}</if>,
+    	<if test="password != null">password = #{password}</if>,
+    	<if test="tel != null">tel = #{tel}</if>
+    	WHERE user_id = #{userId}
+    </update>
+    
+    <delete id="deleteUserById" parameterType="java.lang.String">
+    	DELETE FROM t_user
+    	WHERE user_id = #{userId}
+    </delete>
 </mapper>
