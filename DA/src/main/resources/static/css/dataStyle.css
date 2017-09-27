@@ -1,0 +1,67 @@
+@charset "utf-8";
+body{background: #FFFFCC;}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+.addList{background: #FF9999;padding: 10px;margin: 15px auto 0;border-radius: 10px 10px 0 0;}
+.addList a{display: block;font-size: 16px;color: #FFF;}
+.content{overflow:hidden;width: 1200px;margin: 0 auto;padding: 10px 0 40px;text-align: center;}
+.content h2{position: relative;font-size: 20px;color: #666;margin-bottom: 60px;padding-top: 20px;}
+.content h2:after{content: '';position: absolute; top: 63px;left: 42%;width: 200px; height: 1px; background: #ccc; bottom: 0;}
+.content h2:before{content: '';position: absolute; top: 62px;left: 46%;width: 100px; height: 3px; background: #FF9966; bottom: 0;z-index: 2;}
+.form-group textarea{height: 80px;vertical-align: middle;resize: vertical;}
+.form-group select{width: 302px; height: 34px;border-radius: 3px;border: 1px solid #ccc;margin-bottom: 15px;}
+.btn-box{width: 120px;margin-left: 299px;}
+.btnBgCFF6666{background: #FF6666;}
+.visibilityHidden{visibility: hidden;}
+.marB{position: relative;width: 1000px;margin: 0 auto 30px;border-bottom: 1px solid #ccc;padding: 15px 0 0;}
+.marB:before{content: '';position: absolute;left: 0; bottom: -2px; width: 120px; border-bottom: 3px solid #FF9966; z-index: 1;}
+.SeachBox{overflow: hidden;border-bottom: 1px solid #ccc;padding: 20px 0;}
+.SeachBox label{font-size: 14px;color: #FF9966;vertical-align: middle;margin-right: 5px;}
+.SeachBox label:last-child{margin-right: 0;}
+.SeachBox input{width: 150px;height: 26px;font-size: 14px;color: #FF9966;padding: 2px 10px;border-radius: 3px;border: 1px solid #FF9966;}
+.SeachBox .seachBtn{display: inline-block;width: 80px; margin: 10px 120px 0 0;}
+.symbol{position: absolute;top: 6px;right: 180px;font-size: 16px;color: #FF9966;}
+/*改 dataTables 样式*/
+.dataTables_wrapper.no-footer .dataTables_scrollBody,table.dataTable.no-footer,table.dataTable thead th, table.dataTable thead td{border: none;}
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.2em .5em;
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    color: #FF6666 !important;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    box-shadow: none;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    color: #CC6666 !important;
+    border: 1px solid #CC6666;
+    background: transparent;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: #FF6666 !important;
+    border: 1px solid #FF6666;
+    background: transparent;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+    outline: none;
+    background: transparent;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    cursor: default;
+    color: #CCC !important;
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none;
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate{
+    color: #FF6666;
+}

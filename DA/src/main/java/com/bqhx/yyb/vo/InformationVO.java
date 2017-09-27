@@ -1,10 +1,13 @@
 package com.bqhx.yyb.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class InformationVO {
 
+public class InformationVO extends BaseVO implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	// 合同编号
 	private String contract;
 	// 出借金额
@@ -46,11 +49,11 @@ public class InformationVO {
 	//月付利息
     private BigDecimal interestMonth;
     //划扣日期
-	private Date paymentDate;
+	private String paymentDate;
 	// 初始出借日期
-	private Date startDate;
+	private String startDate;
 	// 到期日
-	private Date endDate;
+	private String endDate;
 	// 账单日
 	private String statementDate;
 	// 即将到期天数
@@ -113,14 +116,6 @@ public class InformationVO {
 	private String managerStatus;
 	// 删除flg
 	private String delFlg;
-
-	private String insUser;
-
-	private Date insDate;
-
-	private String updUser;
-
-	private Date updDate;
 
 	public String getContract() {
 		return contract;
@@ -282,27 +277,27 @@ public class InformationVO {
 		this.interestMonth = interestMonth;
 	}
 
-	public Date getPaymentDate() {
+	public String getPaymentDate() {
 		return paymentDate;
 	}
 
-	public void setPaymentDate(Date paymentDate) {
+	public void setPaymentDate(String paymentDate) {
 		this.paymentDate = paymentDate;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 
@@ -554,35 +549,4 @@ public class InformationVO {
 		this.delFlg = delFlg == null ? null : delFlg.trim();
 	}
 
-	public String getInsUser() {
-		return insUser;
-	}
-
-	public void setInsUser(String insUser) {
-		this.insUser = insUser == null ? null : insUser.trim();
-	}
-
-	public Date getInsDate() {
-		return insDate;
-	}
-
-	public void setInsDate(Date insDate) {
-		this.insDate = insDate;
-	}
-
-	public String getUpdUser() {
-		return updUser;
-	}
-
-	public void setUpdUser(String updUser) {
-		this.updUser = updUser == null ? null : updUser.trim();
-	}
-
-	public Date getUpdDate() {
-		return updDate;
-	}
-
-	public void setUpdDate(Date updDate) {
-		this.updDate = updDate;
-	}
 }

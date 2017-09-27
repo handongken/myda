@@ -1,27 +1,27 @@
 package com.bqhx.yyb.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import com.bqhx.yyb.vo.InformationVO;
 @Mapper
 public interface InformationVOMapper {
-    int deleteByPrimaryKey(String contract);
+	int deleteByPrimaryKey(InformationVO record);
 
-    int insert(InformationVO record);
+	int insert(InformationVO record);
 
-    int insertSelective(InformationVO record);
+	int insertSelective(InformationVO record);
 
-    InformationVO selectByPrimaryKey(String contract);
-
+    List<InformationVO> selectByPrimaryKey(InformationVO record);
+    
     int updateByPrimaryKeySelective(InformationVO record);
 
     int updateByPrimaryKey(InformationVO record);
     
     /**
-	 * @author Administrator
+	 * @author Administrator 
 	 * 获取绩效
 	 */
     InformationVO getPerformance(String contract);

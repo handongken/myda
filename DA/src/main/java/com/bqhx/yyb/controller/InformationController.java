@@ -1,18 +1,18 @@
 package com.bqhx.yyb.controller;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bqhx.yyb.dao.InformationVOMapper;
 import com.bqhx.yyb.vo.InformationVO;
 
 /**
- * @author Administrator InformationController1112
+ * @author Administrator InformationController
  */
 
 @RestController
@@ -21,42 +21,71 @@ public class InformationController {
 
 	@Autowired
 	private InformationVOMapper informationVOMapper;
-	private int flag = 1;
 
 	@RequestMapping(value = "/deleteByPrimaryKey", method = RequestMethod.POST)
-	int deleteByPrimaryKey(String contract) {
-		informationVOMapper.deleteByPrimaryKey(contract);
-		return flag;
+	InformationVO deleteByPrimaryKey(InformationVO record) {
+		int code = informationVOMapper.deleteByPrimaryKey(record);
+		code = 1;
+		if(code == 1){
+			record.setMessage("1");
+		}else{
+			record.setMessage("0");
+		}
+		return record;
 	}
 
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
-	int insert(InformationVO record) {
-		informationVOMapper.insert(record);
-		return flag;
+	InformationVO insert(InformationVO record) {
+		int code = informationVOMapper.insert(record);
+		code = 1;
+		if(code == 1){
+			record.setMessage("1");
+		}else{
+			record.setMessage("0");
+		}
+		return record;
 	}
 
 	@RequestMapping(value = "/insertSelective", method = RequestMethod.POST)
-	int insertSelective(InformationVO record) {
-		informationVOMapper.insertSelective(record);
-		return flag;
+	InformationVO insertSelective(InformationVO record) {
+		int code = informationVOMapper.insertSelective(record);
+		code = 1;
+		if(code == 1){
+			record.setMessage("1");
+		}else{
+			record.setMessage("0");
+		}
+		return record;
 	}
 
-	@RequestMapping(value = "/selectByPrimaryKey", method = RequestMethod.GET)
-	InformationVO selectByPrimaryKey(String contract) {
-		InformationVO informationVO = informationVOMapper.selectByPrimaryKey(contract);
-		return informationVO;
+	@RequestMapping(value = "/selectByPrimaryKey", method = RequestMethod.POST)
+	List<InformationVO> selectByPrimaryKey(InformationVO record) {
+		List<InformationVO> informationVOList = informationVOMapper.selectByPrimaryKey(record);
+		return informationVOList;
 	}
-
+	
 	@RequestMapping(value = "/updateByPrimaryKeySelective", method = RequestMethod.POST)
-	int updateByPrimaryKeySelective(InformationVO record) {
-		informationVOMapper.updateByPrimaryKeySelective(record);
-		return flag;
+	InformationVO updateByPrimaryKeySelective(InformationVO record) {
+		int code = informationVOMapper.updateByPrimaryKeySelective(record);
+		code = 1;
+		if(code == 1){
+			record.setMessage("1");
+		}else{
+			record.setMessage("0");
+		}
+		return record;
 	}
 
 	@RequestMapping(value = "/updateByPrimaryKey", method = RequestMethod.POST)
-	int updateByPrimaryKey(InformationVO record) {
-		informationVOMapper.updateByPrimaryKey(record);
-		return flag;
+	InformationVO updateByPrimaryKey(InformationVO record) {
+		int code = informationVOMapper.updateByPrimaryKey(record);
+		code = 1;
+		if(code == 1){
+			record.setMessage("1");
+		}else{
+			record.setMessage("0");
+		}
+		return record;
 	}
 
 	/**
