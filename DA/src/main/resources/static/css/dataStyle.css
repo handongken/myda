@@ -5,11 +5,11 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
     margin: 0;
 }
-.addExitBox{overflow: hidden;}
-.addList,.exitBtn,.downLoadBtn{float: left;background: #FF9999;padding: 10px;margin: 15px auto 0;border-radius: 5px 5px 0 0;}
+.addExitBox{overflow: hidden;margin: 15px auto;}
+.addList,.exitBtn,.downExcelBtn,.downLoadBtn,.upLoadBtn{float: left;background: #FF9999;padding: 10px;border-radius: 5px;}
 .exitBtn{float: right;background: #ccc;}
-.downLoadBtn{margin-left: 5px;}
-.addList a,.exitBtn a,.downLoadBtn a{display: block;font-size: 16px;color: #FFF;}
+.downExcelBtn{margin-left: 5px;}
+.addList a,.exitBtn a,.downExcelBtn a,.downLoadBtn a,.upLoadBtn a{display: block;font-size: 16px;color: #FFF;}
 .content{overflow:hidden;width: 1200px;margin: 0 auto;padding: 10px 0 40px;text-align: center;}
 .content h2{position: relative;font-size: 20px;color: #666;margin-bottom: 60px;padding-top: 20px;}
 .content h2:after{content: '';position: absolute; top: 63px;left: 42%;width: 200px; height: 1px; background: #ccc; bottom: 0;}
