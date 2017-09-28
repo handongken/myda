@@ -20,7 +20,7 @@
 	</head>
 	<body>
 		<div class="container">
-		<a href="javascript:;" onclick="exit()">tuichu</a>
+		
 			<div class="content">
 				<h2>数据管理列表区</h2>
 				<div class="SeachBox">
@@ -56,10 +56,12 @@
 					<label for="Bank">银行卡号： <input type="number" id="Bank" placeholder="请输入银行卡号"/></label>
 					<p style="text-align: right;"><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
 				</div>
-				<div id="addList" class="addList"><a href="dataEdit.html?contract=">新增列表</a></div>
-				<div id="tableHtml">
-					
+				<div class="addExitBox">
+					<p id="addList" class="addList"><a href="dataEdit.html?contract=">新增列表</a></p>
+					<p class="downLoadBtn"><a href="javascript:;" onclick="downloadExcel()">导出Excel表格</a></p>
+					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p>
 				</div>
+				<div id="tableHtml"></div>
 			</div>
 		</div>
 		<script src="/js/jquery-2.1.0.js"></script>
@@ -70,6 +72,23 @@
 		<!--  <script src="/js/buttons.flash.min.js"></script>-->
 		
 		<script>
+			function downloadExcel(){ //导出表格
+				var user = JSON.parse(localStorage.user);
+				 $.ajax({
+				       url:"/downloadexcel",
+				       type: "POST",
+				       data: {},
+				       success:function(data){
+				             if(data == "success"){
+				            	 alert('成功下载');
+				             }
+				       },
+				       error:function(res){
+							alert('请求失败，请稍后再试');
+					   },
+				       dataType:"text"
+				});
+			}
 			loaddataList();
 			//读取表格
 			function loaddataList(){
@@ -113,7 +132,7 @@
 			function createTh(data){
 				var tableTh = [
 					'合同编号','产品名称','出借金额','折标系数','绩效业绩',
-					/*'员工编号',*/'ID+客户经理','团队经理','营业部名称','营业部经理','分公司名称',
+					'客户编号','客户经理','团队经理','营业部名称','营业部经理','分公司名称',
 					'分公司经理','大区名称','大区经理','事业部名称','事业部经理',
 					'期数','年化收益','利息总额','月付利息',
 					'划扣日期'/*,'划扣时间'*/,'到期日','账单日','初始出借日期','即将到期天数','状态','pos机终端号',
@@ -136,7 +155,8 @@
 							data[i]['money'], //出借金额
 							data[i]['zbRatio'], //折标系数
 							data[i]['jxAchievement'],//绩效业绩
-							{lcId:data[i]['lcId'],lcManager:data[i]['lcManager']}, //理财经理
+							data[i]['lcId'],//客户编号
+							data[i]['lcManager'], //客户经理
 							data[i]['tManager'], //团队经理
 							data[i]['yyb'], //营业部名称
 							data[i]['yybManager'], //营业部经理
@@ -236,21 +256,14 @@
 								else if(cellData == 20){$(td).html("<span>惠添金（100）</span>");}
 						    }
 						},
-			        	{
-							"targets": 5,"orderable": false,
-							"createdCell": function (td, cellData, rowData, row, col) {
-						    	$(td).html("<span title='"+cellData.lcId+"'>"+cellData.lcManager+"</span>");
-						    }
-						},
 						{
-							"targets": 19,"orderable": false,
+							"targets": 20,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
 						    	$(td).html(cellData);
-						    	/* console.log(cellData.length-1); */
 						    }
 						},
 						{
-							"targets": 24,"orderable": false,
+							"targets": 25,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>正常</span>");}
 								else if(cellData == 1){$(td).html("<span>已赎回</span>");}
@@ -260,24 +273,36 @@
 						    }
 						},
 						{
-							"targets": 28,"orderable": false,
+							"targets": 29,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>身份证</span>");}
 								else if(cellData == 1){$(td).html("<span>军官证</span>");}
-								else if(cellData == 2){$(td).html("<span>港澳台居民往来大陆通行证</span>");}
-								else if(cellData == 3){$(td).html("<span>户口簿</span>");}
-								else if(cellData == 4){$(td).html("<span>护照</span>");}
+								else if(cellData == 2){$(td).html("<span>户口簿</span>");}
+								else if(cellData == 3){$(td).html("<span>护照</span>");}
+								else if(cellData == 4){$(td).html("<span>港澳台居民往来大陆通行证</span>");}
 						    }
 						},
 						{
-							"targets": 34,"orderable": false,
+							"targets": 35,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>续投</span>");}
 								else if(cellData == 1){$(td).html("<span>非续投</span>");}
 						    }
 						},
 						{
-							"targets": 57,"orderable": false,
+							"targets": 54,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html(cellData);
+						    }
+						},
+						{
+							"targets": 56,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html(cellData);
+						    }
+						},
+						{
+							"targets": 58,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
 						    	$(td).html('<a href="dataEdit.html?contract='+ cellData +'" class="listTableBtn C66CC66" title="编辑">编辑</a><a href="javascript:;" style="margin-left: 20px;" class="listTableBtn" id="delTr" title="删除" onclick="bindListener(this,'+cellData+')">删除</a>');
 						    }

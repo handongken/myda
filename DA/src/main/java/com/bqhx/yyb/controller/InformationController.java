@@ -1,6 +1,7 @@
 package com.bqhx.yyb.controller;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,8 @@ public class InformationController {
 
 	@RequestMapping(value = "/insertSelective", method = RequestMethod.POST)
 	InformationVO insertSelective(InformationVO record) {
+		String paymentDate = record.getPaymentDate().substring(0, 19);
+		record.setPaymentDate(paymentDate);
 		int code = informationVOMapper.insertSelective(record);
 		code = 1;
 		if(code == 1){
@@ -61,6 +64,20 @@ public class InformationController {
 	@RequestMapping(value = "/selectByPrimaryKey", method = RequestMethod.POST)
 	List<InformationVO> selectByPrimaryKey(InformationVO record) {
 		List<InformationVO> informationVOList = informationVOMapper.selectByPrimaryKey(record);
+		for(InformationVO inf : informationVOList){
+			String paymentDate_s = inf.getPaymentDate();
+			String insDate_s = inf.getInsDate();
+			String updDate_s = inf.getUpdDate();
+			if(paymentDate_s != null && paymentDate_s != ""){
+				inf.setPaymentDate(paymentDate_s.substring(0, 19));
+			}
+			if(insDate_s != null && insDate_s != ""){
+				inf.setInsDate(insDate_s.substring(0, 19));
+			}
+			if(updDate_s != null && updDate_s != ""){
+				inf.setUpdDate(updDate_s.substring(0, 19));
+			}
+		}
 		return informationVOList;
 	}
 	
@@ -78,6 +95,8 @@ public class InformationController {
 
 	@RequestMapping(value = "/updateByPrimaryKey", method = RequestMethod.POST)
 	InformationVO updateByPrimaryKey(InformationVO record) {
+		String paymentDate = record.getPaymentDate().substring(0, 19);
+		record.setPaymentDate(paymentDate);
 		int code = informationVOMapper.updateByPrimaryKey(record);
 		code = 1;
 		if(code == 1){

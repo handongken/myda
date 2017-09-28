@@ -16,6 +16,8 @@ public interface InformationVOMapper {
 
     List<InformationVO> selectByPrimaryKey(InformationVO record);
     
+    List<InformationVO> selectAll();
+    
     int updateByPrimaryKeySelective(InformationVO record);
 
     int updateByPrimaryKey(InformationVO record);

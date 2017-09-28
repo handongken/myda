@@ -1,5 +1,7 @@
 queryData();
-var moneyReg = /([0-9]+[,]?)+$/;
+
+var moneyReg = /^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$/;
+var numReg = /^(0|[1-9][0-9]*)$/;
 function selectOnchange(){
 	if($("#type")[0].selectedIndex == 0){
 		$("#zbRatio").val('');
@@ -97,12 +99,14 @@ function saveData(){ //保存
 	var zbRatio = document.getElementById('zbRatio').value; //折标系数
 	if(zbRatio == ""){alert("折标系数不能为空");return false;}
 	var money = document.getElementById('money').value;//出借金额
-	if(money == "" || !moneyReg.test(money)){alert("请输入正确出借金额(数字)");return false;}
+	if(money == "" || !numReg.test(money)){alert("请输入正确出借金额(不能输入空格,只能输入数字)");return false;}
 	var jxAchievement = document.getElementById('jxAchievement').value;//绩效业绩 = 出借金额 * 折标系数
-	if(jxAchievement == "" || !moneyReg.test(jxAchievement)){alert("请输入正确绩效业绩(数字)");return false;}
+	if(jxAchievement == "" || !numReg.test(jxAchievement)){alert("请输入正确绩效业绩(不能输入空格,只能输入数字)");return false;}
 	
-	var lcManager = document.getElementById('lcManager').value; //理财经理
-	if(lcManager == ""){alert("请输入正确理财经理");return false;}
+	var lcId = document.getElementById('lcId').value; //客户编号
+	if(lcId == "" || !numReg.test(lcId)){alert("请输入正确客户编号(不能输入空格,只能输入数字)");return false;}
+	var lcManager = document.getElementById('lcManager').value; //客户经理
+	if(lcManager == ""){alert("请输入正确客户经理");return false;}
 	var tManager = document.getElementById('tManager').value; //团队经理
 	if(tManager == ""){alert("请输入正确团队经理");return false;}
 	var yyb = document.getElementById('yyb').value;//营业部名称
@@ -211,7 +215,7 @@ function saveData(){ //保存
 	var user = JSON.parse(localStorage.user);
 	var contract = $_GET['contract'];
 	ajaxPost('/updateByPrimaryKey',{"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
-									"lcManager":lcManager,"tManager":tManager,"yyb":yyb,"yybManager":yybManager,
+									"lcId":lcId,"lcManager":lcManager,"tManager":tManager,"yyb":yyb,"yybManager":yybManager,
 									"fgs":fgs,"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,
 									"syb":syb,"sybManager":sybManager,"periods":periods,"rate":rate,
 									 "interestAll":interestAll,"interestMonth":interestMonth,"paymentDate":paymentDate,
@@ -224,7 +228,6 @@ function saveData(){ //保存
 									 "inCardProvince":inCardProvince,"inCardCity":inCardCity,"managerNo":managerNo,"remark":remark,
 									 "contract":contract},success,faild);
 }
-
 
 function queryData(){ //查询
 	var success = function(data){
@@ -241,8 +244,8 @@ function queryData(){ //查询
 			document.getElementById('money').value = data[0].money; //出借金额
 			document.getElementById('zbRatio').value = data[0].zbRatio; //折标系数
 			document.getElementById('jxAchievement').value = data[0].jxAchievement; //绩效业绩 = 出借金额 * 折标系数
-			/* document.getElementById('staffNum').value = staffNum; //员工编号 */
-			document.getElementById('lcManager').value = data[0].lcManager; //理财经理
+			document.getElementById('lcId').value = data[0].lcId; //客户编号
+			document.getElementById('lcManager').value = data[0].lcManager; //客户经理
 			document.getElementById('tManager').value = data[0].tManager; //团队经理
 			document.getElementById('yyb').value = data[0].yyb;//营业部名称
 			document.getElementById('yybManager').value = data[0].yybManager;//营业部经理
@@ -258,6 +261,7 @@ function queryData(){ //查询
 			document.getElementById('interestAll').value = data[0].interestAll;//利息总额
 			document.getElementById('interestMonth').value = data[0].interestMonth;//月付利息
 			document.getElementById('paymentDate').value = data[0].paymentDate;//划扣日期
+			
 			document.getElementById('endDate').value = data[0].endDate;//到期日
 			document.getElementById('statementDate').value = data[0].statementDate;//账单日
 			document.getElementById('startDate').value = data[0].startDate;//初始出借日期
@@ -334,19 +338,22 @@ function queryData(){ //查询
 	ajaxPost('/selectByPrimaryKey',{"contract":contract},success,faild);
 }
 
-function addData(){
+function addData(){ //添加
 	var contract = document.getElementById('contract').value;//合同编号 
-	if(contract == ""){alert("请输入正确合同编号");return false;}
+	if(contract == ""|| !numReg.test(contract)){alert("请输入正确合同编号(不能输入空格,只能输入数字)");return false;}
 	var type = document.getElementById("type").value; //产品名称
 	if(type == ""){alert("请选择正确产品名称");return false;}
 	var money = document.getElementById('money').value;//出借金额
-	if(money == "" || !moneyReg.test(money)){alert("请输入正确出借金额(数字)");return false;}
+	if(money == "" || !numReg.test(money)){alert("请输入正确出借金额((不能输入空格,只能输入数字))");return false;}
 	var zbRatio = document.getElementById('zbRatio').value; //折标系数
 	if(zbRatio == ""){alert("请输入正确折标系数");return false;}
 	var jxAchievement = document.getElementById('jxAchievement').value;//绩效业绩 = 出借金额 * 折标系数
-	if(jxAchievement == "" || !moneyReg.test(jxAchievement)){alert("请输入正确绩效业绩(数字)");return false;}
-	var lcManager = document.getElementById('lcManager').value; //理财经理
-	if(lcManager == ""){alert("请输入正确理财经理");return false;}
+	if(jxAchievement == "" || !numReg.test(jxAchievement)){alert("请输入正确绩效业绩((不能输入空格,只能输入数字))");return false;}
+	
+	var lcId = document.getElementById('lcId').value; //客户编号
+	if(lcId == "" || !numReg.test(lcId)){alert("请输入正确客户编号(不能输入空格,只能输入数字)");return false;}
+	var lcManager = document.getElementById('lcManager').value; //客户经理
+	if(lcManager == ""){alert("请输入正确客户经理");return false;}
 	var tManager = document.getElementById('tManager').value; //团队经理
 	if(tManager == ""){alert("请输入正确团队经理");return false;}
 	var yyb = document.getElementById('yyb').value;//营业部名称
@@ -440,7 +447,7 @@ function addData(){
 	var managerNo = document.getElementById('managerNo').value;//审批者
 	var remark = document.getElementById('remark').value;//备注
 	var success = function(data){
-		console.log(data);
+		/*console.log(data);*/
 		if(data.message == 1){
 			alert('添加成功！');
 			window.location.href = "dataList.html";
@@ -453,7 +460,8 @@ function addData(){
 	};
 	var user = JSON.parse(localStorage.user);
 	/*var contract = $_GET['contract'];*/
-	ajaxPost('/insertSelective',{"contract":contract,"type":type,"money":money,"zbRatio":zbRatio,"jxAchievement":jxAchievement,"lcManager":lcManager,
+	ajaxPost('/insertSelective',{"contract":contract,"type":type,"money":money,"zbRatio":zbRatio,"jxAchievement":jxAchievement,
+								 "lcId":lcId,"lcManager":lcManager,
 								 "tManager":tManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,"fgsManager":fgsManager,"dq":dq,
 								 "dqManager":dqManager,"syb":syb,"sybManager":sybManager,"periods":periods,"rate":rate,
 								 "interestAll":interestAll,"interestMonth":interestMonth,"paymentDate":paymentDate,"endDate":endDate,
@@ -467,3 +475,4 @@ function addData(){
 								 },success,faild);
 
 }
+

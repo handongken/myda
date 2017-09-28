@@ -90,6 +90,11 @@
     		</if>
     </where>
   </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_information
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from t_information
     where contract = #{contract,jdbcType=CHAR}
@@ -313,7 +318,10 @@
       </if> -->
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-	 <if test="contract != null and contract != ''">
+	 
+
+
+<if test="contract != null and contract != ''">
         #{contract,jdbcType=CHAR},
       </if>
       <if test="money != null and money != ''">
@@ -492,177 +500,177 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.bqhx.yyb.vo.InformationVO">
     update t_information
     <set>
-      <if test="money != null and money != ''">
+      <if test="money != null">
         money = #{money,jdbcType=INTEGER},
       </if>
-      <if test="type != null and type != ''">
+      <if test="type != null">
         type = #{type,jdbcType=CHAR},
       </if>
-      <if test="zbRatio != null and zbRatio != ''">
+      <if test="zbRatio != null">
         zb_ratio = #{zbRatio,jdbcType=DECIMAL},
       </if>
-      <if test="jxAchievement != null and jxAchievement != ''">
+      <if test="jxAchievement != null">
         jx_achievement = #{jxAchievement,jdbcType=DECIMAL},
       </if>
-      <if test="lcManager != null and lcManager != ''">
+      <if test="lcManager != null">
         lc_manager = #{lcManager,jdbcType=VARCHAR},
       </if>
-      <if test="lcId != null and lcId != ''">
+      <if test="lcId != null">
         lc_id = #{lcId,jdbcType=VARCHAR},
       </if>
-      <if test="tManager != null and tManager != ''">
+      <if test="tManager != null">
         t_manager = #{tManager,jdbcType=VARCHAR},
       </if>
-      <if test="yyb != null and yyb != ''">
+      <if test="yyb != null">
         yyb = #{yyb,jdbcType=VARCHAR},
       </if>
-      <if test="yybManager != null and yybManager != ''">
+      <if test="yybManager != null">
         yyb_manager = #{yybManager,jdbcType=VARCHAR},
       </if>
-      <if test="fgs != null and fgs != ''">
+      <if test="fgs != null">
         fgs = #{fgs,jdbcType=VARCHAR},
       </if>
-      <if test="fgsManager != null and fgsManager != ''">
+      <if test="fgsManager != null">
         fgs_manager = #{fgsManager,jdbcType=VARCHAR},
       </if>
-      <if test="dq != null and dq != ''">
+      <if test="dq != null">
         dq = #{dq,jdbcType=VARCHAR},
       </if>
-      <if test="dqManager != null and dqManager != ''">
+      <if test="dqManager != null">
         dq_manager = #{dqManager,jdbcType=VARCHAR},
       </if>
-      <if test="syb != null and syb != ''">
+      <if test="syb != null">
         syb = #{syb,jdbcType=VARCHAR},
       </if>
-      <if test="sybManager != null and sybManager != ''">
+      <if test="sybManager != null">
         syb_manager = #{sybManager,jdbcType=VARCHAR},
       </if>
-      <if test="periods != null and periods != ''">
+      <if test="periods != null">
         periods = #{periods,jdbcType=INTEGER},
       </if>
-      <if test="rate != null and rate != ''">
+      <if test="rate != null">
         rate = #{rate,jdbcType=DECIMAL},
       </if>
-      <if test="interestAll != null and interestAll != ''">
+      <if test="interestAll != null">
         interest_all = #{interestAll,jdbcType=DECIMAL},
       </if>
-      <if test="interestMonth != null and interestMonth != ''">
+      <if test="interestMonth != null">
         interest_month = #{interestMonth,jdbcType=DECIMAL},
       </if>
-      <if test="paymentDate != null and paymentDate != ''">
+      <if test="paymentDate != null">
         payment_date = #{paymentDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="startDate != null and startDate != ''">
+      <if test="startDate != null">
         start_date = #{startDate,jdbcType=DATE},
       </if>
-      <if test="endDate != null and endDate != ''">
+      <if test="endDate != null">
         end_date = #{endDate,jdbcType=DATE},
       </if>
-      <if test="statementDate != null and statementDate != ''">
+      <if test="statementDate != null">
         statement_date = #{statementDate,jdbcType=CHAR},
       </if>
-      <if test="surplusDate != null and surplusDate != ''">
+      <if test="surplusDate != null">
         surplus_date = #{surplusDate,jdbcType=INTEGER},
       </if>
-      <if test="status != null and status != ''">
+      <if test="status != null">
         status = #{status,jdbcType=CHAR},
       </if>
-      <if test="posNo != null and posNo != ''">
+      <if test="posNo != null">
         pos_no = #{posNo,jdbcType=CHAR},
       </if>
-      <if test="tenderName != null and tenderName != ''">
+      <if test="tenderName != null">
         tender_name = #{tenderName,jdbcType=CHAR},
       </if>
-      <if test="idType != null and idType != ''">
+      <if test="idType != null">
         id_type = #{idType,jdbcType=CHAR},
       </if>
-      <if test="idNo != null and idNo != ''">
+      <if test="idNo != null">
         id_no = #{idNo,jdbcType=CHAR},
       </if>
-      <if test="continueFlg != null and continueFlg != ''">
+      <if test="continueFlg != null">
         continue_flg = #{continueFlg,jdbcType=CHAR},
       </if>
-      <if test="tel != null and tel != ''">
+      <if test="tel != null">
         tel = #{tel,jdbcType=CHAR},
       </if>
-      <if test="spreadType != null and spreadType != ''">
+      <if test="spreadType != null">
         spread_type = #{spreadType,jdbcType=CHAR},
       </if>
-      <if test="bank != null and bank != ''">
+      <if test="bank != null">
         bank = #{bank,jdbcType=CHAR},
       </if>
-      <if test="branch != null and branch != ''">
+      <if test="branch != null">
         branch = #{branch,jdbcType=CHAR},
       </if>
-      <if test="cardNo != null and cardNo != ''">
+      <if test="cardNo != null">
         card_no = #{cardNo,jdbcType=VARCHAR},
       </if>
-      <if test="cardName != null and cardName != ''">
+      <if test="cardName != null">
         card_name = #{cardName,jdbcType=VARCHAR},
       </if>
-      <if test="cardProvince != null and cardProvince != ''">
+      <if test="cardProvince != null">
         card_province = #{cardProvince,jdbcType=VARCHAR},
       </if>
-      <if test="cardCity != null and cardCity != ''">
+      <if test="cardCity != null">
         card_city = #{cardCity,jdbcType=VARCHAR},
       </if>
-      <if test="cardLine != null and cardLine != ''">
+      <if test="cardLine != null">
         card_line = #{cardLine,jdbcType=VARCHAR},
       </if>
-      <if test="inBank != null and inBank != ''">
+      <if test="inBank != null">
         in_bank = #{inBank,jdbcType=VARCHAR},
       </if>
-      <if test="inBranch != null and inBranch != ''">
+      <if test="inBranch != null">
         in_branch = #{inBranch,jdbcType=VARCHAR},
       </if>
-      <if test="inCardNo != null and inCardNo != ''">
+      <if test="inCardNo != null">
         in_card_no = #{inCardNo,jdbcType=VARCHAR},
       </if>
-      <if test="inCardName != null and inCardName != ''">
+      <if test="inCardName != null">
         in_card_name = #{inCardName,jdbcType=VARCHAR},
       </if>
-      <if test="inCardProvince != null and inCardProvince != ''">
+      <if test="inCardProvince != null">
         in_card_province = #{inCardProvince,jdbcType=VARCHAR},
       </if>
-      <if test="inCardCity != null and inCardCity != ''">
+      <if test="inCardCity != null">
         in_card_city = #{inCardCity,jdbcType=VARCHAR},
       </if>
-      <if test="borrowAddress != null and borrowAddress != ''">
+      <if test="borrowAddress != null">
         borrow_address = #{borrowAddress,jdbcType=VARCHAR},
       </if>
-      <if test="contactName != null and contactName != ''">
+      <if test="contactName != null">
         contact_name = #{contactName,jdbcType=VARCHAR},
       </if>
-      <if test="contactTel != null and contactTel != ''">
+      <if test="contactTel != null">
         contact_tel = #{contactTel,jdbcType=VARCHAR},
       </if>
-      <if test="contactRelationship != null and contactRelationship != ''">
+      <if test="contactRelationship != null">
         contact_relationship = #{contactRelationship,jdbcType=VARCHAR},
       </if>
-      <if test="remark != null and remark != ''">
+      <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="managerNo != null and managerNo != ''">
+      <if test="managerNo != null">
         manager_no = #{managerNo,jdbcType=CHAR},
       </if>
-      <if test="managerStatus != null and managerStatus != ''">
+      <if test="managerStatus != null">
         manager_status = #{managerStatus,jdbcType=CHAR},
       </if>
-      <if test="delFlg != null and delFlg != ''">
+      <if test="delFlg != null">
         del_flg = #{delFlg,jdbcType=CHAR},
       </if>
-      <if test="insUser != null and insUser != ''">
+      <if test="insUser != null">
         ins_user = #{insUser,jdbcType=CHAR},
       </if>
-      <if test="insDate != null and insDate != ''">
+      <if test="insDate != null">
         ins_date = #{insDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updUser != null and updUser != ''">
+      <if test="updUser != null">
         upd_user = #{updUser,jdbcType=CHAR},
       </if>
-      <if test="updDate != null and updDate != ''">
-        upd_date = #{updDate,jdbcType=TIMESTAMP}
-      </if>
+      <if test="updDate != null">
+        upd_date = #{updDate,jdbcType=TIMESTAMP},
+	  </if>
     </set>
     where contract = #{contract,jdbcType=CHAR}
   </update>
