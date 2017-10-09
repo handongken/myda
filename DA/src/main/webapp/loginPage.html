@@ -38,8 +38,8 @@
 				var userName = document.getElementById("userName").value; //取出输入的
 				var userPass = document.getElementById("userPass").value; 
 				var success = function(data){ // data 是服务器返回的
-					//alert(data);
-					var user = {userId:data.userId,name:data.name,tel:data.tel,type:data.type,sid:data.sId,did:data.dId,fid:data.fId,yid:data.yId,tid:data.tId,idCard:data.idCard};//存本地
+					//console.log(data);
+					var user = {insDate:data.insDate,insUser:data.insUser,updDate:data.updDate,updUser:data.updUser,message:data.message,userId:data.userId,password:data.password,name:data.name,tel:data.tel,type:data.type,sid:data.sId,did:data.dId,tid:data.tId,fid:data.fId,yid:data.yId,idCard:data.idCard};//存本地
 					//console.log(user);
 					localStorage.user = JSON.stringify(user);
 					if(data.userId !=""){
