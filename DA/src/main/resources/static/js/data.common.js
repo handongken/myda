@@ -348,7 +348,7 @@ function queryData(){ //查询
 	}
 	ajaxPost('/selectByCondition',{"contract":contract},success,faild);
 }
-function addData(){ //添加
+function addData(){ //新增
 	var contract = document.getElementById('contract').value;//合同编号 
 	if(contract == ""|| !numReg.test(contract)){alert("请输入正确合同编号(不能输入空格,只能输入数字)");return false;}
 	var type = document.getElementById("type").value; //产品名称
@@ -457,7 +457,7 @@ function addData(){ //添加
 	/*var managerNo = document.getElementById('managerNo').value;//审批者
 	var remark = document.getElementById('remark').value;//备注 ,"managerNo":managerNo,"remark":remark*/
 	var success = function(data){
-		console.log(data);
+		//console.log(data);
 		if(data.code == 1){
 			alert('添加成功！');
 			window.location.href = "dataList.html";
@@ -492,7 +492,7 @@ function VerifierData(){//审批提交
 	var remark = document.getElementById('remark').value;//备注
 	if(remark == ""){alert("请填写正确备注");return false;}
 	var success = function(data){
-		console.log(data);
+		//console.log(data);
 		if(data.code == 1){
 			alert('提交成功！');
 			window.location.href = "dataList.html";
