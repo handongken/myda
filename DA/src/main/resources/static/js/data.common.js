@@ -1,8 +1,7 @@
 queryData();
-
 var moneyReg = /^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$/;
 var numReg = /^(0|[1-9][0-9]*)$/;
-function selectOnchange(){
+function selectOnchange(){ //选择产品 自动生成
 	if($("#type")[0].selectedIndex == 0){
 		$("#zbRatio").val('');
 		$("#periods").val('');
@@ -234,7 +233,6 @@ function saveData(){ //保存
 									 "inCardProvince":inCardProvince,"inCardCity":inCardCity,"insUser":insUser,"insDate":insDate,/*"managerStatus":managerStatus,"managerNo":managerNo,"remark":remark,*/
 									 "updUser":updUser,"updDate":updDate,"contract":contract},success,faild);
 }
-
 function queryData(){ //查询
 	var user = JSON.parse(localStorage.user);
 	var success = function(data){
@@ -350,7 +348,6 @@ function queryData(){ //查询
 	}
 	ajaxPost('/selectByCondition',{"contract":contract},success,faild);
 }
-
 function addData(){ //添加
 	var contract = document.getElementById('contract').value;//合同编号 
 	if(contract == ""|| !numReg.test(contract)){alert("请输入正确合同编号(不能输入空格,只能输入数字)");return false;}
@@ -472,7 +469,6 @@ function addData(){ //添加
 		alert(error);
 	};
 	var user = JSON.parse(localStorage.user);
-	/*var contract = $_GET['contract'];*/
 	ajaxPost('/insertSelective',{"contract":contract,"name": user.name,"type":type,"money":money,"zbRatio":zbRatio,"jxAchievement":jxAchievement,
 								 "lcId":lcId,"lcManager":lcManager,
 								 "tManager":tManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,"fgsManager":fgsManager,"dq":dq,
@@ -488,9 +484,7 @@ function addData(){ //添加
 								 },success,faild);
 
 }
-
-//审批提交
-function VerifierData(){
+function VerifierData(){//审批提交
 	var managerNo = document.getElementById('managerNo').value;//审批者
 	/*if(managerNo == ""){alert("请填写正确审批者");return false;}*/
 	var managerStatus = document.getElementById('managerStatus').value;//审批状态
