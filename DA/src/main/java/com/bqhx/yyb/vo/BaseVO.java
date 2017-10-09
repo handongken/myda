@@ -12,7 +12,7 @@ public class BaseVO implements Serializable{
 	private String insDate;
 	private String insUser;
 	private String updDate;
-	private String updUser;
+	private String updUser; 
 	
 	private String message;
 	public String getMessage() {

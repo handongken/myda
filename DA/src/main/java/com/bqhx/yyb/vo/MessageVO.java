@@ -14,7 +14,7 @@ public class MessageVO implements Serializable{
 		this.code = code;
 	}
 	public String getMessage() {
-		return message;
+		return message; 
 	}
 	public void setMessage(String message) {
 		this.message = message;
