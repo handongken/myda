@@ -184,7 +184,7 @@ public class InformationController {
 	 */
 	@RequestMapping(value = "/approve", method = RequestMethod.POST)
 	MessageVO approve(InformationVO record) {
-		MessageVO messageVO = new MessageVO();
+		MessageVO messageVO = new MessageVO(); 
 		String managerStatus = record.getManagerStatus();
 		if(managerStatus.equals("1")){
 			informationVOMapper.updateByPrimaryKeySelective(record);
