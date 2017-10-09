@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bqhx.yyb.dao.InformationVOMapper;
 import com.bqhx.yyb.util.ExcelUtil;
+import com.bqhx.yyb.vo.ConstantVO;
 import com.bqhx.yyb.vo.InformationVO;
 
 @RestController
@@ -24,7 +25,9 @@ public class ExcelController {
 	
 	@RequestMapping("/downloadexcel")
 	protected String downloadExcel() throws Exception {
-		List<InformationVO> list = informationVOMapper.selectAll();
+		InformationVO record = new InformationVO();
+		record.setManagerStatus(ConstantVO.FLAG_ONE);
+		List<InformationVO> list = informationVOMapper.selectAll(record);
 		for(InformationVO inf : list){
 			String paymentDate_s = inf.getPaymentDate();
 			if(paymentDate_s != null && paymentDate_s != ""){
@@ -32,11 +35,11 @@ public class ExcelController {
 			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("title", "业绩日报总表");
+		map.put("title", ConstantVO.SUMMARYTABLETITLE);
 		map.put("date", getDate());
 		map.put("total", list.size() + " 条");
 		String out = "D:/业绩日报总表_" + getDate() + ".xls";
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, "information-template.xls",
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, ConstantVO.EXCELTEMPLATE,
 				new FileOutputStream(out), list, InformationVO.class, true);
 		return "success";
 	}

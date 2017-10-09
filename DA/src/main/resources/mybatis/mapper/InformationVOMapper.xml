@@ -22,7 +22,7 @@
     <result column="rate" jdbcType="DECIMAL" property="rate" />
     <result column="interest_all" jdbcType="DECIMAL" property="interestAll" />
     <result column="interest_month" jdbcType="DECIMAL" property="interestMonth" />
-    <result column="payment_date" jdbcType="TIMESTAMP" property="paymentDate" />
+    <result column="payment_date" jdbcType="VARCHAR" property="paymentDate" />
     <result column="start_date" jdbcType="DATE" property="startDate" />
     <result column="end_date" jdbcType="DATE" property="endDate" />
     <result column="statement_date" jdbcType="CHAR" property="statementDate" />
@@ -64,14 +64,22 @@
   <sql id="Base_Column_List">
     contract, money, type, zb_ratio, jx_achievement, lc_manager, lc_id, t_manager, yyb, 
     yyb_manager, fgs, fgs_manager, dq, dq_manager, syb, syb_manager, periods, rate, interest_all, 
-    interest_month, payment_date, start_date, end_date, statement_date, surplus_date, 
+    interest_month, payment_date,start_date, end_date, statement_date, surplus_date, 
     status, pos_no, tender_name, id_type, id_no, continue_flg, tel, spread_type, bank, 
     branch, card_no, card_name, card_province, card_city, card_line, in_bank, in_branch, 
     in_card_no, in_card_name, in_card_province, in_card_city, borrow_address, contact_name, 
-    contact_tel, contact_relationship, remark, manager_no, manager_status, del_flg, ins_user, 
-    ins_date, upd_user, upd_date
+    contact_tel, contact_relationship, remark, manager_no, manager_status, del_flg, ins_user,ins_date, upd_user,upd_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <sql id="Base_List">
+    contract, money, type, zb_ratio, jx_achievement, lc_manager, lc_id, t_manager, yyb, 
+    yyb_manager, fgs, fgs_manager, dq, dq_manager, syb, syb_manager, periods, rate, interest_all, 
+    interest_month, start_date, end_date, statement_date, surplus_date, 
+    status, pos_no, tender_name, id_type, id_no, continue_flg, tel, spread_type, bank, 
+    branch, card_no, card_name, card_province, card_city, card_line, in_bank, in_branch, 
+    in_card_no, in_card_name, in_card_province, in_card_city, borrow_address, contact_name, 
+    contact_tel, contact_relationship, remark, manager_no, manager_status, del_flg, ins_user, upd_user
+  </sql>
+  <select id="selectByCondition" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_information
@@ -88,12 +96,30 @@
     		<if test="bank != null and bank != ''">
     			and bank = #{bank,jdbcType=CHAR}
     		</if>
+    		<if test="delFlg != null">
+    		and del_flg = #{delFlg,jdbcType=CHAR}
+    		</if>
     </where>
   </select>
-  <select id="selectAll"  resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_information
+    <where>
+    	<if test="contract != null and contract != ''">
+    			contract = #{contract,jdbcType=CHAR}
+    		</if>
+    </where>
+  </select>
+  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_information
+    <where>
+    	<if test="managerStatus != null">
+    			manager_status = #{managerStatus,jdbcType=CHAR}
+    		</if>
+    </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from t_information
@@ -160,9 +186,9 @@
       <if test="lcManager != null and lcManager != ''">
         lc_manager,
       </if>
-      <!-- <if test="lcId != null and lcId != ''">
+      <if test="lcId != null and lcId != ''">
         lc_id,
-      </if> -->
+      </if>
       <if test="tManager != null and tManager != ''">
         t_manager,
       </if>
@@ -303,13 +329,14 @@
       </if>
       <if test="delFlg != null and delFlg != ''">
         del_flg,
-      </if>
+      </if>-->
       <if test="insUser != null and insUser != ''">
         ins_user,
       </if>
       <if test="insDate != null and insDate != ''">
         ins_date,
       </if>
+      <!--
       <if test="updUser != null and updUser != ''">
         upd_user,
       </if>
@@ -318,9 +345,6 @@
       </if> -->
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-	 
-
-
 <if test="contract != null and contract != ''">
         #{contract,jdbcType=CHAR},
       </if>
@@ -339,9 +363,9 @@
       <if test="lcManager != null and lcManager != ''">
         #{lcManager,jdbcType=VARCHAR},
       </if>
-      <!-- <if test="lcId != null and lcId != ''">
+      <if test="lcId != null and lcId != ''">
         #{lcId,jdbcType=VARCHAR},
-      </if> -->
+      </if>
       <if test="tManager != null and tManager != ''">
         #{tManager,jdbcType=VARCHAR},
       </if>
@@ -482,14 +506,14 @@
       </if>
       <if test="delFlg != null and delFlg != ''">
         #{delFlg,jdbcType=CHAR},
-      </if>
+      </if>-->
       <if test="insUser != null and insUser != ''">
         #{insUser,jdbcType=CHAR},
       </if>
       <if test="insDate != null and insDate != ''">
         #{insDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="insDate != null and insDate != ''">
+      <!--<if test="insDate != null and insDate != ''">
         #{updUser,jdbcType=CHAR},
       </if>
       <if test="updDate != null and updDate != ''">
@@ -658,7 +682,7 @@
       </if>
       <if test="delFlg != null">
         del_flg = #{delFlg,jdbcType=CHAR},
-      </if>
+      </if> 
       <if test="insUser != null">
         ins_user = #{insUser,jdbcType=CHAR},
       </if>
@@ -725,10 +749,10 @@
       contact_name = #{contactName,jdbcType=VARCHAR},
       contact_tel = #{contactTel,jdbcType=VARCHAR},
       contact_relationship = #{contactRelationship,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
+      <!--remark = #{remark,jdbcType=VARCHAR},
       manager_no = #{managerNo,jdbcType=CHAR},
-      manager_status = #{managerStatus,jdbcType=CHAR},
-      del_flg = #{delFlg,jdbcType=CHAR},
+       manager_status = #{managerStatus,jdbcType=CHAR},
+      del_flg = #{delFlg,jdbcType=CHAR}, -->
       ins_user = #{insUser,jdbcType=CHAR},
       ins_date = #{insDate,jdbcType=TIMESTAMP},
       upd_user = #{updUser,jdbcType=CHAR},
@@ -736,7 +760,7 @@
     where contract = #{contract,jdbcType=CHAR}
   </update>
   
-  <select id="getPerformance" parameterType="java.lang.String"
+  <!-- <select id="getPerformance" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		SELECT
 		money,type
@@ -767,5 +791,5 @@
 		bank,branch,card_no,card_name,card_province,card_city,card_line
 		FROM t_information
 		WHERE contract = #{contract}
-	</select>
+	</select> -->
 </mapper>

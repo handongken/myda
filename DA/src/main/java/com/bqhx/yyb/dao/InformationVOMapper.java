@@ -1,10 +1,8 @@
 package com.bqhx.yyb.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import com.bqhx.yyb.vo.InformationVO;
 @Mapper
 public interface InformationVOMapper {
@@ -14,9 +12,11 @@ public interface InformationVOMapper {
 
 	int insertSelective(InformationVO record);
 
-    List<InformationVO> selectByPrimaryKey(InformationVO record);
-    
-    List<InformationVO> selectAll();
+	List<InformationVO> selectByCondition(InformationVO record);
+	
+	InformationVO selectByPrimaryKey(InformationVO record);
+   
+    List<InformationVO> selectAll(InformationVO record);
     
     int updateByPrimaryKeySelective(InformationVO record);
 
@@ -25,19 +25,19 @@ public interface InformationVOMapper {
     /**
 	 * @author Administrator 
 	 * 获取绩效
-	 */
+	 *//*
     InformationVO getPerformance(String contract);
-    /**
+    *//**
 	 * @author Administrator
 	 * 获取利息
-	 */
+	 *//*
     InformationVO getInterest(String contract);
-    /**
+    *//**
 	 * @author Administrator
 	 * 获取银行信息
-	 */
+	 *//*
     InformationVO getBank(String contract);
     
     void updateInterest(@Param("contract")String contract,@Param("interest_all")BigDecimal interest_all,@Param("interest_month")BigDecimal interest_month);
-
+*/
 }
