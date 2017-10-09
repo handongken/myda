@@ -16,4 +16,4 @@ var ajaxPost = function(url,data,success,faild){
 		},
 		dataType:"json"
 	});
-};
+}; 

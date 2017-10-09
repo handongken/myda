@@ -506,4 +506,4 @@ function VerifierData(){//审批提交
 	var user = JSON.parse(localStorage.user);
 	var contract = $_GET['contract'];
 	ajaxPost('/approve',{"contract":contract,"managerNo":user.name,"managerStatus":managerStatus,"remark":remark},success,faild);
-}
+} 

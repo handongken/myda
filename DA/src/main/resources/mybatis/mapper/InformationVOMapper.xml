@@ -670,7 +670,7 @@
       </if>
       <if test="contactRelationship != null">
         contact_relationship = #{contactRelationship,jdbcType=VARCHAR},
-      </if>
+      </if> 
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
