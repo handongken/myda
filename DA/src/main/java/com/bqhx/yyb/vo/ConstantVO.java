@@ -11,7 +11,7 @@ public final class ConstantVO {
 	 * dateformat"yyyy-MM-dd HH:mm:ss"
 	 */ 
 	public static final SimpleDateFormat SDF= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	/**
+	/** 
 	 * 1
 	 */
 	public static final String FLAG_ONE = "1";

@@ -14,7 +14,7 @@ public class InformationVO extends BaseVO implements Serializable{
 	/**出借金额 */ 
 	private Integer money;
 	/**产品名称  */ 
-	private String type; 
+	private String type;  
 	/**折标系数  */ 
 	private BigDecimal zbRatio;
 	/**绩效业绩  */ 
