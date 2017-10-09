@@ -8,7 +8,7 @@ import com.bqhx.yyb.vo.InformationVO;
 public interface InformationVOMapper {
 	int deleteByPrimaryKey(InformationVO record);
 
-	int insert(InformationVO record);
+	int insert(InformationVO record); 
 
 	int insertSelective(InformationVO record);
 
