@@ -39,7 +39,7 @@
 				var userPass = document.getElementById("userPass").value; 
 				var success = function(data){ // data 是服务器返回的
 					//alert(data);
-					var user = {name:data.name,tel:data.tel,type:data.type,sid:data.sId,did:data.dId,fid:data.fId,yid:data.yId,tid:data.tId,idCard:data.idCard};//存本地
+					var user = {userId:data.userId,name:data.name,tel:data.tel,type:data.type,sid:data.sId,did:data.dId,fid:data.fId,yid:data.yId,tid:data.tId,idCard:data.idCard};//存本地
 					//console.log(user);
 					localStorage.user = JSON.stringify(user);
 					if(data.userId !=""){
@@ -49,7 +49,7 @@
 				var faild = function(error){ // error 是服务器返回的
 					alert(error);
 				};
-				ajaxPost('http://127.0.0.1:8080/login',{userId:userName,password:userPass},success,faild); //发送
+				ajaxPost(csUrl+'/login',{userId:userName,password:userPass},success,faild); //发送
 			}
 		</script>
 	</body>

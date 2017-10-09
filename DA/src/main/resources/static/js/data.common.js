@@ -126,7 +126,6 @@ function saveData(){ //保存
 	var sybManager = document.getElementById('sybManager').value;//事业部经理
 	if(sybManager == ""){alert("请输入正确事业部经理");return false;}
 	
-	
 	var periods = document.getElementById('periods').value;//期数
 	if(periods == ""){alert("请输入正确期数");return false;}
 	var rate = document.getElementById('rate').value;//年化收益
@@ -198,11 +197,18 @@ function saveData(){ //保存
 	var inCardCity = document.getElementById('inCardCity').value;//开卡市
 	if(inCardCity == ""){alert("请输入正确开卡市");return false;}
 
-	var managerNo = document.getElementById('managerNo').value;//审批者
+	var insUser = document.getElementById('insUser').value;//插入更新者
+	var insDate = document.getElementById('insDate').value;//插入更时间
+	var updUser = document.getElementById('updUser').value;//更新者
+	var updDate = document.getElementById('updDate').value;//更新时间
+	
+	/*var managerNo = document.getElementById('managerNo').value;//审批者
 	var remark = document.getElementById('remark').value;//备注
+	var managerStatus = document.getElementById('managerStatus').value;
+	managerStatus = 0;*/
 	var success = function(data){
-		console.log(data);
-		if(data.message == 1){
+		//console.log(data);
+		if(data.code == 1){
 			alert('提交成功！');
 			window.location.href = "dataList.html";
 		}else{
@@ -214,7 +220,7 @@ function saveData(){ //保存
 	};
 	var user = JSON.parse(localStorage.user);
 	var contract = $_GET['contract'];
-	ajaxPost('/updateByPrimaryKey',{"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
+	ajaxPost('/updateByPrimaryKey',{"name":user.name,"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
 									"lcId":lcId,"lcManager":lcManager,"tManager":tManager,"yyb":yyb,"yybManager":yybManager,
 									"fgs":fgs,"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,
 									"syb":syb,"sybManager":sybManager,"periods":periods,"rate":rate,
@@ -225,11 +231,12 @@ function saveData(){ //保存
 									 "contactRelationship":contactRelationship,"continueFlg":continueFlg,"spreadType":spreadType,"bank":bank,
 									 "branch":branch,"cardName":cardName,"cardNo":cardNo,"cardProvince":cardProvince,"cardCity":cardCity,
 									 "cardLine":cardLine,"inBank":inBank,"inBranch":inBranch,"inCardName":inCardName,"inCardNo":inCardNo,
-									 "inCardProvince":inCardProvince,"inCardCity":inCardCity,"managerNo":managerNo,"remark":remark,
-									 "contract":contract},success,faild);
+									 "inCardProvince":inCardProvince,"inCardCity":inCardCity,"insUser":insUser,"insDate":insDate,/*"managerStatus":managerStatus,"managerNo":managerNo,"remark":remark,*/
+									 "updUser":updUser,"updDate":updDate,"contract":contract},success,faild);
 }
 
 function queryData(){ //查询
+	var user = JSON.parse(localStorage.user);
 	var success = function(data){
 		//console.log(data);
 		if(contract !=''){
@@ -317,25 +324,31 @@ function queryData(){ //查询
 				 $("#inCardCity").append("<option  value=" + item.inCardCity + ">" + item.inCardCity + "</option>");
 			}*/
 
-			document.getElementById('managerNo').value = data[0].managerNo;//审批者
+			document.getElementById('insUser').value = data[0].insUser;//插入更新者
+			document.getElementById('insDate').value = data[0].insDate;//插入更时间
+			document.getElementById('updUser').value = data[0].updUser;//更新者
+			document.getElementById('updDate').value = data[0].updDate;//更新时间
+			
+			document.getElementById('managerNo').value = user.name;//审批者
+			document.getElementById('managerStatus').value = data[0].managerStatus;//审批状态
 			document.getElementById('remark').value = data[0].remark;//备注
 		}
 	};
 	var faild = function(error){
 		alert(error);
 	};
-	var user = JSON.parse(localStorage.user);
 	var contract = $_GET['contract'];
 	if(contract == ""){
+		$("#contract").attr("disabled",false);
 		$("#addBtn").css("display","block");
-		$("input").attr('disabled',false);
-		$("select").attr('disabled',false);
 		$("#editBtn").css("display","none");
+		$(".addHidden").css("display","none");
 	}else{
 		$("#addBtn").css("display","none");
 		$("#editBtn").css("display","block");
+		$(".addHidden").css("display","block");
 	}
-	ajaxPost('/selectByPrimaryKey',{"contract":contract},success,faild);
+	ajaxPost('/selectByCondition',{"contract":contract},success,faild);
 }
 
 function addData(){ //添加
@@ -444,15 +457,15 @@ function addData(){ //添加
 	var inCardCity = document.getElementById('inCardCity').value;//开卡市
 	if(inCardCity == ""){alert("请输入正确开卡市");return false;}
 
-	var managerNo = document.getElementById('managerNo').value;//审批者
-	var remark = document.getElementById('remark').value;//备注
+	/*var managerNo = document.getElementById('managerNo').value;//审批者
+	var remark = document.getElementById('remark').value;//备注 ,"managerNo":managerNo,"remark":remark*/
 	var success = function(data){
-		/*console.log(data);*/
-		if(data.message == 1){
+		console.log(data);
+		if(data.code == 1){
 			alert('添加成功！');
 			window.location.href = "dataList.html";
 		}else{
-			alert('请确定添加正确代码！');
+			alert('请确定添加正确代码，并且合同号不能重复。');
 		}
 	};
 	var faild = function(error){
@@ -460,7 +473,7 @@ function addData(){ //添加
 	};
 	var user = JSON.parse(localStorage.user);
 	/*var contract = $_GET['contract'];*/
-	ajaxPost('/insertSelective',{"contract":contract,"type":type,"money":money,"zbRatio":zbRatio,"jxAchievement":jxAchievement,
+	ajaxPost('/insertSelective',{"contract":contract,"name": user.name,"type":type,"money":money,"zbRatio":zbRatio,"jxAchievement":jxAchievement,
 								 "lcId":lcId,"lcManager":lcManager,
 								 "tManager":tManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,"fgsManager":fgsManager,"dq":dq,
 								 "dqManager":dqManager,"syb":syb,"sybManager":sybManager,"periods":periods,"rate":rate,
@@ -471,8 +484,32 @@ function addData(){ //添加
 								 "contactRelationship":contactRelationship,"continueFlg":continueFlg,"spreadType":spreadType,"bank":bank,
 								 "branch":branch,"cardName":cardName,"cardNo":cardNo,"cardProvince":cardProvince,"cardCity":cardCity,
 								 "cardLine":cardLine,"inBank":inBank,"inBranch":inBranch,"inCardName":inCardName,"inCardNo":inCardNo,
-								 "inCardProvince":inCardProvince,"inCardCity":inCardCity,"managerNo":managerNo,"remark":remark
+								 "inCardProvince":inCardProvince,"inCardCity":inCardCity
 								 },success,faild);
 
 }
 
+//审批提交
+function VerifierData(){
+	var managerNo = document.getElementById('managerNo').value;//审批者
+	/*if(managerNo == ""){alert("请填写正确审批者");return false;}*/
+	var managerStatus = document.getElementById('managerStatus').value;//审批状态
+	if(managerStatus == ""){alert("请选择正确审批状态");return false;}
+	var remark = document.getElementById('remark').value;//备注
+	if(remark == ""){alert("请填写正确备注");return false;}
+	var success = function(data){
+		console.log(data);
+		if(data.code == 1){
+			alert('提交成功！');
+			window.location.href = "dataList.html";
+		}else{
+			alert('请重新输入正确代码！');
+		}
+	};
+	var faild = function(error){
+		alert(error);
+	};
+	var user = JSON.parse(localStorage.user);
+	var contract = $_GET['contract'];
+	ajaxPost('/approve',{"contract":contract,"managerNo":user.name,"managerStatus":managerStatus,"remark":remark},success,faild);
+}

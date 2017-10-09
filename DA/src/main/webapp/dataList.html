@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
 		<style>
-			.tableBox th,.tableBox td{padding: 10px;white-space: nowrap;text-align: center;}
+			.tableBox th,.tableBox td{padding: 10px;white-space: nowrap;color: #666;text-align: center;}
 			.tableBox th{background: #FF6666;color: #FFFFCC;}
 			table.dataTable tbody tr{background: transparent;}
 			table.dataTable tbody tr:nth-of-type(even){background: rgba(169, 183, 209, 0.28);}
@@ -54,7 +54,7 @@
 					</label>
 					<label for="Phone">电话号码： <input type="tel" id="Phone" maxlength="11" placeholder="请输入电话号码"/></label>
 					<label for="Bank">银行卡号： <input type="number" id="Bank" placeholder="请输入银行卡号"/></label>
-					<p style="text-align: right;"><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
+					<p style="text-align: right;"><a href="javascript:;" onclick="emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
 				</div>
 				<div class="addExitBox">
 					<p id="addList" class="addList"><a href="dataEdit.html?contract=">新增列表</a></p>
@@ -63,7 +63,73 @@
 					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p> -->
 					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p>
 				</div>
-				<div id="tableHtml"></div>
+				<div id="tableHtml">
+					<!-- <table id="tableBox" class="tableBox" width="100%">
+						<thead>
+							<tr>
+								<th>合同编号</th>
+								<th>产品名称</th>
+								<th>出借金额 </th>
+								<th>折标系数</th>
+								<th>绩效业绩</th>
+								<th>客户编号 </th>
+								<th>客户经理</th>
+								<th>团队经理</th>
+								<th>营业部名称</th>
+								<th>营业部经理</th>
+								<th>分公司名称</th>
+								<th>分公司经理</th>
+								<th>大区名称</th>
+								<th>大区经理</th>
+								<th>事业部名称</th>
+								<th>事业部经理</th>
+								<th>期数</th>
+								<th>年化收益</th>
+								<th>利息总额</th>
+								<th>月付利息</th>
+								<th>划扣日期</th>
+								<th>到期日</th>
+								<th>账单日</th>
+								<th>初始出借日期</th>
+								<th>即将到期天数</th>
+								<th>状态</th>
+								<th>pos机终端号</th>
+								<th>出借人</th>
+								<th>联系方式</th>
+								<th>证件类型 </th>
+								<th>身份证号</th>
+								<th>出借人地址</th>
+								<th>紧急联系人</th>
+								<th>紧急联系人电话</th>
+								<th>与出借人关系</th>
+								<th>非续投/续投</th>
+								<th>推广渠道</th>
+								<th>汇入银行</th>
+								<th>银行支行名称</th>
+								<th>开户人姓名</th>
+								<th>账号</th>
+								<th>开卡省份</th>
+								<th>开卡城市</th>
+								<th>银行行号</th>
+								<th>回款银行</th>
+								<th>银行支行名称</th>
+								<th>开户人姓名</th>
+								<th>账号</th>
+								<th>开卡省份</th>
+								<th>开卡城市</th>
+								<th>审批者</th>
+								<th>审批状态</th>
+								<th>删除flg</th>
+								<th>更插入者</th>
+								<th>更插入时间</th>
+								<th>更新者</th>
+								<th>更新时间</th>
+								<th>备注</th>
+								<th></th>
+							</tr>
+						</thead>
+					</table>	 -->				
+				</div>
 			</div>
 		</div>
 		<script src="/js/jquery-2.1.0.js"></script>
@@ -74,48 +140,20 @@
 		<!--  <script src="/js/buttons.flash.min.js"></script>-->
 		
 		<script>
-			function downExcelExcel(){ //导出表格
-				var user = JSON.parse(localStorage.user);
-				 $.ajax({
-				       url:"/downloadexcel",
-				       type: "POST",
-				       data: {},
-				       success:function(data){
-				             if(data == "success"){
-				            	 alert('成功下载');
-				             }
-				       },
-				       error:function(res){
-							alert('请求失败，请稍后再试');
-					   },
-				       dataType:"text"
-				});
-			}
 			loaddataList();
-			//读取表格
-			function loaddataList(){
-				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
-				var contract = document.getElementById("Contract").value;
-				var name = document.getElementById("Name").value;
-				var tel = document.getElementById("Phone").value;
-				var Bank = document.getElementById("Bank").value;
-				var success = function(data){
-					createTh(data);
-				};
-				var faild = function(error){
-					alert(error);
-				};
-				//取user
-				var user = JSON.parse(localStorage.user);
-				ajaxPost('/selectByPrimaryKey',{"contract":contract,"type":name,"tel":tel,"bank":Bank},success,faild); //,"type":name,"tel":tel,"bank":Bank
+			function emptySeach(){
+				document.getElementById("Contract").value = '';
+				document.getElementById("Name").value = '';
+				document.getElementById("Phone").value = '';
+				document.getElementById("Bank").value = '';
+				loaddataList();
 			}
-			/* var thisLi = obj.parentNode.parentNode;
-			thisLi.parentNode.removeChild(thisLi); */
 			function bindListener(obj,contract){ //删除
 				var thisLi = obj.parentNode.parentNode;
 				thisLi.parentNode.removeChild(thisLi);
 				var success = function(data){
-					if(data.message == 1){
+					console.log(data);
+					if(data.code == 1){
 						alert("删除成功！");
 						window.location.reload();
 					}else{
@@ -130,6 +168,51 @@
 				var user = JSON.parse(localStorage.user);
 				ajaxPost('/deleteByPrimaryKey',{"contract":contract},success,faild); 
 			}
+			
+			function downExcelExcel(){ //导出表格
+				var user = JSON.parse(localStorage.user);
+				 $.ajax({
+				       url:"/downloadexcel",
+				       type: "POST",
+				       data: {},
+				       success:function(data){
+				             if(data == "success"){
+				            	 alert('成功下载');
+				             }else{
+								alert('下载不成功！');
+							}
+				       },
+				       error:function(res){
+							alert('请求失败，请稍后再试');
+					   },
+				       dataType:"text"
+				});
+			}
+			//读取表格
+			function loaddataList(){
+				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
+				var contract = document.getElementById("Contract").value;
+				var name = document.getElementById("Name").value;
+				var tel = document.getElementById("Phone").value;
+				var Bank = document.getElementById("Bank").value;
+				
+				var success = function(data){
+					createTh(data);
+					/* for(var i = 0; i<data.length; i++){
+						console.log(data[i].delFlg);
+						if(data[i].delFlg == 1){
+							$("#tableBox tr").eq(data[i].delFlg).remove();
+							$("#tableBox tr td").html(data[i].delFlg).parent.css("display","none") 
+						}
+					}*/
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				//取user
+				var user = JSON.parse(localStorage.user);
+				ajaxPost('/selectByCondition',{"contract":contract,"type":name,"tel":tel,"bank":Bank},success,faild); //,"type":name,"tel":tel,"bank":Bank
+			}
 			//读表格
 			function createTh(data){
 				var tableTh = [
@@ -137,17 +220,17 @@
 					'客户编号','客户经理','团队经理','营业部名称','营业部经理','分公司名称',
 					'分公司经理','大区名称','大区经理','事业部名称','事业部经理',
 					'期数','年化收益','利息总额','月付利息',
-					'划扣日期'/*,'划扣时间'*/,'到期日','账单日','初始出借日期','即将到期天数','状态','pos机终端号',
+					'划扣日期','到期日','账单日','初始出借日期','即将到期天数','状态','pos机终端号',
 					'出借人','联系方式','证件类型','身份证号','出借人地址','紧急联系人','紧急联系人电话','与出借人关系','非续投/续投','推广渠道',
 					'汇入银行','银行支行名称','账号','开户人姓名','开卡省份','开卡城市','银行行号',
 					'回款银行','银行支行名称','开户人姓名','账号','开卡省份','开卡城市',
-					'审批者','审批状态','删除flg','更插入者','更插入时间','更新者','更新时间','备注',''
+					'审批者','审批状态'/* ,'删除flg' */,'更插入者','更插入时间','更新者','更新时间','备注',''
 				]; //创建th内容
 				var thsHtml = ' '; //为了保存th值
 				for(var i = 0; i < tableTh.length; i++){
 					thsHtml += '<th>' + tableTh[i] + '</th>';
 				}
-				$("#tableBox thead tr").html(thsHtml); //添加到table中
+				$("#tableBox thead tr").html(thsHtml); //添加到table中 
 				var tableTd = []; //保存td
 				if(data.length>0){
 					for(var i = 0; i<data.length; i++){
@@ -204,7 +287,7 @@
 							data[i]['inCardCity'],//开卡城市
 							data[i]['managerNo'],//审批者
 							data[i]['managerStatus'],//审批状态
-							data[i]['delFlg'],//删除flg
+							/* data[i]['delFlg'],//删除flg */
 							data[i]['insUser'], //更插入者
 							data[i]['insDate'], //更插入时间
 							data[i]['updUser'], //更新者
@@ -233,7 +316,7 @@
 						    }
 						},
 						{
-							"targets": 1,"orderable": false,
+							"targets": 1,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>聚惠丰</span>")}
 								else if(cellData == 1){$(td).html("<span>聚惠盈</span>");}
@@ -292,9 +375,11 @@
 						    }
 						},
 						{
-							"targets": 54,"orderable": false,
+							"targets": 51,"orderable": true,
 							"createdCell": function (td, cellData, rowData, row, col) {
-						    	$(td).html(cellData);
+								if(cellData == 0){$(td).html("<span>未审批</span>");}
+								else if(cellData == 1){$(td).html("<span>审批通过</span>");}
+								else if(cellData == 2){$(td).html("<span>审批失败</span>");}
 						    }
 						},
 						{
@@ -304,9 +389,13 @@
 						    }
 						},
 						{
-							"targets": 58,"orderable": false,
+							"targets": 57,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
-						    	$(td).html('<a href="dataEdit.html?contract='+ cellData +'" class="listTableBtn C66CC66" title="编辑">编辑</a><a href="javascript:;" style="margin-left: 20px;" class="listTableBtn" id="delTr" title="删除" onclick="bindListener(this,'+cellData+')">删除</a>');
+								if(rowData[51] == '1'){
+									$(td).html('');
+								} else{
+									$(td).html('<a href="dataVerifier.html?contract='+ cellData +'" class="listTableBtn C66CC66" title="审批">审批</a><a href="dataEdit.html?contract='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a><a href="javascript:;" class="listTableBtn" id="delTr" title="删除" onclick="bindListener(this,'+cellData+')">删除</a>');
+								}
 						    }
 						}
 					],

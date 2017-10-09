@@ -26,7 +26,8 @@ input::-webkit-inner-spin-button {
 .SeachBox label:last-child{margin-right: 0;}
 .SeachBox input,.SeachBox select{width: 150px;height: 26px;font-size: 14px;color: #FF9966;padding: 2px 10px;border-radius: 3px;border: 1px solid #FF9966;}
 .SeachBox select{width: 172px;height: 32px;}
-.SeachBox .seachBtn{display: inline-block;width: 80px; margin: 10px 10px 0 0;}
+.SeachBox .seachBtn,.SeachBox .emptyBtn{display: inline-block;width: 80px; margin: 10px 10px 0 0;}
+.SeachBox .emptyBtn{background: #ccc;}
 .symbol{position: absolute;top: 6px;right: 180px;font-size: 16px;color: #FF9966;}
 .listTableBtn{color: #FF6666}
 .C66CC66{color: #66CC66}
