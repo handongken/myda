@@ -38,7 +38,7 @@ public class ExcelController {
 		map.put("title", ConstantVO.SUMMARYTABLETITLE);
 		map.put("date", getDate());
 		map.put("total", list.size() + " 条");
-		String out = "D:/业绩日报总表_" + getDate() + ".xls";
+		String out = "D:/业绩日报总表_" + getDate() + ".xls"; 
 		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, ConstantVO.EXCELTEMPLATE,
 				new FileOutputStream(out), list, InformationVO.class, true);
 		return "success";
