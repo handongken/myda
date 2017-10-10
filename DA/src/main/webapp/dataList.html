@@ -195,23 +195,15 @@
 				var name = document.getElementById("Name").value;
 				var tel = document.getElementById("Phone").value;
 				var Bank = document.getElementById("Bank").value;
-				
 				var success = function(data){
 					createTh(data);
-					/* for(var i = 0; i<data.length; i++){
-						console.log(data[i].delFlg);
-						if(data[i].delFlg == 1){
-							$("#tableBox tr").eq(data[i].delFlg).remove();
-							$("#tableBox tr td").html(data[i].delFlg).parent.css("display","none") 
-						}
-					}*/
 				};
 				var faild = function(error){
 					alert(error);
 				};
 				//取user
 				var user = JSON.parse(localStorage.user);
-				ajaxPost('/selectByCondition',{"contract":contract,"type":name,"tel":tel,"bank":Bank},success,faild); //,"type":name,"tel":tel,"bank":Bank
+				ajaxPost('/selectByCondition',{"contract":contract,"type":name,"tel":tel,"bank":Bank},success,faild); 
 			}
 			//读表格
 			function createTh(data){
