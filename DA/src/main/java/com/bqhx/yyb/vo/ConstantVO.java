@@ -1,6 +1,5 @@
 package com.bqhx.yyb.vo;
 
-import java.text.SimpleDateFormat;
 
 /**
  * 常量类
@@ -8,10 +7,14 @@ import java.text.SimpleDateFormat;
  */
 public final class ConstantVO {
 	/**
-	 * dateformat"yyyy-MM-dd HH:mm:ss"
-	 */ 
-	public static final SimpleDateFormat SDF= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	/** 
+	 * pattern:"yyyy-MM-dd HH:mm:ss"
+	 */
+	public static final String PATTERN_HMS = "yyyy-MM-dd HH:mm:ss";
+	/**
+	 * pattern:"yyyy-MM-dd"
+	 */
+	public static final String PATTERN = "yyyy-MM-dd";
+	/**
 	 * 1
 	 */
 	public static final String FLAG_ONE = "1";
