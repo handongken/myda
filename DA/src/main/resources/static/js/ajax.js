@@ -17,3 +17,23 @@ var ajaxPost = function(url,data,success,faild){
 		dataType:"json"
 	});
 }; 
+//表格下载
+var ajaxDownExcel = function(url,data,success,faild){
+	$.ajax({
+		url:url,
+		type:"POST", //POST
+		data:data,
+		success:function(res){
+			if(res == "success"){
+           	 alert('成功下载');
+            }else{
+				alert('下载不成功！');
+			}
+		},
+		error:function(res){
+			alert('请求失败，请稍后再试');
+		},
+		dataType:"text"
+	});
+};
+
