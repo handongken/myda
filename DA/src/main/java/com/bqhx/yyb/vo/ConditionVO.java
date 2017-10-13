@@ -39,6 +39,14 @@ public class ConditionVO implements Serializable {
 	private String multyFlg;
 	/**非续投/续投  */ 
 	private String continueFlg;
+	/**审批状态  */ 
+	private String managerStatus;
+	/**营业部  */ 
+	private String yyb;
+	/**营业部经理  */ 
+	private String yybManager;
+	/**客户经理  */ 
+	private String lcManager;
 	
 	public String getStartTime() {
 		return startTime;
@@ -176,4 +184,36 @@ public class ConditionVO implements Serializable {
 		this.continueFlg = continueFlg;
 	}
 
+	public String getManagerStatus() {
+		return managerStatus;
+	}
+
+	public void setManagerStatus(String managerStatus) {
+		this.managerStatus = managerStatus;
+	}
+
+	public String getYyb() {
+		return yyb;
+	}
+
+	public void setYyb(String yyb) {
+		this.yyb = yyb;
+	}
+
+	public String getYybManager() {
+		return yybManager;
+	}
+
+	public void setYybManager(String yybManager) {
+		this.yybManager = yybManager;
+	}
+
+	public String getLcManager() {
+		return lcManager;
+	}
+
+	public void setLcManager(String lcManager) {
+		this.lcManager = lcManager;
+	}
+    
 }
