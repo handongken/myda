@@ -1,0 +1,61 @@
+<meta charset="UTF-8">
+<div style="margin-top :150px;"></div>
+<ul class="sidenav">
+	<!-- <li>
+		<a class="current" href="dataList.html"><span>首页</span></a>
+	</li>-->
+	<li>
+		<a href="javascript:;"><i class="levela"></i><span>数据管理</span></a><!-- <i class="iright pull-right">&gt;</i> -->
+		<ul class="sidebar-dropdown" id="sidenavA">
+			<li>
+				<a href="dataList.html">数据总表</a>
+			</li>
+			<li>
+				<a href="dataEdit.html?contract=">新增数据</a>
+			</li>
+			<li>
+				<a href="statusListA.html">已 &nbsp;赎 &nbsp;回</a>
+			</li>
+			<li>
+				<a href="statusListB.html">提前赎回</a>
+			</li>
+			<li>
+				<a href="continueFlgList.html">续投业绩</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="titleS" href="javascript:;"><i class="levelb"></i><span>人力资源数据</span></a>
+		<ul class="sidebar-dropdown" id="sidenavB">
+			<li>
+				<a href="">人资列表</a>
+			</li>
+			<li>
+				<a href="">添加人资</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="titleT" href="javascript:;"><i class="levelc"></i><span>财务管理</span></a>
+		<ul class="sidebar-dropdown" id="sidenavC">
+			<li>
+				<a href="">财务列表</a>
+			</li>
+			<li>
+				<a href="">添加财务</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="exitBtn" href="javascript:;" onclick="exit()">退出系统</a>
+		<!-- <p class="exitBtn"></p> -->
+	</li>
+</ul>
+<script>
+	$("#sidenavA>li>a").each(function(){ 
+	    $this = $(this); 
+	    if($this[0].href==String(window.location)){ 
+	      $this.addClass("currentA"); 
+	    } 
+	 }); 
+</script>
