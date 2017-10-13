@@ -10,8 +10,8 @@
 		<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
 	</head>
-	<body>
 		<div class="container">
+			<div id="nav" class="sidebar"> </div>
 			<div class="content">
 				<h2>数据管理编辑区</h2>
 				<form action="">
@@ -113,7 +113,7 @@
 			        </div>
 			        <div class="form-group">
 			            <label for="paymentDate">划扣日期</label>
-			            <input type="text" class="laydate-icon"  id="paymentDate" name="paymentDate" value="" placeholder="请选择划扣日期" onClick="laydate({elem: '#paymentDate',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" required>
+			            <input type="text" class="laydate-icon"  id="paymentDate" name="paymentDate" value="" placeholder="请选择划扣日期" onClick="laydate({elem: '#paymentDate',istime: false, format: 'YYYY-MM-DD'})" required>
 			            <label for="hksj" class="visibilityHidden">划扣时间</label>
 			            <input type="text" class="visibilityHidden" value="" name="hksj" placeholder="请输入划扣时间" required />
 			        </div>
@@ -134,12 +134,11 @@
 			        </div>
 			        <div class="form-group">
 			            <label for="status">状态</label>
-			            <select id="status">
+			            <select id="status" disabled>
 			            	<option value="">请选择状态</option>
-			            	<option value="0">正常</option>
+			            	<option value="0" selected>正常</option>
 			            	<option value="1">已赎回</option>
-			            	<option value="2">即将到期</option>
-			            	<option value="3">申请提前赎回</option>
+			            	<option value="2">申请提前赎回</option>
 			            	<!--正常/已赎回/即将到期/申请提前赎回-->
 			            </select>
 			            <label for="posNo">pos机终端号</label>
@@ -150,7 +149,7 @@
 				        <label for="tenderName">出借人</label>
 				        <input type="text" id="tenderName" value="" name="tenderName" maxlength="8" placeholder="请输入出借人" required />
 			            <label for="tel">联系方式</label>
-			            <input type="text" id="tel" name="tel" value=""  maxlength="13" placeholder="请输入联系方式" required />
+			            <input type="text" id="tel" name="tel" value=""  maxlength="11" placeholder="请输入联系方式" required />
 			        </div>
 			        <div class="form-group">
 			            <label for="idType">证件类型</label>
@@ -174,7 +173,7 @@
 			        </div>
 			        <div class="form-group">
 			            <label for="contactTel">紧急联系人电话</label>
-			            <input type="text" id="contactTel" value=""  name="contactTel" maxlength="13" placeholder="请输入紧急联系人电话" required />
+			            <input type="text" id="contactTel" value=""  name="contactTel" maxlength="11" placeholder="请输入紧急联系人电话" required />
 			            <label for="contactRelationship">与出借人关系</label>
 			            <input type="text" id="contactRelationship" value=""  name="contactRelationship" maxlength="6" placeholder="请输入与出借人关系" required />
 			        </div>

@@ -13,7 +13,6 @@ var $_GET = (function() { //获取上一页数据
 		return {};
 	}
 })();
-
 function exit(){ //退出
 	/*var success = function(data){ // data 是服务器返回的
 		
@@ -26,4 +25,20 @@ function exit(){ //退出
 */
 	localStorage.clear(); //直接清空
 	location.href = "loginPage.html";
+}
+$(function(){//侧边栏
+	$('#nav').load('nav.html');
+});
+function showOverAll(){//展开收起
+	$("#overAll").toggleClass('show');
+}
+function tabList(num,obj){ //tab选项
+	//tabList
+	var tabs = document.getElementById('tabList').getElementsByClassName('current')[0];
+	if(tabs) tabs.className = '';
+	obj.className = 'current';
+	//tabBox
+	var tabBoxOn = document.getElementById('tabBox').getElementsByClassName('tabShow')[0];
+	if(tabBoxOn) tabBoxOn.className = 'tabHide';
+	document.getElementById('tab'+num).className = 'tabHide tabShow';
 }

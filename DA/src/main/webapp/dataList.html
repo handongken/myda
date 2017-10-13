@@ -10,204 +10,141 @@
 		<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
-		<style>
-			.tableBox th,.tableBox td{padding: 10px;white-space: nowrap;color: #666;text-align: center;}
-			.tableBox th{background: #FF6666;color: #FFFFCC;}
-			table.dataTable tbody tr{background: transparent;}
-			table.dataTable tbody tr:nth-of-type(even){background: rgba(169, 183, 209, 0.28);}
-			.tableBox td .tableEdit{color: #FF6666;}
-		</style>
 	</head>
 	<body>
 		<div class="container">
-		
+			<div id="nav" class="sidebar"> </div>
 			<div class="content">
 				<h2>数据管理列表区</h2>
-				<div class="SeachBox">
-					<label for="Contract">合同号： <input type="text" id="Contract" placeholder="请输入合同号"/></label>
-					<label for="Name">产品名称：<!--  <input type="text" id="Name" placeholder="请输入姓名"/> -->
-						<select id="Name" name="type">
-				            	<!--聚惠丰、聚惠盈、聚惠享、聚惠丰（50）、聚惠盈（50）、聚惠享（50）、聚惠丰（100）、聚惠盈（100）、聚惠享（100）、聚惠福、聚惠鑫、聚惠福（50）、聚惠福（100）、聚惠鑫（50）、聚惠鑫（100）、惠添利、惠添金、惠添利（50）、惠添利（100）、惠添金（50）、惠添金（100）-->
-				            	<option value="" selected>请选择产品名称类型</option>
-				            	<option value="0">聚惠丰</option>
-				            	<option value="1">聚惠盈</option>
-				            	<option value="2">聚惠享</option>
-				            	<option value="3">聚惠丰（50）</option>
-				            	<option value="4">聚惠盈（50）</option>
-				            	<option value="5">聚惠享（50）</option>
-				            	<option value="6">聚惠丰（100）</option>
-				            	<option value="7">聚惠盈（100）</option>
-				            	<option value="8">聚惠享（100）</option>
-				            	<option value="9">聚惠福</option>
-				            	<option value="10">聚惠鑫</option>
-				            	<option value="11">聚惠福（50）</option>
-				            	<option value="12">聚惠福（100）</option>
-				            	<option value="13">聚惠鑫（50）</option>
-				            	<option value="14">聚惠鑫（100）</option>
-				            	<option value="15">惠添利</option>
-				            	<option value="16">惠添金</option>
-				            	<option value="17">惠添利（50）</option>
-				            	<option value="18">惠添利（100）</option>
-				            	<option value="19">惠添金（50）</option>
-				            	<option value="20">惠添金（100）</option>
-				            </select>
-					</label>
-					<label for="Phone">电话号码： <input type="tel" id="Phone" maxlength="11" placeholder="请输入电话号码"/></label>
-					<label for="Bank">银行卡号： <input type="number" id="Bank" placeholder="请输入银行卡号"/></label>
-					<p style="text-align: right;"><a href="javascript:;" onclick="emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
+				<div class="show" id="overAll">
+					<div class="SeachBox">
+							<div style="overflow: hidden;">
+							<label for="Contract">合同号： <input type="text" id="Contract" placeholder="请输入合同号"/></label>
+							<label for="Phone">电话号码： <input type="tel" id="Phone" maxlength="11" placeholder="请输入电话号码"/></label>
+							<label for="Status">状态类型：<!--  <input type="text" id="Name" placeholder="请输入姓名"/> -->
+								<select id="Status" name="Status">
+						            	<option value="" selected>请选择状态类型</option>
+						            	<option value="0">正常</option>
+						            	<option value="1">已赎回</option>
+						            	<option value="2">申请提前赎回</option>
+						            </select>
+							</label>
+						</div>
+						<div>
+							<label for="TenderName">出借人： <input type="text" id="TenderName" placeholder="请输入出借人"/></label>
+							<label for="LcManager">客户经理 ： <input type="text" id="LcManager" placeholder="请输入客户经理 "/></label>
+							<label for="Yyb">营业部名称： <input type="text" id="Yyb" placeholder="请输入营业部名称"/></label>
+						</div>
+						<div>
+							<label for="YybManager">营业部经理： <input type="text" id="YybManager" placeholder="请输入营业部经理"/></label>
+							<label for="Fgs">分公司名称 ： <input type="text" id="Fgs" placeholder="请输入分公司名称 "/></label>
+							<label for="FgsManager">分公司经理： <input type="text" id="FgsManager" placeholder="请输入分公司经理"/></label>
+						</div>
+						<div>
+							<label for="Dq">大区名称 ： <input type="text" id="Dq" placeholder="请输入大区名称 "/></label>
+							<label for="DqManager">大区经理： <input type="text" id="DqManager" placeholder="请输入大区经理"/></label>
+							<label for="Syb">事业部名称： <input type="text" id="Syb" placeholder="请输入事业部名称"/></label>
+						</div>
+						<div>
+							<label for="SybManager">事业部经理： <input type="text" id="SybManager" placeholder="请输入事业部经理"/></label>
+							<label for="spaymentDate" class="time">划扣日期： <input type="text" class="laydate-icon"  id="spaymentDate" name="paymentDate" value="" placeholder="请选择开始时间" onClick="laydate({elem: '#spaymentDate',istime: false, format: 'YYYY-MM-DD'})" required> - <input class="laydate-icon" id="epaymentDate"  placeholder="请选择结束时间" onClick="laydate({elem: '#epaymentDate',istime: false, format: 'YYYY-MM-DD'})" required></label>
+						</div>
+						<div style="overflow: hidden;">
+							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
+						</div>
+					</div>
+					<div id="showHideBtn"><a href="javascript:;" class="clickSH" id="clickSh" onClick="showOverAll()"><i></i><span class="up">收起</span><span class="down">展开更多</span></a></div>
 				</div>
 				<div class="addExitBox">
-					<p id="addList" class="addList"><a href="dataEdit.html?contract=">新增列表</a></p>
+					<!-- <p id="addList" class="addList"><a href="">新增列表</a></p> -->
 					<p class="downExcelBtn"><a href="javascript:;" onclick="downExcelExcel()">导出Excel表格</a></p>
 					<!-- <p class="downLoadBtn"><a href="javascript:;" onclick="downloadExcel()">下载文件</a></p>
-					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p> -->
-					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p>
+					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p>
+					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p> -->
 				</div>
-				<div id="tableHtml">
-					<!-- <table id="tableBox" class="tableBox" width="100%">
-						<thead>
-							<tr>
-								<th>合同编号</th>
-								<th>产品名称</th>
-								<th>出借金额 </th>
-								<th>折标系数</th>
-								<th>绩效业绩</th>
-								<th>客户编号 </th>
-								<th>客户经理</th>
-								<th>团队经理</th>
-								<th>营业部名称</th>
-								<th>营业部经理</th>
-								<th>分公司名称</th>
-								<th>分公司经理</th>
-								<th>大区名称</th>
-								<th>大区经理</th>
-								<th>事业部名称</th>
-								<th>事业部经理</th>
-								<th>期数</th>
-								<th>年化收益</th>
-								<th>利息总额</th>
-								<th>月付利息</th>
-								<th>划扣日期</th>
-								<th>到期日</th>
-								<th>账单日</th>
-								<th>初始出借日期</th>
-								<th>即将到期天数</th>
-								<th>状态</th>
-								<th>pos机终端号</th>
-								<th>出借人</th>
-								<th>联系方式</th>
-								<th>证件类型 </th>
-								<th>身份证号</th>
-								<th>出借人地址</th>
-								<th>紧急联系人</th>
-								<th>紧急联系人电话</th>
-								<th>与出借人关系</th>
-								<th>非续投/续投</th>
-								<th>推广渠道</th>
-								<th>汇入银行</th>
-								<th>银行支行名称</th>
-								<th>开户人姓名</th>
-								<th>账号</th>
-								<th>开卡省份</th>
-								<th>开卡城市</th>
-								<th>银行行号</th>
-								<th>回款银行</th>
-								<th>银行支行名称</th>
-								<th>开户人姓名</th>
-								<th>账号</th>
-								<th>开卡省份</th>
-								<th>开卡城市</th>
-								<th>审批者</th>
-								<th>审批状态</th>
-								<th>删除flg</th>
-								<th>更插入者</th>
-								<th>更插入时间</th>
-								<th>更新者</th>
-								<th>更新时间</th>
-								<th>备注</th>
-								<th></th>
-							</tr>
-						</thead>
-					</table>	 -->				
-				</div>
+				<div id="tableHtml"> </div>
 			</div>
 		</div>
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
+		<script src="/js/laydate.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
-		<!-- <script src="/js/dataTables.buttons.min.js"></script> -->
-		<!--  <script src="/js/buttons.flash.min.js"></script>-->
-		
 		<script>
 			loaddataList();
-			function emptySeach(){
+			function emptySeach(){ //清空搜索框
 				document.getElementById("Contract").value = '';
-				document.getElementById("Name").value = '';
 				document.getElementById("Phone").value = '';
-				document.getElementById("Bank").value = '';
+				document.getElementById("Status").value = '';
+				document.getElementById("TenderName").value = '';
+				document.getElementById("LcManager").value = '';
+				document.getElementById("Yyb").value = '';
+				document.getElementById("YybManager").value = '';
+				document.getElementById("Fgs").value = '';
+				document.getElementById("FgsManager").value = '';
+				document.getElementById("Dq").value = '';
+				document.getElementById("DqManager").value = '';
+				document.getElementById("Syb").value = '';
+				document.getElementById("SybManager").value = '';
+				document.getElementById("spaymentDate").value = '';
+				document.getElementById("epaymentDate").value = '';
 				loaddataList();
 			}
-			function bindListener(obj,contract){ //删除
+			function bindListener(obj,contract){ //删除单行table
 				var thisLi = obj.parentNode.parentNode;
 				thisLi.parentNode.removeChild(thisLi);
 				var success = function(data){
-					//console.log(data);
 					if(data.code == 1){
 						alert("删除成功！");
 						window.location.reload();
 					}else{
 						alert('删除不成功！');
 					}
-					
 				};
 				var faild = function(error){
 					alert(error);
 				};
-				//取user
-				var user = JSON.parse(localStorage.user);
 				ajaxPost('/deleteByPrimaryKey',{"contract":contract},success,faild); 
 			}
-			
-			function downExcelExcel(){ //导出表格
-				var user = JSON.parse(localStorage.user);
-				 $.ajax({
-				       url:"/downloadexcel",
-				       type: "POST",
-				       data: {},
-				       success:function(data){
-				             if(data == "success"){
-				            	 alert('成功下载');
-				             }else{
-								alert('下载不成功！');
-							}
-				       },
-				       error:function(res){
-							alert('请求失败，请稍后再试');
-					   },
-				       dataType:"text"
-				});
+			function downExcelExcel(){//导出表格
+				var success = function(data){
+					alert(data);
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				ajaxDownExcel('/downloadSummaryTable',{},success,faild); 
 			}
-			//读取表格
-			function loaddataList(){
+			function loaddataList(){//读取表格
 				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
 				var contract = document.getElementById("Contract").value;
-				var name = document.getElementById("Name").value;
+				var status = document.getElementById("Status").value;
 				var tel = document.getElementById("Phone").value;
-				var Bank = document.getElementById("Bank").value;
+				var tenderName = document.getElementById("TenderName").value;
+				var lcManager = document.getElementById("LcManager").value;
+				var yyb = document.getElementById("Yyb").value;
+				var yybManager = document.getElementById("YybManager").value;
+				var fgs = document.getElementById("Fgs").value;
+				var fgsManager = document.getElementById("FgsManager").value;
+				var dq = document.getElementById("Dq").value;
+				var dqManager = document.getElementById("DqManager").value;
+				var syb = document.getElementById("Syb").value;
+				var sybManager = document.getElementById("SybManager").value;
+				var spaymentDate = document.getElementById("spaymentDate").value;
+				var epaymentDate = document.getElementById("epaymentDate").value;
 				var success = function(data){
 					createTh(data);
 				};
 				var faild = function(error){
 					alert(error);
 				};
-				//取user
-				var user = JSON.parse(localStorage.user);
-				ajaxPost('/selectByCondition',{"contract":contract,"type":name,"tel":tel,"bank":Bank},success,faild); 
+				ajaxPost('/selectByCondition',{"contract":contract,"tel":tel,"status":status,"tenderName":tenderName,
+												"lcManager":lcManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,
+												"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,"syb":syb,
+												"sybManager":sybManager,"startTime":spaymentDate,"endTime":epaymentDate},success,faild); 
 			}
-			//读表格
-			function createTh(data){
-				var tableTh = [
+			function createTh(data){//读表格字段
+				var tableTh = [//创建th内容
 					'合同编号','产品名称','出借金额','折标系数','绩效业绩',
 					'客户编号','客户经理','团队经理','营业部名称','营业部经理','分公司名称',
 					'分公司经理','大区名称','大区经理','事业部名称','事业部经理',
@@ -217,7 +154,7 @@
 					'汇入银行','银行支行名称','账号','开户人姓名','开卡省份','开卡城市','银行行号',
 					'回款银行','银行支行名称','开户人姓名','账号','开卡省份','开卡城市',
 					'审批者','审批状态'/* ,'删除flg' */,'更插入者','更插入时间','更新者','更新时间','备注',''
-				]; //创建th内容
+				]; 
 				var thsHtml = ' '; //为了保存th值
 				for(var i = 0; i < tableTh.length; i++){
 					thsHtml += '<th>' + tableTh[i] + '</th>';
@@ -291,7 +228,7 @@
 				}
 				var tables = $("#tableBox").DataTable({
 					'data': tableTd,
-			        'dom': 'tp',
+			        'dom': 'tip',
 			        'info': true,
 			        "processing": true,
                     'scrollX': true,
@@ -308,7 +245,7 @@
 						    }
 						},
 						{
-							"targets": 1, 
+							"targets": 1,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>聚惠丰</span>")}
 								else if(cellData == 1){$(td).html("<span>聚惠盈</span>");}
@@ -334,23 +271,16 @@
 						    }
 						},
 						{
-							"targets": 20,"orderable": false,
-							"createdCell": function (td, cellData, rowData, row, col) {
-						    	$(td).html(cellData);
-						    }
-						},
-						{
-							"targets": 25,"orderable": false,
+							"targets": 25,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>正常</span>");}
 								else if(cellData == 1){$(td).html("<span>已赎回</span>");}
-								else if(cellData == 2){$(td).html("<span>即将到期</span>");}
-								else if(cellData == 3){$(td).html("<span>申请提前赎回</span>");}
+								else if(cellData == 2){$(td).html("<span>申请提前赎回</span>");}
 						    	
 						    }
 						},
 						{
-							"targets": 29,"orderable": false,
+							"targets": 29,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>身份证</span>");}
 								else if(cellData == 1){$(td).html("<span>军官证</span>");}
@@ -360,14 +290,14 @@
 						    }
 						},
 						{
-							"targets": 35,"orderable": false,
+							"targets": 35,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>续投</span>");}
 								else if(cellData == 1){$(td).html("<span>非续投</span>");}
 						    }
 						},
 						{
-							"targets": 51,"orderable": true,
+							"targets": 51,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(cellData == 0){$(td).html("<span>未审批</span>");}
 								else if(cellData == 1){$(td).html("<span>审批通过</span>");}
@@ -377,11 +307,11 @@
 						{
 							"targets": 56,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
-						    	$(td).html(cellData);
+								$(td).html(cellData);
 						    }
 						},
 						{
-							"targets": 57,"orderable": false, 
+							"targets": 57,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(rowData[51] == '1'){
 									$(td).html('');
@@ -395,6 +325,7 @@
 				    	"emptyTable": "暂无数据",
 				    	"loadingRecords": "读取中请稍候...",
 				    	"zeroRecords": "暂无数据",
+				    	"info": "共 _TOTAL_条记录 显示_START_到 _END_条记录",
 				    	"paginate": {
 					    	"previous": "上一页",
 					    	"next": "下一页",

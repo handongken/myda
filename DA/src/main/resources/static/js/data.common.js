@@ -1,6 +1,7 @@
 queryData();
-var moneyReg = /^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$/;
+/*var moneyReg = /^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$/;*/
 var numReg = /^(0|[1-9][0-9]*)$/;
+var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
 function selectOnchange(){ //选择产品 自动生成
 	if($("#type")[0].selectedIndex == 0){
 		$("#zbRatio").val('');
@@ -151,7 +152,7 @@ function saveData(){ //保存
 	var tenderName = document.getElementById('tenderName').value;//出借人
 	if(tenderName == ""){alert("请输入正确出借人");return false;}
 	var tel = document.getElementById('tel').value;//联系方式
-	if(tel == ""){alert("请输入正确联系方式");return false;}
+	if(tel == "" || !phoneReg.test(tel)){alert("请输入正确联系方式");return false;}
 	var idType = document.getElementById('idType').value;//证件类型
 	if(idType == ""){alert("请选择证件类型");return false;}
 	var idNo = document.getElementById('idNo').value;//身份证号
@@ -161,7 +162,7 @@ function saveData(){ //保存
 	var contactName = document.getElementById('contactName').value;//紧急联系人
 	if(contactName == ""){alert("请输入正确紧急联系人");return false;}
 	var contactTel = document.getElementById('contactTel').value;//紧急联系电话
-	if(contactTel == ""){alert("请输入正确紧急联系电话");return false;}
+	if(contactTel == "" || !phoneReg.test(contactTel)){alert("请输入正确紧急联系电话");return false;}
 	var contactRelationship = document.getElementById('contactRelationship').value;//紧与出借人
 	if(contactRelationship == ""){alert("请输入正确紧与出借人");return false;}
 	var continueFlg = document.getElementById('continueFlg').value;//非续投/续投
@@ -409,7 +410,7 @@ function addData(){ //新增
 	var tenderName = document.getElementById('tenderName').value;//出借人
 	if(tenderName == ""){alert("请输入正确出借人");return false;}
 	var tel = document.getElementById('tel').value;//联系方式
-	if(tel == ""){alert("请输入正确联系方式");return false;}
+	if(tel == "" || !phoneReg.test(tel)){alert("请输入正确联系方式");return false;}
 	var idType = document.getElementById('idType').value;//证件类型
 	if(idType == ""){alert("请选择正确证件类型");return false;}
 	var idNo = document.getElementById('idNo').value;//身份证号
@@ -419,7 +420,7 @@ function addData(){ //新增
 	var contactName = document.getElementById('contactName').value;//紧急联系人
 	if(contactName == ""){alert("请输入正确紧急联系人");return false;}
 	var contactTel = document.getElementById('contactTel').value;//紧急联系电话
-	if(contactTel == ""){alert("请输入正确紧急联系电话");return false;}
+	if(contactTel == "" || !phoneReg.test(contactTel)){alert("请输入正确紧急联系电话");return false;}
 	var contactRelationship = document.getElementById('contactRelationship').value;//紧与出借人
 	if(contactRelationship == ""){alert("请输入正确紧与出借人");return false;}
 	var continueFlg = document.getElementById('continueFlg').value;//非续投/续投
