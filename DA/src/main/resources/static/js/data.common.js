@@ -1,5 +1,4 @@
 queryData();
-/*var moneyReg = /^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$/;*/
 var numReg = /^(0|[1-9][0-9]*)$/;
 var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
 function selectOnchange(){ //选择产品 自动生成
@@ -102,7 +101,6 @@ function saveData(){ //保存
 	if(money == "" || !numReg.test(money)){alert("请输入正确出借金额(不能输入空格,只能输入数字)");return false;}
 	var jxAchievement = document.getElementById('jxAchievement').value;//绩效业绩 = 出借金额 * 折标系数
 	if(jxAchievement == "" || !numReg.test(jxAchievement)){alert("请输入正确绩效业绩(不能输入空格,只能输入数字)");return false;}
-	
 	var lcId = document.getElementById('lcId').value; //客户编号
 	if(lcId == "" || !numReg.test(lcId)){alert("请输入正确客户编号(不能输入空格,只能输入数字)");return false;}
 	var lcManager = document.getElementById('lcManager').value; //客户经理
@@ -125,7 +123,6 @@ function saveData(){ //保存
 	if(syb == ""){alert("请输入正确事业部名称");return false;}
 	var sybManager = document.getElementById('sybManager').value;//事业部经理
 	if(sybManager == ""){alert("请输入正确事业部经理");return false;}
-	
 	var periods = document.getElementById('periods').value;//期数
 	if(periods == ""){alert("请输入正确期数");return false;}
 	var rate = document.getElementById('rate').value;//年化收益
@@ -148,7 +145,6 @@ function saveData(){ //保存
 	if(status == ""){alert("请选择状态");return false;}
 	var posNo = document.getElementById('posNo').value;//pos机端口号
 	if(posNo == ""){alert("请输入正确pos机端口号");return false;}
-	
 	var tenderName = document.getElementById('tenderName').value;//出借人
 	if(tenderName == ""){alert("请输入正确出借人");return false;}
 	var tel = document.getElementById('tel').value;//联系方式
@@ -169,7 +165,6 @@ function saveData(){ //保存
 	if(continueFlg == ""){alert("请选择正确是否续投");return false;}
 	var spreadType = document.getElementById('spreadType').value;//推广渠道
 	if(spreadType == ""){alert("请输入正确推广渠道");return false;}
-	
 	var bank = document.getElementById('bank').value;//汇入银行
 	if(bank == ""){alert("请输入正确汇入银行");return false;}
 	var branch = document.getElementById('branch').value;//银行支行名称
@@ -196,18 +191,11 @@ function saveData(){ //保存
 	if(inCardProvince == ""){alert("请输入正确开卡省");return false;}
 	var inCardCity = document.getElementById('inCardCity').value;//开卡市
 	if(inCardCity == ""){alert("请输入正确开卡市");return false;}
-
 	var insUser = document.getElementById('insUser').value;//插入更新者
 	var insDate = document.getElementById('insDate').value;//插入更时间
 	var updUser = document.getElementById('updUser').value;//更新者
 	var updDate = document.getElementById('updDate').value;//更新时间
-	
-	/*var managerNo = document.getElementById('managerNo').value;//审批者
-	var remark = document.getElementById('remark').value;//备注
-	var managerStatus = document.getElementById('managerStatus').value;
-	managerStatus = 0;*/
 	var success = function(data){
-		//console.log(data);
 		if(data.code == 1){
 			alert('提交成功！');
 			window.location.href = "dataList.html";
@@ -237,16 +225,9 @@ function saveData(){ //保存
 function queryData(){ //查询
 	var user = JSON.parse(localStorage.user);
 	var success = function(data){
-		//console.log(data);
 		if(contract !=''){
 			document.getElementById("contract").value = data[0].contract; //合同编号
 			document.getElementById("type").value = data[0].type;
-			/*$("#type").empty(); //产品名称
-			 $("#type").append("<option value=0 selected>请选择产品名称</option>"); 
-			for(var i = 0;i<data.length;i++){
-				var item = data[i];
-				 $("#type").append("<option  value=" + item.type + ">" + item.type + "</option>");
-			}*/
 			document.getElementById('money').value = data[0].money; //出借金额
 			document.getElementById('zbRatio').value = data[0].zbRatio; //折标系数
 			document.getElementById('jxAchievement').value = data[0].jxAchievement; //绩效业绩 = 出借金额 * 折标系数
@@ -261,13 +242,11 @@ function queryData(){ //查询
 			document.getElementById('dqManager').value = data[0].dqManager;//大区经理
 			document.getElementById('syb').value = data[0].syb;//事业部名称
 			document.getElementById('sybManager').value = data[0].sybManager;//事业部经理
-			
 			document.getElementById('periods').value = data[0].periods;//期数
 			document.getElementById('rate').value = data[0].rate;//年化收益
 			document.getElementById('interestAll').value = data[0].interestAll;//利息总额
 			document.getElementById('interestMonth').value = data[0].interestMonth;//月付利息
 			document.getElementById('paymentDate').value = data[0].paymentDate;//划扣日期
-			
 			document.getElementById('endDate').value = data[0].endDate;//到期日
 			document.getElementById('statementDate').value = data[0].statementDate;//账单日
 			document.getElementById('startDate').value = data[0].startDate;//初始出借日期
@@ -284,25 +263,12 @@ function queryData(){ //查询
 			document.getElementById('contactRelationship').value = data[0].contactRelationship;//紧急联系关系
 			document.getElementById('continueFlg').value = data[0].continueFlg;//非续投/续投
 			document.getElementById('spreadType').value = data[0].spreadType;//推广渠道
-			
 			document.getElementById('bank').value = data[0].bank;//汇入银行
 			document.getElementById('branch').value = data[0].branch;//银行支行名称
 			document.getElementById('cardName').value = data[0].cardName;//开户人姓名
 			document.getElementById('cardNo').value = data[0].cardNo;//账号
 			document.getElementById('cardProvince').value = data[0].cardProvince;//开卡省
 			document.getElementById('cardCity').value = data[0].cardCity;//开卡市
-			/*$("#cardProvince").empty(); //开卡省
-			 $("#cardProvince").append("<option value=0 selected>请选择开卡省</option>"); 
-			for(var i = 0;i<data.length;i++){
-				var item = data[i];
-				 $("#cardProvince").append("<option  value=" + item.cardProvince + ">" + item.cardProvince + "</option>");
-			}
-			$("#cardCity").empty(); //开卡市
-			$("#cardCity").append("<option value=0 selected>请选择开卡省</option>");
-			for(var i = 0;i<data.length;i++){
-				var item = data[i];
-				 $("#cardCity").append("<option  value=" + item.cardCity + ">" + item.cardCity + "</option>");
-			}*/
 			document.getElementById('cardLine').value = data[0].cardLine;//银行行号
 			document.getElementById('inBank').value = data[0].inBank;//回款银行
 			document.getElementById('inBranch').value = data[0].inBranch;//银行支行名称
@@ -315,19 +281,11 @@ function queryData(){ //查询
 			for(var i = 0;i<data.length;i++){
 				var item = data[i];
 				 $("#inCardProvince").append("<option  value=" + item.inCardProvince + ">" + item.inCardProvince + "</option>");
-			}
-			$("#inCardCity").empty(); //开卡市
-			 $("#inCardCity").append("<option value=" + item.inCardCity + " selected>请选择开卡省</option>"); 
-			for(var i = 0;i<data.length;i++){
-				var item = data[i];
-				 $("#inCardCity").append("<option  value=" + item.inCardCity + ">" + item.inCardCity + "</option>");
 			}*/
-
 			document.getElementById('insUser').value = data[0].insUser;//插入更新者
 			document.getElementById('insDate').value = data[0].insDate;//插入更时间
 			document.getElementById('updUser').value = data[0].updUser;//更新者
 			document.getElementById('updDate').value = data[0].updDate;//更新时间
-			
 			document.getElementById('managerNo').value = user.name;//审批者
 			document.getElementById('managerStatus').value = data[0].managerStatus;//审批状态
 			document.getElementById('remark').value = data[0].remark;//备注
@@ -360,7 +318,6 @@ function addData(){ //新增
 	if(zbRatio == ""){alert("请输入正确折标系数");return false;}
 	var jxAchievement = document.getElementById('jxAchievement').value;//绩效业绩 = 出借金额 * 折标系数
 	if(jxAchievement == "" || !numReg.test(jxAchievement)){alert("请输入正确绩效业绩((不能输入空格,只能输入数字))");return false;}
-	
 	var lcId = document.getElementById('lcId').value; //客户编号
 	if(lcId == "" || !numReg.test(lcId)){alert("请输入正确客户编号(不能输入空格,只能输入数字)");return false;}
 	var lcManager = document.getElementById('lcManager').value; //客户经理
@@ -383,7 +340,6 @@ function addData(){ //新增
 	if(syb == ""){alert("请输入正确事业部名称");return false;}
 	var sybManager = document.getElementById('sybManager').value;//事业部经理
 	if(sybManager == ""){alert("请输入正确事业部经理");return false;}
-	
 	var periods = document.getElementById('periods').value;//期数
 	if(periods == ""){alert("请输入正确期数");return false;}
 	var rate = document.getElementById('rate').value;//年化收益
@@ -406,7 +362,6 @@ function addData(){ //新增
 	if(status == ""){alert("请选择正确状态");return false;}
 	var posNo = document.getElementById('posNo').value;//pos机端口号
 	if(posNo == ""){alert("请输入正确pos机端口号");return false;}
-	
 	var tenderName = document.getElementById('tenderName').value;//出借人
 	if(tenderName == ""){alert("请输入正确出借人");return false;}
 	var tel = document.getElementById('tel').value;//联系方式
@@ -427,7 +382,6 @@ function addData(){ //新增
 	if(continueFlg == ""){alert("请选择正确是否续投");return false;}
 	var spreadType = document.getElementById('spreadType').value;//推广渠道
 	if(spreadType == ""){alert("请输入正确推广渠道");return false;}
-	
 	var bank = document.getElementById('bank').value;//汇入银行
 	if(bank == ""){alert("请输入正确汇入银行");return false;}
 	var branch = document.getElementById('branch').value;//银行支行名称
@@ -454,11 +408,7 @@ function addData(){ //新增
 	if(inCardProvince == ""){alert("请输入正确开卡省");return false;}
 	var inCardCity = document.getElementById('inCardCity').value;//开卡市
 	if(inCardCity == ""){alert("请输入正确开卡市");return false;}
-
-	/*var managerNo = document.getElementById('managerNo').value;//审批者
-	var remark = document.getElementById('remark').value;//备注 ,"managerNo":managerNo,"remark":remark*/
 	var success = function(data){
-		//console.log(data);
 		if(data.code == 1){
 			alert('添加成功！');
 			window.location.href = "dataList.html";
@@ -487,13 +437,11 @@ function addData(){ //新增
 }
 function VerifierData(){//审批提交
 	var managerNo = document.getElementById('managerNo').value;//审批者
-	/*if(managerNo == ""){alert("请填写正确审批者");return false;}*/
 	var managerStatus = document.getElementById('managerStatus').value;//审批状态
 	if(managerStatus == ""){alert("请选择正确审批状态");return false;}
 	var remark = document.getElementById('remark').value;//备注
 	if(remark == ""){alert("请填写正确备注");return false;}
 	var success = function(data){
-		//console.log(data);
 		if(data.code == 1){
 			alert('提交成功！');
 			window.location.href = "dataList.html";
