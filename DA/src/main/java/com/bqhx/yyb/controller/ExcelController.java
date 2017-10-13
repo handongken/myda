@@ -11,10 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bqhx.yyb.constant.Constant;
 import com.bqhx.yyb.dao.InformationVOMapper;
 import com.bqhx.yyb.util.ExcelUtil;
-import com.bqhx.yyb.vo.ConstantVO;
 import com.bqhx.yyb.vo.InformationVO;
+import com.bqhx.yyb.constant.*;
 
 @RestController
 @RequestMapping("/")
@@ -23,29 +24,171 @@ public class ExcelController {
 	@Autowired
 	private InformationVOMapper informationVOMapper;
 	
-	@RequestMapping("/downloadexcel")
-	protected String downloadExcel() throws Exception {
+	/**
+	 * 下载总表
+	 *
+	 */
+	@RequestMapping("/downloadSummaryTable")
+	protected String downloadSummaryTable() throws Exception {
 		InformationVO record = new InformationVO();
-		record.setManagerStatus(ConstantVO.FLAG_ONE);
+		record.setManagerStatus(Constant.FLAG_ONE);
 		List<InformationVO> list = informationVOMapper.selectAll(record);
-		for(InformationVO inf : list){
-			String paymentDate_s = inf.getPaymentDate();
-			if(paymentDate_s != null && paymentDate_s != ""){
-				inf.setPaymentDate(paymentDate_s.substring(0, 19));
+		for(int i = 0;i < list.size();i++){
+			InformationVO info = list.get(i);
+			//type
+			String type = info.getType();
+			String typeValue = TypeEnum.getValue(type);
+			if(typeValue != null && typeValue != ""){
+				info.setType(typeValue);
+			}
+			//status
+			String status = info.getStatus();
+			String statusValue = StatusEnum.getValue(status);
+			if(statusValue != null && statusValue != ""){
+				info.setStatus(statusValue);
+			}
+			//continueFlg
+			String continueFlg = info.getContinueFlg();
+			String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
+			if(continueFlgValue != null && continueFlgValue != ""){
+				info.setContinueFlg(continueFlgValue);
 			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("title", ConstantVO.SUMMARYTABLETITLE);
+		map.put("title", Constant.SUMMARYTABLETITLE);
 		map.put("date", getDate());
 		map.put("total", list.size() + " 条");
-		String out = "D:/业绩日报总表_" + getDate() + ".xls"; 
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, ConstantVO.EXCELTEMPLATE,
+		String out = Constant.SUMMARYTABLE + getDate() + ".xls";
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.EXCELTEMPLATE,
 				new FileOutputStream(out), list, InformationVO.class, true);
 		return "success";
 	}
 
+	/**
+	 * 下载已赎回表
+	 * status="1"
+	 */
+	@RequestMapping("/downloadRedeemedTable")
+	protected String downloadRedeemedTable() throws Exception {
+		InformationVO record = new InformationVO();
+		record.setManagerStatus(Constant.FLAG_ONE);
+		record.setStatus(Constant.FLAG_ONE);
+		List<InformationVO> list = informationVOMapper.selectAll(record);
+		for(int i = 0;i < list.size();i++){
+			InformationVO info = list.get(i);
+			//type
+			String type = info.getType();
+			String typeValue = TypeEnum.getValue(type);
+			if(typeValue != null && typeValue != ""){
+				info.setType(typeValue);
+			}
+			//status
+			String status = info.getStatus();
+			String statusValue = StatusEnum.getValue(status);
+			if(statusValue != null && statusValue != ""){
+				info.setStatus(statusValue);
+			}
+			//continueFlg
+			String continueFlg = info.getContinueFlg();
+			String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
+			if(continueFlgValue != null && continueFlgValue != ""){
+				info.setContinueFlg(continueFlgValue);
+			}
+		}
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("title", Constant.REDEEMEDTABLETITLE);
+		map.put("date", getDate());
+		map.put("total", list.size() + " 条");
+		String out = Constant.REDEEMEDTABLE + getDate() + ".xls";
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.EXCELTEMPLATE,
+				new FileOutputStream(out), list, InformationVO.class, true);
+		return "success";
+	}
+	
+	/**
+	 * 下载提前赎回表
+	 * status="3"
+	 */
+	@RequestMapping("/downloadRedeemableTable")
+	protected String downloadRedeemableTable() throws Exception {
+		InformationVO record = new InformationVO();
+		record.setManagerStatus(Constant.FLAG_ONE);
+		record.setStatus(Constant.FLAG_THREE);
+		List<InformationVO> list = informationVOMapper.selectAll(record);
+		for(int i = 0;i < list.size();i++){
+			InformationVO info = list.get(i);
+			//type
+			String type = info.getType();
+			String typeValue = TypeEnum.getValue(type);
+			if(typeValue != null && typeValue != ""){
+				info.setType(typeValue);
+			}
+			//status
+			String status = info.getStatus();
+			String statusValue = StatusEnum.getValue(status);
+			if(statusValue != null && statusValue != ""){
+				info.setStatus(statusValue);
+			}
+			//continueFlg
+			String continueFlg = info.getContinueFlg();
+			String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
+			if(continueFlgValue != null && continueFlgValue != ""){
+				info.setContinueFlg(continueFlgValue);
+			}
+		}
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("title", Constant.REDEEMABLETABLETITLE);
+		map.put("date", getDate());
+		map.put("total", list.size() + " 条");
+		String out = Constant.REDEEMABLETABLE + getDate() + ".xls";
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.EXCELTEMPLATE,
+				new FileOutputStream(out), list, InformationVO.class, true);
+		return "success";
+	}
+	
+	/**
+	 * 下载续投业绩表
+	 * continueFlg="0"
+	 */
+	@RequestMapping("/downloadInvestmentTable")
+	protected String downloadInvestmentTable() throws Exception {
+		InformationVO record = new InformationVO();
+		record.setManagerStatus(Constant.FLAG_ONE);
+		record.setContinueFlg(Constant.FLAG_ZERO);
+		List<InformationVO> list = informationVOMapper.selectAll(record);
+		for(int i = 0;i < list.size();i++){
+			InformationVO info = list.get(i);
+			//type
+			String type = info.getType();
+			String typeValue = TypeEnum.getValue(type);
+			if(typeValue != null && typeValue != ""){
+				info.setType(typeValue);
+			}
+			//status
+			String status = info.getStatus();
+			String statusValue = StatusEnum.getValue(status);
+			if(statusValue != null && statusValue != ""){
+				info.setStatus(statusValue);
+			}
+			//continueFlg
+			String continueFlg = info.getContinueFlg();
+			String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
+			if(continueFlgValue != null && continueFlgValue != ""){
+				info.setContinueFlg(continueFlgValue);
+			}
+		}
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("title", Constant.INVESTMENTTABLETITLE);
+		map.put("date", getDate());
+		map.put("total", list.size() + " 条");
+		String out = Constant.INVESTMENTTABLE + getDate() + ".xls";
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.EXCELTEMPLATE,
+				new FileOutputStream(out), list, InformationVO.class, true);
+		return "success";
+	}
+	
 	private String getDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+		SimpleDateFormat sdf = new SimpleDateFormat(Constant.PATTERN);
 		return sdf.format(new Date());
 	}
 }
