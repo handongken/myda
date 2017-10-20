@@ -10,7 +10,7 @@ a:hover{opacity:.8}
 .fr{float:right}
 .tab-list a.current{background:#fff;color:#06c}
 .tabHide{display:none}
-.tabShow{display:block}
+.tabShow{display:block} 
 /*---------------------------------------------------------nav ---------------------------------------------------------*/
 .sidebar{position:fixed;width:215px;height:100%;transition:all .3s ease;background:#CC9;box-shadow:1px 0 0 0 rgba(210,204,255,.52)}
 .sidebar-dropdown,.sidenav{padding:0}

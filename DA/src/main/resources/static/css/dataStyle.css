@@ -4,7 +4,7 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
     margin: 0;
-}
+} 
 .addExitBox{overflow:hidden;margin:15px auto}
 .addList,.downExcelBtn,.downLoadBtn,.upLoadBtn{float:left;background:#F99;padding:10px;border-radius:5px}
 .sidenav>li>a.exitBtn{padding:20px;background:#b1b183;color:#fff;text-align:center;margin-top:66px}
