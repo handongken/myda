@@ -1,5 +1,4 @@
 package com.bqhx.yyb.controller;
-
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +19,6 @@ import com.bqhx.yyb.vo.InformationVO;
 import com.bqhx.yyb.vo.MessageVO;
 import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.vo.UserVO;
-
 
 /**
  * @author Administrator InformationController

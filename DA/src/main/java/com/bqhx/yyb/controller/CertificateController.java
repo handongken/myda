@@ -19,6 +19,6 @@ public class CertificateController {
 	@RequestMapping(value = "/selectCertificateByCondition", method = RequestMethod.POST)
 	List<CertificateVO> selectCertificateByCondition(ConditionVO conditionVO){
 		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);
-		return certificateVOList;
+		return certificateVOList; 
 	}
 }
