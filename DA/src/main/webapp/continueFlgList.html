@@ -17,7 +17,7 @@
 			<div class="content">
 				<h2>续投业绩列表区</h2>
 				<div class="addExitBox">
-					<p class="downExcelBtn"><a href="javascript:;" onclick="downExcelExcel()">导出续投业绩表格</a></p>
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downExcelExcel(downURL)">导出续投业绩表格</a></p>
 				</div>
 				<div id="tableHtml"> </div>
 			</div>
@@ -28,18 +28,8 @@
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
 			loaddataList();
-			//导出表格
-			function downExcelExcel(){
-				var success = function(data){
-					alert(data);
-				};
-				var faild = function(error){
-					alert(error);
-				};
-				ajaxDownExcel('/downloadInvestmentTable',{},success,faild); 
-			}
-			//读取表格
-			function loaddataList(){
+			var downURL = '/downloadInvestmentTable';
+			function loaddataList(){//读取表格
 				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
 				var success = function(data){
 					createTh(data);
@@ -53,8 +43,7 @@
 				var continueFlg = 0;
 				ajaxPost('/selectByCondition',{"continueFlg":continueFlg},success,faild); 
 			}
-			//读表格
-			function createTh(data){
+			function createTh(data){//读表格
 				var tableTh = [
 					'合同编号','产品名称','出借金额','折标系数','绩效业绩',
 					'客户编号','客户经理','团队经理','营业部名称','营业部经理','分公司名称',
@@ -82,7 +71,7 @@
 							data[i]['jxAchievement'],//绩效业绩
 							data[i]['lcId'],//客户编号
 							data[i]['lcManager'], //客户经理
-							data[i]['tManager'], //团队经理
+							data[i]['tmanager'], //团队经理
 							data[i]['yyb'], //营业部名称
 							data[i]['yybManager'], //营业部经理
 							data[i]['fgs'], //分公司名称
