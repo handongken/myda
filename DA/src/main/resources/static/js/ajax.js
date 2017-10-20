@@ -18,7 +18,7 @@ var ajaxPost = function(url,data,success,faild){
 	});
 }; 
 var ajaxDownExcel = function(url,data,success,faild){//表格下载
-	$.ajax({
+	$.ajax({ 
 		url:url,
 		type:"POST", //POST
 		data:data,

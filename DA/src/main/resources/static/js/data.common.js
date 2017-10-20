@@ -22,7 +22,7 @@ function selectOnchange(){ //选择产品 自动生成
 	}else if($("#type").val() == 3){
 		$("#zbRatio").val('0.25');
 		$("#periods").val('3');
-		$("#rate").val('6.5');
+		$("#rate").val('6.5'); 
 	}else if($("#type").val() == 4){
 		$("#zbRatio").val('0.6');
 		$("#periods").val('6');

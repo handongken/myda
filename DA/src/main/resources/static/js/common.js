@@ -21,7 +21,7 @@ function downExcelExcel(downUrl){//导出表格
 		alert(error);
 	};
 	ajaxDownExcel(downUrl,{},success,faild); 
-}
+} 
 function bindListener(obj,contract){ //删除单行table
 	var thisLi = obj.parentNode.parentNode;
 	thisLi.parentNode.removeChild(thisLi);
