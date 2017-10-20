@@ -1,6 +1,5 @@
 package com.bqhx.yyb.constant;
 
-
 /**
  * 常量类
  *

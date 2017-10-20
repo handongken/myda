@@ -1,6 +1,5 @@
 package com.bqhx.yyb.constant;
 
-
 public final class TypeEnum {
 	enum tEnum {
 
