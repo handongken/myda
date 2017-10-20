@@ -49,7 +49,7 @@
 				var faild = function(error){ // error 是服务器返回的
 					alert(error);
 				};
-				ajaxPost(csUrl+'/login',{userId:userName,password:userPass},success,faild); //发送
+				ajaxPost('/login',{userId:userName,password:userPass},success,faild); //发送
 			}
 		</script>
 	</body>
