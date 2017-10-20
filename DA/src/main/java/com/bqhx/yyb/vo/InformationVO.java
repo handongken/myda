@@ -24,7 +24,7 @@ public class InformationVO extends BaseVO implements Serializable{
 	/**理财经理id  */ 
 	private String lcId;
 	/**团队经理  */ 
-	private String tManager;
+	private String tmanager;
 	/**营业部  */ 
 	private String yyb;
 	/**营业部经理  */ 
@@ -182,12 +182,12 @@ public class InformationVO extends BaseVO implements Serializable{
 	}
 
 	@ExcelResources(title="团队经理",order=8)
-	public String gettManager() {
-		return tManager;
+	public String getTmanager() {
+		return tmanager;
 	}
 
-	public void settManager(String tManager) {
-		this.tManager = tManager == null ? null : tManager.trim();
+	public void setTmanager(String tmanager) {
+		this.tmanager = tmanager;
 	}
 
 	@ExcelResources(title="营业部名称",order=9)

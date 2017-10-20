@@ -1,7 +1,5 @@
 package com.bqhx.yyb.constant;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 常量类
@@ -16,6 +14,10 @@ public final class Constant {
 	 * pattern:"yyyy-MM-dd"
 	 */
 	public static final String PATTERN = "yyyy-MM-dd";
+	/**
+	 * 数字1
+	 */
+	public static final int ONE = 1; 
 	/**
 	 * 3
 	 */
@@ -40,6 +42,14 @@ public final class Constant {
 	 * exceltemplate
 	 */
 	public static final String EXCELTEMPLATE = "information-template.xls";
+	/**
+	 * totaltemplate
+	 */
+	public static final String TOTALTEMPLATE = "info-template.xls";
+	/**
+	 * interesttemplate
+	 */
+	public static final String INTERESTTEMPLATE = "interest-template.xls";
 	/**
 	 * summary table's title
 	 */
@@ -73,63 +83,7 @@ public final class Constant {
 	 */
 	public static final String INVESTMENTTABLE = "D:/续投业绩_";
 	/**
-	 * getTypeValue
+	 * interest's tilte
 	 */
-	/*public static final String getTypeValue(String key){
-		Map<String, String> typeMap = new HashMap<String, String>();
-		String value = null;
-		typeMap.put("0", "聚惠丰");
-		typeMap.put("1", "聚惠盈");
-		typeMap.put("2", "聚惠享");
-		typeMap.put("3", "聚惠丰(50)");
-		typeMap.put("4", "聚惠盈(50)");
-		typeMap.put("5", "聚惠享(50)");
-		typeMap.put("6", "聚惠丰(100)");
-		typeMap.put("7", "聚惠盈(100)");
-		typeMap.put("8", "聚惠享(100)");
-		typeMap.put("9", "聚惠福");
-		typeMap.put("10", "聚惠鑫");
-		typeMap.put("11", "聚惠福(50)");
-		typeMap.put("12", "聚惠福(100)");
-		typeMap.put("13", "聚惠鑫(50)");
-		typeMap.put("14", "聚惠鑫(100)");
-		typeMap.put("15", "惠添利");
-		typeMap.put("16", "惠添金");
-		typeMap.put("17", "惠添利(50)");
-		typeMap.put("18", "惠添利(100)");
-		typeMap.put("19", "惠添金(50)");
-		typeMap.put("20", "惠添金(100)");
-		if(typeMap.containsKey(key)){
-			value = typeMap.get(key);
-		}
-		return value;
-	}
-	*//**
-	 * getStatusValue
-	 *//*
-	public static final String getStatusValue(String key){
-		Map<String, String> statusMap = new HashMap<String, String>();
-		String value = null;
-		statusMap.put("0", "正常");
-		statusMap.put("1", "已赎回");
-		statusMap.put("2", "即将到期");
-		statusMap.put("3", "申请提前赎回");
-		if(statusMap.containsKey(key)){
-			value = statusMap.get(key);
-		}
-		return value;
-	}
-	*//**
-	 * getContinueFlgValue
-	 *//*
-	public static final String getContinueFlgValue(String key){
-		Map<String, String> continueFlgMap = new HashMap<String, String>();
-		String value = null;
-		continueFlgMap.put("0", "续投");
-		continueFlgMap.put("1", "非续投");
-		if(continueFlgMap.containsKey(key)){
-			value = continueFlgMap.get(key);
-		}
-		return value;
-	}*/
+	public static final String INTERESTTITLE = "受让方收益发放凭证(付息申请)";
 }

@@ -13,6 +13,31 @@ var $_GET = (function() { //获取上一页数据
 		return {};
 	}
 })();
+function downExcelExcel(downUrl){//导出表格
+	var success = function(data){
+		alert(data);
+	};
+	var faild = function(error){
+		alert(error);
+	};
+	ajaxDownExcel(downUrl,{},success,faild); 
+}
+function bindListener(obj,contract){ //删除单行table
+	var thisLi = obj.parentNode.parentNode;
+	thisLi.parentNode.removeChild(thisLi);
+	var success = function(data){
+		if(data.code == 1){
+			alert("删除成功！");
+			window.location.reload();
+		}else{
+			alert('删除不成功！');
+		}
+	};
+	var faild = function(error){
+		alert(error);
+	};
+	ajaxPost('/deleteByPrimaryKey',{"contract":contract},success,faild); 
+}
 function exit(){ //退出
 	/*var success = function(data){ // data 是服务器返回的
 		

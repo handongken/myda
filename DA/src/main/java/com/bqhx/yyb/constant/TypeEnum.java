@@ -26,11 +26,28 @@ public final class TypeEnum {
 	}
 
 	public static String getValue(String enumKey){
+		String enumValue = null;
 		String value = null;
 		if(enumKey != null){
 			for(int i = 0;i < tEnum.values().length;i++){
-				if(tEnum.values()[i].getEnumKey().equals(enumKey)){
-					value = tEnum.values()[i].getEnumValue();
+				String key = tEnum.values()[i].getEnumKey();
+				if(key.equals(enumKey)){
+					enumValue = tEnum.values()[i].getEnumValue();
+					if(enumValue.contains("聚惠丰")){
+						value = "A";
+					}else if(enumValue.contains("聚惠盈")){
+						value = "B";
+					}else if(enumValue.contains("聚惠享")){
+						value = "C";
+					}else if(enumValue.contains("聚惠福")){
+						value = "D";
+					}else if(enumValue.contains("聚惠鑫")){
+						value = "E";
+					}else if(enumValue.contains("惠添利")){
+						value = "F";
+					}else if(enumValue.contains("惠添金")){
+						value = "G";
+					}
 					return value;
 				}
 			}

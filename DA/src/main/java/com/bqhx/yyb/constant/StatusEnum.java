@@ -4,7 +4,7 @@ package com.bqhx.yyb.constant;
 public final class StatusEnum {
 	enum sEnum {
 
-		STATUS_0("0", "正常"), STATUS_1("1", "已赎回"), STATUS_2("2", "即将到期"), STATUS_3("3", "申请提前赎回");
+		STATUS_0("0", "正常"), STATUS_1("1", "已赎回"), STATUS_2("2", "申请提前赎回");
 		
 		private String enumKey;
 		private String enumValue;

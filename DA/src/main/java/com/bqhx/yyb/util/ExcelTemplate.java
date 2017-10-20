@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -66,6 +67,10 @@ public class ExcelTemplate {
      */
     private float rowHeight;
     /**
+    *  默认类型
+    */
+    private int defaultType;
+    /**
      * 存储某一方所对于的样式
      */
     private Map<Integer,CellStyle> styles;
@@ -73,7 +78,11 @@ public class ExcelTemplate {
      * 序号的列
      */
     private int serColIndex;
-    private ExcelTemplate(){
+    
+    public Workbook getWb() {
+		return wb;
+	}
+	private ExcelTemplate(){
 
     }
     public static ExcelTemplate getInstance() {
@@ -147,15 +156,59 @@ public class ExcelTemplate {
     }
 
     /**
-     * 创建相应的元素，基于String类型
+     * 创建单元格
      * @param value
      */
     public void createCell(String value) {
         Cell c = curRow.createCell(curColIndex);
         setCellStyle(c);
-        c.setCellValue(value);
+        c.setCellType(defaultType);
+        setCellValue(c,value);
         curColIndex++;
     }
+    
+    /**
+     * 根据cellType创建单元格
+     * @param cellType
+     * @param value
+     */
+    public void createCell(int cellType, String value) {
+        Cell c = curRow.createCell(curColIndex);
+        setCellStyle(c);
+        c.setCellType(cellType);
+        c.setCellFormula(value);
+        curColIndex++;
+    }
+    
+    /**
+     * 在单元格填充数据
+     * @param cell
+     * @param param
+     */
+	public void setCellValue(Cell cell, String param) {
+		if (cell != null) {
+			switch (cell.getCellType()) {
+			case Cell.CELL_TYPE_FORMULA:
+				try {
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(Double.parseDouble(param));
+				} catch (IllegalStateException e) {
+					// value = String.valueOf(cell.getRichStringCellValue());
+				}
+				break;
+			case Cell.CELL_TYPE_NUMERIC:
+				cell.setCellValue(Double.parseDouble(param));
+				// value = String.valueOf(cell.getNumericCellValue());
+				break;
+			case Cell.CELL_TYPE_STRING:
+				cell.setCellValue(param);
+				// value = String.valueOf(cell.getRichStringCellValue());
+				break;
+			}
+		}
+	}
+
+    
     public void createCell(int value) {
         Cell c = curRow.createCell(curColIndex);
         setCellStyle(c);
@@ -219,6 +272,21 @@ public class ExcelTemplate {
     }
 
     /**
+     * 创建新行，在使用时只要添加完一行，需要调用该方法创建
+     */
+    public void copyAndCreateNewRow() {
+        if(lastRowIndex>curRowIndex&&curRowIndex!=initRowIndex) {
+            sheet.shiftRows(curRowIndex, lastRowIndex, 1,true,true);
+//            sheet.setForceFormulaRecalculation(true);
+            lastRowIndex++;
+        }
+        curRow = sheet.createRow(curRowIndex);
+        curRow.setHeightInPoints(rowHeight);
+        curRowIndex++;
+        curColIndex = initColIndex;
+    }
+    
+    /**
      * 插入序号，会自动找相应的序号标示的位置完成插入
      */
     public void insertSer() {
@@ -233,18 +301,19 @@ public class ExcelTemplate {
         }
     }
     /**
-     * 根据map替换相应的常量，通过Map中的值来替换#开头的值
+     * 根据map替换相应的常量，通过Map中的值来替换$开头的值
      * @param datas
      */
     public void replaceFinalData(Map<String,String> datas) {
         if(datas==null) return;
+        String str = null;
         for(Row row:sheet) {
             for(Cell c:row) {
-//                if(c.getCellType()!=Cell.CELL_TYPE_STRING) continue;
-                String str = c.getStringCellValue().trim();
-                if(str.startsWith("#")) {
-                    if(datas.containsKey(str.substring(1))) {
-                        c.setCellValue(datas.get(str.substring(1)));
+                if(c.getCellType()!=Cell.CELL_TYPE_STRING) continue;
+            	str = c.getStringCellValue().trim();
+                if(str.startsWith("$")) {
+                    if(datas.containsKey(str)) {
+                        c.setCellValue(datas.get(str));
                     }
                 }
             }
@@ -273,7 +342,6 @@ public class ExcelTemplate {
         sheet = wb.getSheetAt(0);
         initConfigData();
         lastRowIndex = sheet.getLastRowNum();
-        curRow = sheet.createRow(curRowIndex);
     }
     /**
      * 初始化数据信息
@@ -281,25 +349,28 @@ public class ExcelTemplate {
     private void initConfigData() {
         boolean findData = false;
         boolean findSer = false;
-        for(Row row:sheet) {
+         for(Row row:sheet) {
             if(findData) break;
             for(Cell c:row) {
-//                if(c.getCellType()!=Cell.CELL_TYPE_STRING) continue;
+            	if(c.getCellType()!=Cell.CELL_TYPE_STRING){
+            		continue;
+            	}
                 String str = c.getStringCellValue().trim();
                 if(str.equals(SER_NUM)) {
                     serColIndex = c.getColumnIndex();
                     findSer = true;
                 }
-                if(str.equals(DATA_LINE)) {
-                    initColIndex = c.getColumnIndex();
-                    initRowIndex = row.getRowNum();
-                    curColIndex = initColIndex;
-                    curRowIndex = initRowIndex;
-                    findData = true;
-                    defaultStyle = c.getCellStyle();
-                    rowHeight = row.getHeightInPoints();
-                    initStyles();
-                    break;
+                if(str.startsWith("#")){
+                initColIndex = c.getColumnIndex();
+                initRowIndex = row.getRowNum();
+                curColIndex = initColIndex;
+                curRowIndex = initRowIndex;
+                findData = true;
+                defaultStyle = c.getCellStyle();
+                defaultType = c.getCellType();
+                rowHeight = row.getHeightInPoints();
+                initStyles();
+                break;
                 }
             }
         }
@@ -313,8 +384,11 @@ public class ExcelTemplate {
     private void initSer() {
         for(Row row:sheet) {
             for(Cell c:row) {
-//                if(c.getCellType()!=Cell.CELL_TYPE_STRING) continue;
-                String str = c.getStringCellValue().trim();
+            	String str = null;
+            	if(c.getCellType()!=Cell.CELL_TYPE_STRING){
+            		continue;
+            	}
+            	str = c.getStringCellValue().trim();
                 if(str.equals(SER_NUM)) {
                     serColIndex = c.getColumnIndex();
                 }
@@ -328,8 +402,11 @@ public class ExcelTemplate {
         styles = new HashMap<Integer, CellStyle>();
         for(Row row:sheet) {
             for(Cell c:row) {
-//                if(c.getCellType()!=Cell.CELL_TYPE_STRING) continue;
-                String str = c.getStringCellValue().trim();
+            	String str = null;
+            	if(c.getCellType()!=Cell.CELL_TYPE_STRING){
+            		continue;
+            	}
+            	str = c.getStringCellValue().trim();
                 if(str.equals(DEFAULT_STYLE)) {
                     defaultStyle = c.getCellStyle();
                 }
@@ -339,4 +416,50 @@ public class ExcelTemplate {
             }
         }
 }
+    
+    public void initStyles(int rowNum){
+    	styles = new HashMap<Integer, CellStyle>();
+        for(Row row:sheet) {
+        	if(row.getRowNum() == rowNum){
+        		for(Cell c:row) {
+                	String str = null;
+                	if(c.getCellType()!=Cell.CELL_TYPE_STRING){
+                		continue;
+                	}
+                	str = c.getStringCellValue().trim();
+                    if(str.equals(DEFAULT_STYLE)) {
+                        defaultStyle = c.getCellStyle();
+                    }
+                    if(str.equals(STYLE)) {
+                        styles.put(c.getColumnIndex(), c.getCellStyle());
+                    }
+                }
+        	}
+        }
+    }
+    
+    /**
+     * 从0开始根据模板中获取当前数据行数，默认是2
+     * @return 当前数据行数
+     */
+    public int getCurDataRowNum() {
+    	int curDataRowNum = 2;
+         for(Row row:sheet) {
+            for(Cell c:row) {
+            	if(c.getCellType()!=Cell.CELL_TYPE_STRING){
+            		continue;
+            	}
+                String str = c.getStringCellValue().trim();
+                if(str.startsWith("@")){
+                	curDataRowNum = row.getRowNum();
+                return curDataRowNum;
+                }
+            }
+        }
+        return curDataRowNum;
+    }
+    
+    public void addCurColIndex(){
+    	this.curColIndex++;
+    }
 }

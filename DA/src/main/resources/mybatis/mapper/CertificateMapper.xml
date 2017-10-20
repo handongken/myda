@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.CertificateMapper">
+	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.CertificateVO">
+		<id column="contract" property="contract" jdbcType="CHAR" />
+		<id column="return_interval" property="returnInterval" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="INTEGER" />
+		<result column="in_card_name" property="inCardName" jdbcType="VARCHAR" />
+		<result column="in_card_no" property="inCardNo" jdbcType="VARCHAR" />
+		<result column="interest_month" property="interestMonth"
+			jdbcType="DECIMAL" />
+		<result column="in_bank" property="inBank" jdbcType="VARCHAR" />
+		<result column="type_name" property="typeName" jdbcType="CHAR" />
+		<result column="start_date" property="startDate" jdbcType="DATE" />
+		<result column="begin_date" property="beginDate" jdbcType="DATE" />
+		<result column="end_date" property="endDate" jdbcType="DATE" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		contract, return_interval, money, in_card_name, in_card_no,
+		interest_month, in_bank,
+		type_name, start_date, begin_date, end_date
+	</sql>
+
+	<select id="selectCertificateByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_certificate
+		<where>
+			<if test="startTime != null and startTime != ''">
+				start_date &gt;=#{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and start_date &lt;=#{endTime}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertCertificate" useGeneratedKeys="true"
+		keyProperty="contract" parameterType="java.lang.String">
+		INSERT INTO t_certificate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contract != null and contract != ''">
+				contract,
+			</if>
+			<if test="returnInterval != null and returnInterval != ''">
+				return_interval,
+			</if>
+			<if test="money != null and money != ''">
+				money,
+			</if>
+			<if test="inCardName != null and inCardName != ''">
+				in_card_name,
+			</if>
+			<if test="inCardNo != null and inCardNo != ''">
+				in_card_no,
+			</if>
+			<if test="interestMonth != null and interestMonth != ''">
+				interest_month,
+			</if>
+			<if test="inBank != null and inBank != ''">
+				in_bank,
+			</if>
+			<if test="typeName != null and typeName != ''">
+				type_name,
+			</if>
+			<if test="startDate != null and startDate != ''">
+				start_date,
+			</if>
+			<if test="beginDate != null and beginDate != ''">
+				begin_date,
+			</if>
+			<if test="endDate != null and endDate != ''">
+				end_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contract != null and contract != ''">
+				#{contract,jdbcType=CHAR},
+			</if>
+			<if test="returnInterval != null and returnInterval != ''">
+				#{returnInterval,jdbcType=INTEGER},
+			</if>
+			<if test="money != null and money != ''">
+				#{money,jdbcType=INTEGER},
+			</if>
+			<if test="inCardName != null and inCardName != ''">
+				#{inCardName,jdbcType=VARCHAR},
+			</if>
+			<if test="inCardNo != null and inCardNo != ''">
+				#{inCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="interestMonth != null and interestMonth != ''">
+				#{interestMonth,jdbcType=DECIMAL},
+			</if>
+			<if test="inBank != null and inBank != ''">
+				#{inBank,jdbcType=VARCHAR},
+			</if>
+			<if test="typeName != null and typeName != ''">
+				#{typeName,jdbcType=CHAR},
+			</if>
+			<if test="startDate != null and startDate != ''">
+				#{startDate,jdbcType=DATE},
+			</if>
+			<if test="beginDate != null and beginDate != ''">
+				#{beginDate,jdbcType=DATE},
+			</if>
+			<if test="endDate != null and endDate != ''">
+				#{endDate,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

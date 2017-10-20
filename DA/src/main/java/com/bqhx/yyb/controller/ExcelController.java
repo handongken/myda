@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bqhx.yyb.constant.Constant;
 import com.bqhx.yyb.dao.InformationVOMapper;
+import com.bqhx.yyb.dao.TypeMapper;
 import com.bqhx.yyb.util.ExcelUtil;
 import com.bqhx.yyb.vo.InformationVO;
+import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.constant.*;
 
 @RestController
@@ -23,7 +25,8 @@ public class ExcelController {
 	
 	@Autowired
 	private InformationVOMapper informationVOMapper;
-	
+	@Autowired
+	private TypeMapper typeMapper;
 	/**
 	 * 下载总表
 	 *
@@ -31,15 +34,16 @@ public class ExcelController {
 	@RequestMapping("/downloadSummaryTable")
 	protected String downloadSummaryTable() throws Exception {
 		InformationVO record = new InformationVO();
-		record.setManagerStatus(Constant.FLAG_ONE);
+		record.setDelFlg(Constant.FLAG_ZERO);
 		List<InformationVO> list = informationVOMapper.selectAll(record);
 		for(int i = 0;i < list.size();i++){
 			InformationVO info = list.get(i);
 			//type
 			String type = info.getType();
-			String typeValue = TypeEnum.getValue(type);
-			if(typeValue != null && typeValue != ""){
-				info.setType(typeValue);
+			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type);
+			String typeName = typeVO.getTypeName();
+			if(typeName != null && typeName != ""){
+				info.setType(typeName);
 			}
 			//status
 			String status = info.getStatus();
@@ -55,11 +59,11 @@ public class ExcelController {
 			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("title", Constant.SUMMARYTABLETITLE);
-		map.put("date", getDate());
-		map.put("total", list.size() + " 条");
+		map.put("${totalCount}", list.size() + " 条");
+		map.put("${date}", getDate());
+		map.put("${title}", Constant.SUMMARYTABLETITLE);
 		String out = Constant.SUMMARYTABLE + getDate() + ".xls";
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.EXCELTEMPLATE,
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
 				new FileOutputStream(out), list, InformationVO.class, true);
 		return "success";
 	}
@@ -71,16 +75,17 @@ public class ExcelController {
 	@RequestMapping("/downloadRedeemedTable")
 	protected String downloadRedeemedTable() throws Exception {
 		InformationVO record = new InformationVO();
-		record.setManagerStatus(Constant.FLAG_ONE);
+		record.setDelFlg(Constant.FLAG_ZERO);
 		record.setStatus(Constant.FLAG_ONE);
 		List<InformationVO> list = informationVOMapper.selectAll(record);
 		for(int i = 0;i < list.size();i++){
 			InformationVO info = list.get(i);
 			//type
 			String type = info.getType();
-			String typeValue = TypeEnum.getValue(type);
-			if(typeValue != null && typeValue != ""){
-				info.setType(typeValue);
+			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type);
+			String typeName = typeVO.getTypeName();
+			if(typeName != null && typeName != ""){
+				info.setType(typeName);
 			}
 			//status
 			String status = info.getStatus();
@@ -96,11 +101,11 @@ public class ExcelController {
 			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("title", Constant.REDEEMEDTABLETITLE);
-		map.put("date", getDate());
-		map.put("total", list.size() + " 条");
+		map.put("${title}", Constant.REDEEMEDTABLETITLE);
+		map.put("${totalCount}", list.size() + " 条");
+		map.put("${date}", getDate());
 		String out = Constant.REDEEMEDTABLE + getDate() + ".xls";
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.EXCELTEMPLATE,
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
 				new FileOutputStream(out), list, InformationVO.class, true);
 		return "success";
 	}
@@ -112,16 +117,17 @@ public class ExcelController {
 	@RequestMapping("/downloadRedeemableTable")
 	protected String downloadRedeemableTable() throws Exception {
 		InformationVO record = new InformationVO();
-		record.setManagerStatus(Constant.FLAG_ONE);
+		record.setDelFlg(Constant.FLAG_ZERO);
 		record.setStatus(Constant.FLAG_THREE);
 		List<InformationVO> list = informationVOMapper.selectAll(record);
 		for(int i = 0;i < list.size();i++){
 			InformationVO info = list.get(i);
 			//type
 			String type = info.getType();
-			String typeValue = TypeEnum.getValue(type);
-			if(typeValue != null && typeValue != ""){
-				info.setType(typeValue);
+			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type);
+			String typeName = typeVO.getTypeName();
+			if(typeName != null && typeName != ""){
+				info.setType(typeName);
 			}
 			//status
 			String status = info.getStatus();
@@ -137,11 +143,11 @@ public class ExcelController {
 			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("title", Constant.REDEEMABLETABLETITLE);
-		map.put("date", getDate());
-		map.put("total", list.size() + " 条");
+		map.put("${title}", Constant.REDEEMABLETABLETITLE);
+		map.put("${totalCount}", list.size() + " 条");
+		map.put("${date}", getDate());
 		String out = Constant.REDEEMABLETABLE + getDate() + ".xls";
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.EXCELTEMPLATE,
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
 				new FileOutputStream(out), list, InformationVO.class, true);
 		return "success";
 	}
@@ -153,16 +159,17 @@ public class ExcelController {
 	@RequestMapping("/downloadInvestmentTable")
 	protected String downloadInvestmentTable() throws Exception {
 		InformationVO record = new InformationVO();
-		record.setManagerStatus(Constant.FLAG_ONE);
+		record.setDelFlg(Constant.FLAG_ZERO);
 		record.setContinueFlg(Constant.FLAG_ZERO);
 		List<InformationVO> list = informationVOMapper.selectAll(record);
 		for(int i = 0;i < list.size();i++){
 			InformationVO info = list.get(i);
 			//type
 			String type = info.getType();
-			String typeValue = TypeEnum.getValue(type);
-			if(typeValue != null && typeValue != ""){
-				info.setType(typeValue);
+			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type);
+			String typeName = typeVO.getTypeName();
+			if(typeName != null && typeName != ""){
+				info.setType(typeName);
 			}
 			//status
 			String status = info.getStatus();
@@ -178,11 +185,11 @@ public class ExcelController {
 			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("title", Constant.INVESTMENTTABLETITLE);
-		map.put("date", getDate());
-		map.put("total", list.size() + " 条");
+		map.put("${title}", Constant.INVESTMENTTABLETITLE);
+		map.put("${totalCount}", list.size() + " 条");
+		map.put("${date}", getDate());
 		String out = Constant.INVESTMENTTABLE + getDate() + ".xls";
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.EXCELTEMPLATE,
+		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
 				new FileOutputStream(out), list, InformationVO.class, true);
 		return "success";
 	}

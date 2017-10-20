@@ -10,13 +10,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bqhx.yyb.constant.Constant;
-import com.bqhx.yyb.constant.TypeEnum;
+import com.bqhx.yyb.dao.CertificateMapper;
 import com.bqhx.yyb.dao.InformationVOMapper;
+import com.bqhx.yyb.dao.TypeMapper;
 import com.bqhx.yyb.util.DateUtil;
+import com.bqhx.yyb.vo.CertificateVO;
 import com.bqhx.yyb.vo.ConditionVO;
 import com.bqhx.yyb.vo.InformationVO;
 import com.bqhx.yyb.vo.MessageVO;
+import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.vo.UserVO;
+
 
 /**
  * @author Administrator InformationController
@@ -28,7 +32,10 @@ public class InformationController {
 
 	@Autowired
 	private InformationVOMapper informationVOMapper;
-
+	@Autowired
+	private CertificateMapper certificateMapper;
+	@Autowired
+	private TypeMapper typeMapper;
 	/**
 	 * 
 	 * @param record
@@ -80,6 +87,7 @@ public class InformationController {
 			}
 			record.setInsUser(user.getName());
 			informationVOMapper.insertSelective(record);
+			insertCertificate(record);
 			messageVO.setCode(Constant.FLAG_ONE);
 			messageVO.setMessage(Constant.SUCCESS);
 		}
@@ -119,7 +127,6 @@ public class InformationController {
 				}
 			}
 		}
-		TypeEnum t = new TypeEnum();
 		return informationVOList;
 	}
 
@@ -174,49 +181,30 @@ public class InformationController {
 	}
 
 	/**
-	 * @author Administrator 获取绩效
+	 * 
+	 * @param record
+	 * @return messageVO insert
 	 */
-	/*
-	 * @RequestMapping(value = "/getPerformance", method = RequestMethod.GET)
-	 * InformationVO getPerformance(String contract) { InformationVO information
-	 * = informationVOMapper.getPerformance(contract); // int money =
-	 * information.getMoney();
-	 * 
-	 * return information; }
-	 * 
-	 *//**
-		 * @author Administrator 更新利息
-		 */
-	/*
-	 * @RequestMapping(value = "/getInterest", method = RequestMethod.POST)
-	 * InformationVO updateInterest(String contract) { InformationVO
-	 * information_before = informationVOMapper.getInterest(contract); int
-	 * periods = information_before.getPeriods(); BigDecimal rate =
-	 * information_before.getRate(); BigDecimal interest_all = rate.multiply(new
-	 * BigDecimal(periods)); BigDecimal interest_month =
-	 * information_before.getInterestMonth(); if (periods != 0) { interest_month
-	 * = interest_all.divide(new BigDecimal(periods)); }
-	 * informationVOMapper.updateInterest(contract, interest_all,
-	 * interest_month); InformationVO information_after =
-	 * informationVOMapper.getInterest(contract); return information_after; }
-	 * 
-	 *//**
-		 * @author Administrator 获取利息
-		 */
-	/*
-	 * InformationVO getTnterest(String contract) { InformationVO information =
-	 * informationVOMapper.getInterest(contract); return information; }
-	 * 
-	 *//**
-		 * @author Administrator 获取银行信息
-		 *//*
-		 * @RequestMapping(value = "/getBank", method = RequestMethod.GET)
-		 * InformationVO getBank(String contract) { InformationVO information =
-		 * informationVOMapper.getBank(contract); return information; }
-		 */
-
-	/*
-	 * private String getDate() { SimpleDateFormat sdf = new
-	 * SimpleDateFormat("yyyy-MM-dd hh:MM:ss"); return sdf.format(new Date()); }
-	 */
+	void insertCertificate(InformationVO record){
+		CertificateVO certificateVO = new CertificateVO();
+		String startDate = record.getStartDate();
+		TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(record.getType());
+		String typeName = typeVO.getTypeName();
+		int returnInterval = typeVO.getReturnInterval();
+		String endDate = DateUtil.getEndDate(startDate,Constant.ONE);
+		String beginDate = DateUtil.getBeginDate(returnInterval, startDate);
+		certificateVO.setStartDate(startDate);
+		certificateVO.setEndDate(endDate);
+		certificateVO.setBeginDate(beginDate);
+		certificateVO.setContract(record.getContract());
+		certificateVO.setInBank(record.getInBank());
+		certificateVO.setInCardName(record.getInCardName());
+		certificateVO.setInCardNo(record.getInCardNo());
+		certificateVO.setInterestMonth(record.getInterestMonth());
+		certificateVO.setMoney(record.getMoney());
+		certificateVO.setTypeName(typeName);
+		certificateVO.setReturnInterval(returnInterval);
+		certificateMapper.insertCertificate(certificateVO);
+	}
+	
 }

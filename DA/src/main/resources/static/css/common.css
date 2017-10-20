@@ -21,11 +21,11 @@ a:hover{opacity:.8}
 .sidenav>li>a>i.levelb{background:url(/images/levelb.png) no-repeat}
 .sidenav>li>a>i.levelc{background:url(/images/levelc.png) no-repeat}
 .sidebar-dropdown{overflow:hidden;font-size:14px;background:#b1b183;border-bottom:1px solid #ccc}
-.sidebar-dropdown>li>a{float:left;display:inline-block;color:#FFF;padding:10px 0 10px 36px}
+.sidebar-dropdown>li>a{float:left;display:inline-block;width: 100px;color:#FFF;padding:10px 0 10px 4px;text-align: center;}
 .sidebar-dropdown>li>a.currentA{color:#495200;font-weight:700}
 /*---------------------------------------------------------点击收起与展开更多---------------------------------------------------------*/
 #showHideBtn{text-align:center}
-.SeachBox,.show{display:none}
+.sbHide,.show{display:none}
 .clickSH .up{color:#495200;display:none}
 .clickSH .down{color:#495200;display:inline-block}
 .clickSH i{position:absolute;width:0;height:0;margin:8px 0 0 65px;border-top:10px solid #F96;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:none}

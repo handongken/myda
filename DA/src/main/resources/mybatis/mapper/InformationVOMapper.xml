@@ -9,7 +9,7 @@
 		<result column="jx_achievement" jdbcType="DECIMAL" property="jxAchievement" />
 		<result column="lc_manager" jdbcType="VARCHAR" property="lcManager" />
 		<result column="lc_id" jdbcType="VARCHAR" property="lcId" />
-		<result column="t_manager" jdbcType="VARCHAR" property="tManager" />
+		<result column="t_manager" jdbcType="VARCHAR" property="tmanager" />
 		<result column="yyb" jdbcType="VARCHAR" property="yyb" />
 		<result column="yyb_manager" jdbcType="VARCHAR" property="yybManager" />
 		<result column="fgs" jdbcType="VARCHAR" property="fgs" />
@@ -120,9 +120,6 @@
 			<if test="tel != null and tel != ''">
 				and tel LIKE "%"#{tel,jdbcType=CHAR}"%"
 			</if>
-			<if test="status != null and status != ''">
-				and status LIKE "%"#{status,jdbcType=CHAR}"%"
-			</if>
 			<if test="startTime != null and startTime != ''">
 				and payment_date &gt;=#{startTime}
 			</if>
@@ -154,11 +151,11 @@
 		<include refid="Base_Column_List" />
 		from t_information
 		<where>
-			<if test="managerStatus != null">
+			<!-- <if test="managerStatus != null">
 				manager_status = #{managerStatus,jdbcType=CHAR}
-			</if>
+			</if> -->
 			<if test="status != null and status != ''">
-				and status = #{status,jdbcType=CHAR}
+				status = #{status,jdbcType=CHAR}
 			</if>
 			<if test="continueFlg != null and continueFlg != ''">
 				and continue_flg = #{continueFlg,jdbcType=CHAR}
@@ -192,7 +189,7 @@
 		values (#{contract,jdbcType=CHAR}, #{money,jdbcType=INTEGER},
 		#{type,jdbcType=CHAR},
 		#{zbRatio,jdbcType=DECIMAL}, #{jxAchievement,jdbcType=DECIMAL}, #{lcManager,jdbcType=VARCHAR},
-		#{lcId,jdbcType=VARCHAR}, #{tManager,jdbcType=VARCHAR},
+		#{lcId,jdbcType=VARCHAR}, #{tmanager,jdbcType=VARCHAR},
 		#{yyb,jdbcType=VARCHAR},
 		#{yybManager,jdbcType=VARCHAR}, #{fgs,jdbcType=VARCHAR}, #{fgsManager,jdbcType=VARCHAR},
 		#{dq,jdbcType=VARCHAR}, #{dqManager,jdbcType=VARCHAR},
@@ -244,7 +241,7 @@
 			<if test="lcId != null and lcId != ''">
 				lc_id,
 			</if>
-			<if test="tManager != null and tManager != ''">
+			<if test="tmanager != null and tmanager != ''">
 				t_manager,
 			</if>
 			<if test="yyb != null and yyb != ''">
@@ -412,8 +409,8 @@
 			<if test="lcId != null and lcId != ''">
 				#{lcId,jdbcType=VARCHAR},
 			</if>
-			<if test="tManager != null and tManager != ''">
-				#{tManager,jdbcType=VARCHAR},
+			<if test="tmanager != null and tmanager != ''">
+				#{tmanager,jdbcType=VARCHAR},
 			</if>
 			<if test="yyb != null and yyb != ''">
 				#{yyb,jdbcType=VARCHAR},
@@ -582,8 +579,8 @@
 			<if test="lcId != null">
 				lc_id = #{lcId,jdbcType=VARCHAR},
 			</if>
-			<if test="tManager != null">
-				t_manager = #{tManager,jdbcType=VARCHAR},
+			<if test="tmanager != null">
+				t_manager = #{tmanager,jdbcType=VARCHAR},
 			</if>
 			<if test="yyb != null">
 				yyb = #{yyb,jdbcType=VARCHAR},
@@ -746,7 +743,7 @@
 		jx_achievement = #{jxAchievement,jdbcType=DECIMAL},
 		lc_manager = #{lcManager,jdbcType=VARCHAR},
 		lc_id = #{lcId,jdbcType=VARCHAR},
-		t_manager = #{tManager,jdbcType=VARCHAR},
+		t_manager = #{tmanager,jdbcType=VARCHAR},
 		yyb = #{yyb,jdbcType=VARCHAR},
 		yyb_manager = #{yybManager,jdbcType=VARCHAR},
 		fgs = #{fgs,jdbcType=VARCHAR},
@@ -797,15 +794,21 @@
 		upd_date = #{updDate,jdbcType=TIMESTAMP}
 		where contract = #{contract,jdbcType=CHAR}
 	</update>
-
-	<!-- <select id="getPerformance" parameterType="java.lang.String" resultMap="BaseResultMap"> 
-		SELECT money,type FROM t_information WHERE contract = #{contract} </select> 
-		<select id="getInterest" parameterType="java.lang.String" resultMap="BaseResultMap"> 
-		SELECT periods,rate,interest_all,interest_month FROM t_information WHERE 
-		contract = #{contract} </select> <update id="updateInterest" parameterType="java.lang.String"> 
-		UPDATE t_information SET <if test="interest_all != null">interest_all = #{interest_all}</if> 
-		,<if test="interest_month != null">interest_month = #{interest_month}</if> 
-		WHERE contract = #{contract} </update> <select id="getBank" parameterType="java.lang.String" 
-		resultMap="BaseResultMap"> SELECT bank,branch,card_no,card_name,card_province,card_city,card_line 
-		FROM t_information WHERE contract = #{contract} </select> -->
+	<select id="selectInterestByCondition" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_information
+		<where>
+			<if test="startTime != null and startTime != ''">
+				start_date &gt;=#{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and start_date &lt;=#{endTime}
+			</if>
+			<if test="delFlg != null">
+				and del_flg = #{delFlg,jdbcType=CHAR}
+			</if>
+		</where>
+	</select>
 </mapper>

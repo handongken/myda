@@ -17,15 +17,14 @@ var ajaxPost = function(url,data,success,faild){
 		dataType:"json"
 	});
 }; 
-//表格下载
-var ajaxDownExcel = function(url,data,success,faild){
+var ajaxDownExcel = function(url,data,success,faild){//表格下载
 	$.ajax({
 		url:url,
 		type:"POST", //POST
 		data:data,
 		success:function(res){
 			if(res == "success"){
-           	 alert('成功下载');
+           	 alert('成功下载,存入D盘!');
             }else{
 				alert('下载不成功！');
 			}

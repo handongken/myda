@@ -3,7 +3,6 @@ package com.bqhx.yyb.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.bqhx.yyb.vo.ConditionVO;
 import com.bqhx.yyb.vo.InformationVO;
@@ -25,22 +24,4 @@ public interface InformationVOMapper {
 
     int updateByPrimaryKey(InformationVO record);
     
-    /**
-	 * @author Administrator 
-	 * 获取绩效
-	 *//*
-    InformationVO getPerformance(String contract);
-    *//**
-	 * @author Administrator
-	 * 获取利息
-	 *//*
-    InformationVO getInterest(String contract);
-    *//**
-	 * @author Administrator
-	 * 获取银行信息
-	 *//*
-    InformationVO getBank(String contract);
-    
-    void updateInterest(@Param("contract")String contract,@Param("interest_all")BigDecimal interest_all,@Param("interest_month")BigDecimal interest_month);
-*/
 }
