@@ -1,5 +1,4 @@
 package com.bqhx.yyb.vo;
-
 import java.io.Serializable;
 
 public class UserVO  extends BaseVO implements Serializable{

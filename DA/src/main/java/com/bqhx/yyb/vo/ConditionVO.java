@@ -1,10 +1,8 @@
 package com.bqhx.yyb.vo;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.bqhx.yyb.util.ExcelResources;
-
 
 public class ConditionVO extends BaseVO implements Serializable{
 
