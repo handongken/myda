@@ -1,8 +1,10 @@
 package com.bqhx.yyb.vo;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.bqhx.yyb.util.ExcelResources;
+
 
 public class ConditionVO extends BaseVO implements Serializable{
 
@@ -125,7 +127,151 @@ public class ConditionVO extends BaseVO implements Serializable{
 	private String multyFlg;
 	/** 发放期间 */
 	private StringBuffer issueDate;
+	/** 下载路径 */
+	private String downloadPath;
+	/**开始发放日期  */ 
+	private String beginDate;
+	/**结束发放日期  */ 
+	private String terminateDate;
+	/**金额上限  */
+	private BigDecimal amountLimit;
+	/**生效日期（初始出借日期String）  */ 
+	private String effectiveDates;
+	/**失效日期  */ 
+	private String invalidDates;
+	/**支票权限  */ 
+	private String checkAuthority;
+	/**授权使用人  */ 
+	private String authorizedUser;
+	/**收方信息填写类型  */ 
+	private String receiverType;
+	/**汇路类型  */ 
+	private String remitType;
+	/**收方行地址 */ 
+	private String inCardAddress;
+	/**附言  */ 
+	private String postscript;
+	/**收款人手机号码  */ 
+	private String inTel;
+	/**付息or还本,1or0  */ 
+	private String payFlg;
 	
+	public BigDecimal getAmountLimit() {
+		return amountLimit;
+	}
+
+	public void setAmountLimit(BigDecimal amountLimit) {
+		this.amountLimit = amountLimit;
+	}
+
+	public String getEffectiveDates() {
+		return effectiveDates;
+	}
+
+	public void setEffectiveDates(String effectiveDates) {
+		this.effectiveDates = effectiveDates;
+	}
+
+	public String getInvalidDates() {
+		return invalidDates;
+	}
+
+	public void setInvalidDates(String invalidDates) {
+		this.invalidDates = invalidDates;
+	}
+
+	public String getCheckAuthority() {
+		return checkAuthority;
+	}
+
+	public void setCheckAuthority(String checkAuthority) {
+		this.checkAuthority = checkAuthority;
+	}
+
+	public String getAuthorizedUser() {
+		return authorizedUser;
+	}
+
+	public void setAuthorizedUser(String authorizedUser) {
+		this.authorizedUser = authorizedUser;
+	}
+
+	public String getReceiverType() {
+		return receiverType;
+	}
+
+	public void setReceiverType(String receiverType) {
+		this.receiverType = receiverType;
+	}
+
+	public String getRemitType() {
+		return remitType;
+	}
+
+	public void setRemitType(String remitType) {
+		this.remitType = remitType;
+	}
+
+	public String getInCardAddress() {
+		return inCardAddress;
+	}
+
+	public void setInCardAddress(String inCardAddress) {
+		this.inCardAddress = inCardAddress;
+	}
+
+	public String getPostscript() {
+		return postscript;
+	}
+
+	public void setPostscript(String postscript) {
+		this.postscript = postscript;
+	}
+
+	public String getInTel() {
+		return inTel;
+	}
+
+	public void setInTel(String inTel) {
+		this.inTel = inTel;
+	}
+
+	public String getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(String beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public String getTerminateDate() {
+		return terminateDate;
+	}
+
+	public void setTerminateDate(String terminateDate) {
+		this.terminateDate = terminateDate;
+	}
+
+	public String getPayFlg() {
+		return payFlg;
+	}
+
+	public void setPayFlg(String payFlg) {
+		this.payFlg = payFlg;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getDownloadPath() {
+		return downloadPath;
+	}
+
+	public void setDownloadPath(String downloadPath) {
+		this.downloadPath = downloadPath;
+	}
+
 	@ExcelResources(title="合同编号",order=1)
 	public String getContract() {
 		return contract;

@@ -53,10 +53,10 @@
 			        </div>
 			        <div class="form-group">
 			            <label for="zbRatio">折标系数</label>
-			            <input type="text" id="zbRatio" value="" name="zbRatio" placeholder="请选择产品名称计算折标系数" disabled />
+			            <input type="text" id="zbRatio" value="" name="zbRatio" placeholder="请选择产品名称计算折标系数" readonly />
 			            <label for="jxAchievement">绩效业绩</label>
 			            <!--出借金额*折标系数-->
-			            <input type="text" id="jxAchievement" value="" name="jxAchievement" placeholder="请输入绩效业绩" required />
+			            <input type="text" id="jxAchievement" value="" name="jxAchievement" placeholder="请输入绩效业绩" required readonly/>
 			        </div>
 					<div class="marB"> </div>
 			        <div class="form-group" >
@@ -98,36 +98,34 @@
 			        <div class="marB"> </div>
 			        <div class="form-group">
 			        	<label for="periods">期数</label>
-			            <input type="text" id="periods" value="" name="periods" placeholder="请选择产品名称计算期数" disabled />
+			            <input type="text" id="periods" value="" name="periods" placeholder="请选择产品名称计算期数" readonly />
 			            <label for="rate">年化收益</label>
-			            <input type="text" id="rate" value="" name="rate" placeholder="请选择产品名称计算年化收益" disabled />
+			            <input type="text" id="rate" value="" name="rate" placeholder="请选择产品名称计算年化收益" readonly />
 			            <i class="symbol">%</i>
 			        </div>
 			        <div class="form-group">
 			            <label for="interestAll">利息总额</label>
 			            <!--出借金额*年化收益-->
-			            <input type="text" id="interestAll" value="" name="interestAll" placeholder="请输入利息总额" required />
+			            <input type="text" id="interestAll" value="" name="interestAll" placeholder="请输入利息总额" required readonly/>
 			            <label for="interestMonth">月付利息</label>
 			            <!--利息总额/期数--> 
-			            <input type="text" id="interestMonth" value="" name="interestMonth" placeholder="请输入月付利息" required />
+			            <input type="text" id="interestMonth" value="" name="interestMonth" placeholder="请输入月付利息" required readonly/>
 			        </div>
 			        <div class="form-group">
 			            <label for="paymentDate">划扣日期</label>
-			            <input type="text" class="laydate-icon"  id="paymentDate" name="paymentDate" value="" placeholder="请选择划扣日期" onClick="laydate({elem: '#paymentDate',istime: false, format: 'YYYY-MM-DD'})" required>
+			            <input type="text" class="Wdate"  id="paymentDate" name="paymentDate" value="" placeholder="请选择划扣日期" onClick="WdatePicker()" required>
 			            <label for="hksj" class="visibilityHidden">划扣时间</label>
 			            <input type="text" class="visibilityHidden" value="" name="hksj" placeholder="请输入划扣时间" required />
 			        </div>
 			        <div class="form-group">
-			            <label for="endDate">到期日</label>
-			            <input type="text" id="endDate" value="" name="endDate" placeholder="请输入到期日（格式：yyyy-mm-dd）" required/>
-			          <!--   <input placeholder="请选择到期日" type="text" class="laydate-icon"  id="endDate" name="endDate" value="" onClick="laydate({elem: '#endDate',istime: false, format: 'YYYY-MM-DD'})"  disabled> -->
+			            <label for="startDate">初始出借日期</label>
+			            <input type="text" class="Wdate"  id="startDate" name="startDate" value="" placeholder="请选择初始出借日期" onClick="WdatePicker()" required>
 			            <label for="statementDate">账单日</label>
-			             <input type="text" id="statementDate" value="" name="statementDate" placeholder="请输入账单日" required />
-			            <!-- <input placeholder="请选择账单日" type="text" class="laydate-icon"  id="statementDate" name="statementDate" value="" onClick="laydate({elem: '#statementDate',istime: false, format: 'YYYY-MM-DD'})"  disabled> -->
+			             <input type="text" id="statementDate" value="" name="statementDate" placeholder="请输入账单日" readonly required />
 			        </div>
 			        <div class="form-group">
-			            <label for="startDate">初始出借日期</label>
-			            <input type="text" class="laydate-icon"  id="startDate" name="startDate" value="" placeholder="请选择初始出借日期" onClick="laydate({elem: '#startDate',istime: false, format: 'YYYY-MM-DD'})" required>
+			            <label for="endDate">到期日</label>
+			            <input type="text" id="endDate" value="" name="endDate" placeholder="请输入到期日（格式：yyyy-mm-dd）" readonly required/>
 			            <label for="surplusDate">即将到期天数</label>
 			            <!--到期日-TODAY()&"天到期"或"0"-->
 			            <input type="text" id="surplusDate" value="" name="surplusDate" placeholder="请输入即将到期天数" required />
@@ -280,7 +278,7 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
-		<script src="/js/laydate.js"></script>
+		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/data.common.js"></script>
 	</body>
 </html>

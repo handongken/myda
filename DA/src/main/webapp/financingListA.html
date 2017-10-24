@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>投资金额发放凭证列表页</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="/css/dataStyle.css" />
+		<style>.content h2:after{left: 40%;}.content h2:before{left: 45%;}</style>    
+	</head>
+	<body>
+		<div class="container">
+			<div id="nav" class="sidebar"> </div>
+			<div class="content">
+				<h2>受让方投资金额发放凭证(付本申请)</h2>
+				<div class="SeachBox">
+					<label for="statementDateS" class="time">付款日期： <input type="text" class="Wdate" id="statementDateS" name="statementDateS" value="" placeholder="请输入开始日" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'statementDateE\')||\'2020-10-01\'}'})" required> - <input type="text" class="Wdate" id="statementDateE" name="statementDateE" value="" placeholder="请输入结束日" onClick="WdatePicker({minDate:'#F{$dp.$D(\'statementDateS\')}',maxDate:'2020-10-01'})" required></label>
+					<div style="overflow: hidden;">
+						<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach();" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="seachLoad()" class="btn seachBtn">搜索</a></p>
+					</div>
+				</div>
+				<div class="addExitBox">
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downExcelExcel(downURl)">导出投资金额发放凭证表格</a></p>
+				</div>
+				<div id="tableHtml" class="tableHtml"> </div>
+				<div class="sumMoney">合计金额：<span id="sumMoney"></span></div>
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/common.js"></script>
+		<script src="/js/WdatePicker.js"></script>
+		<script src="/js/finance.common.js"></script>
+		<script src="/js/jquery.dataTables.min.js"></script>
+		<script>
+			var downURl = '/downloadReleaseCertificate';
+			function createTh(data){//读表格字段
+				var tableTh = [//创建th内容
+					'序号','发放金额','姓名','银行名称','银行账号',
+					'产品','发放期间','合同号'
+				]; 
+				var thsHtml = ' '; //为了保存th值
+				for(var i = 0; i < tableTh.length; i++){
+					thsHtml += '<th>' + tableTh[i] + '</th>';
+				}
+				$("#tableBox thead tr").html(thsHtml); //添加到table中 
+				var tableTd = []; //保存td
+				if(data.length>0){
+					for(var i = 0; i<data.length; i++){
+						tableTd[i] = [
+							i+1,
+							data[i].interestMonth,
+							data[i].inCardName,
+							data[i].inBank,
+							data[i].inCardNo,
+							data[i].typeName,
+							{beginDate:data[i]['beginDate'],terminateDate:data[i]['terminateDate']},
+							data[i].contract
+						];
+					}
+				}
+				var tables = $("#tableBox").DataTable({
+					'data': tableTd,
+			        'dom': 'tip',
+			        'info': true,
+			        "processing": true,
+                    'scrollX': true,
+					'iDisplayLength': 10,
+//					'scrollY': '350px',
+//					"scrollCollapse": true, 
+					'order': [],
+					"ordering": true,
+			        'columnDefs': [
+			        	{
+							"targets": 0,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html("<p>"+cellData+"</p>");
+						    }
+						},
+						{
+							"targets": 6,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html("<p>"+cellData.beginDate+" — "+cellData.terminateDate+"</p>");
+						    }
+						}
+					],
+					'language': {
+				    	"emptyTable": "暂无数据",
+				    	"loadingRecords": "读取中请稍候...",
+				    	"zeroRecords": "暂无数据",
+				    	"info": "共 _TOTAL_条记录 显示_START_到 _END_条记录",
+				    	"paginate": {
+					    	"previous": "上一页",
+					    	"next": "下一页",
+					    }
+					}
+			    } );
+			}
+		</script>
+	</body>
+</html>

@@ -17,7 +17,7 @@
 			<div class="content">
 				<h2>已赎回列表区</h2>
 				<div class="addExitBox">
-					<p class="downExcelBtn"><a href="javascript:;" onclick="downExcelExcel()">导出已赎回表格</a></p>
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downURL)">导出已赎回表格</a></p>
 				</div>
 				<div id="tableHtml"> </div>
 			</div>
@@ -28,17 +28,8 @@
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
 			loaddataList();
-			function downExcelExcel(){//导出表格
-				var success = function(data){
-					alert(data);
-				};
-				var faild = function(error){
-					alert(error);
-				};
-				ajaxDownExcel('/downloadRedeemedTable',{},success,faild); 
-			}
-			//读取表格
-			function loaddataList(){
+			var downURL = '/downloadRedeemedTable';
+			function loaddataList(){//读取表格
 				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
 				var success = function(data){
 					createTh(data);
@@ -81,7 +72,7 @@
 							data[i]['jxAchievement'],//绩效业绩
 							data[i]['lcId'],//客户编号
 							data[i]['lcManager'], //客户经理
-							data[i]['tManager'], //团队经理
+							data[i]['tmanager'], //团队经理
 							data[i]['yyb'], //营业部名称
 							data[i]['yybManager'], //营业部经理
 							data[i]['fgs'], //分公司名称

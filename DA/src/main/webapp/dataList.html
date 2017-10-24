@@ -47,7 +47,7 @@
 						</div>
 						<div>
 							<label for="SybManager">事业部经理： <input type="text" id="SybManager" placeholder="请输入事业部经理"/></label>
-							<label for="spaymentDate" class="time">划扣日期： <input type="text" class="laydate-icon"  id="spaymentDate" name="paymentDate" value="" placeholder="请选择开始时间" onClick="laydate({elem: '#spaymentDate',istime: false, format: 'YYYY-MM-DD'})" required> - <input class="laydate-icon" id="epaymentDate"  placeholder="请选择结束时间" onClick="laydate({elem: '#epaymentDate',istime: false, format: 'YYYY-MM-DD'})" required></label>
+							<label for="spaymentDate" class="time">划扣日期： <input type="text" class="Wdate" id="spaymentDate" name="spaymentDate" value="" placeholder="请选择开始时间" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'epaymentDate\')||\'2020-10-01\'}'})" required> - <input class="Wdate" id="epaymentDate"  placeholder="请选择结束时间" onClick="WdatePicker({minDate:'#F{$dp.$D(\'spaymentDate\')}',maxDate:'2020-10-01'})" required></label>
 						</div>
 						<div style="overflow: hidden;">
 							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
@@ -57,7 +57,7 @@
 				</div>
 				<div class="addExitBox">
 					<!-- <p id="addList" class="addList"><a href="">新增列表</a></p> -->
-					<p class="downExcelBtn"><a href="javascript:;" onclick="downExcelExcel(downURL)">导出Excel表格</a></p>
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downURL)">导出Excel表格</a></p>
 					<!-- <p class="downLoadBtn"><a href="javascript:;" onclick="downloadExcel()">下载文件</a></p>
 					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p>
 					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p> -->
@@ -68,7 +68,7 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
-		<script src="/js/laydate.js"></script>
+		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
 			loaddataList();
@@ -127,8 +127,8 @@
 					'期数','预期年化收益','收益总额','月付收益',
 					'划扣日期','到期日','账单日','初始出借日期','即将到期天数','状态','pos机终端号',
 					'出借人','联系方式','证件类型','身份证号','出借人地址','紧急联系人','紧急联系人电话','与出借人关系','非续投/续投','推广渠道',
-					'汇入银行','银行支行名称','账号','开户人姓名','开卡省份','开卡城市','银行行号',
-					'回款银行','银行支行名称','开户人姓名','账号','开卡省份','开卡城市',
+					'汇入银行','银行支行名称','账号','开户人姓名','开卡省份','开卡城市',
+					'回款银行','银行支行名称','开户人姓名','账号','开卡省份','开卡城市','银行行号',
 					'审批者','审批状态'/* ,'删除flg' */,'更插入者','更插入时间','更新者','更新时间','备注',''
 				]; 
 				var thsHtml = ' '; //为了保存th值
@@ -183,13 +183,13 @@
 							data[i]['cardNo'],//账号
 							data[i]['cardProvince'],//开卡省份
 							data[i]['cardCity'],//开卡城市
-							data[i]['cardLine'],//银行行号
 							data[i]['inBank'],//回款银行
 							data[i]['inBranch'],//银行支行名称
 							data[i]['inCardNo'], //账号
 							data[i]['inCardName'], //开户人姓名
 							data[i]['inCardProvince'],//开卡省份
 							data[i]['inCardCity'],//开卡城市
+							data[i]['cardLine'],//银行行号
 							data[i]['managerNo'],//审批者
 							data[i]['managerStatus'],//审批状态
 							/* data[i]['delFlg'],//删除flg */

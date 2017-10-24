@@ -1,4 +1,5 @@
 package com.bqhx.yyb.vo;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -18,7 +19,7 @@ public class CertificateVO implements Serializable{
 	private String inCardName;
 	/**银行账号  */ 
 	private String inCardNo;
-	/**发放金额  */ 
+	/**发放金额(收益)  */ 
 	private BigDecimal interestMonth;
 	/**银行名称  */ 
 	private String inBank;
@@ -26,11 +27,38 @@ public class CertificateVO implements Serializable{
 	private String typeName;
 	/**初始出借日期  */ 
 	private String startDate;
-	/**开始发放日期  */ 
+	/**开始发放日期(计息日)  */ 
 	private String beginDate;
-	/**结束发放日期  */ 
-	private String endDate;
+	/**结束发放日期(到期日)  */ 
+	private String terminateDate;
+	/**删除flg  */ 
+	private String delFlg;
+	/**出借人  */ 
+	private String tenderName;
+	/**联系方式  */ 
+	private String tel;
 	
+	public String getTenderName() {
+		return tenderName;
+	}
+	public void setTenderName(String tenderName) {
+		this.tenderName = tenderName;
+	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	public String getDelFlg() {
+		return delFlg;
+	}
+	public void setDelFlg(String delFlg) {
+		this.delFlg = delFlg;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public String getContract() {
 		return contract;
 	}
@@ -79,11 +107,11 @@ public class CertificateVO implements Serializable{
 	public void setBeginDate(String beginDate) {
 		this.beginDate = beginDate;
 	}
-	public String getEndDate() {
-		return endDate;
+	public String getTerminateDate() {
+		return terminateDate;
 	}
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
+	public void setTerminateDate(String terminateDate) {
+		this.terminateDate = terminateDate;
 	}
 	public String getTypeName() {
 		return typeName;

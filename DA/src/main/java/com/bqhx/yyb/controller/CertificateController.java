@@ -19,6 +19,36 @@ public class CertificateController {
 	@RequestMapping(value = "/selectCertificateByCondition", method = RequestMethod.POST)
 	List<CertificateVO> selectCertificateByCondition(ConditionVO conditionVO){
 		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);
-		return certificateVOList; 
+		return certificateVOList;
+	}
+	
+	/**
+	 * 银行短信（回息）
+	 */
+	@RequestMapping(value = "/selectSMSInterestByCondition", method = RequestMethod.POST)
+	List<CertificateVO> selectSMSInterestByCondition(ConditionVO conditionVO){
+		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);
+		for(int i = 0;i < certificateVOList.size();i++){
+			CertificateVO certificateVO = certificateVOList.get(i);
+			String str = certificateVO.getInCardNo();
+			String inCardNo = str.substring(str.length() - 4);//银行卡后四位
+			certificateVO.setInCardNo(inCardNo);
+		}
+		return certificateVOList;
+	}
+	
+	/**
+	 * 银行短信（回本）
+	 */
+	@RequestMapping(value = "/selectSMSCapitalByCondition", method = RequestMethod.POST)
+	List<CertificateVO> selectSMSCapitalByCondition(ConditionVO conditionVO){
+		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);
+		for(int i = 0;i < certificateVOList.size();i++){
+			CertificateVO certificateVO = certificateVOList.get(i);
+			String str = certificateVO.getInCardNo();
+			String inCardNo = str.substring(str.length() - 4);//银行卡后四位
+			certificateVO.setInCardNo(inCardNo);
+		}
+		return certificateVOList;
 	}
 }

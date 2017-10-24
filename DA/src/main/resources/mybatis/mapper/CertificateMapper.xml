@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
 <mapper namespace="com.bqhx.yyb.dao.CertificateMapper">
 	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.CertificateVO">
 		<id column="contract" property="contract" jdbcType="CHAR" />
@@ -13,13 +14,16 @@
 		<result column="type_name" property="typeName" jdbcType="CHAR" />
 		<result column="start_date" property="startDate" jdbcType="DATE" />
 		<result column="begin_date" property="beginDate" jdbcType="DATE" />
-		<result column="end_date" property="endDate" jdbcType="DATE" />
+		<result column="terminate_date" property="terminateDate" jdbcType="DATE" />
+		<result column="del_flg" property="delFlg" jdbcType="CHAR" />
+		<result column="tender_name" property="tenderName" jdbcType="CHAR" />
+		<result column="tel" property="tel" jdbcType="CHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		contract, return_interval, money, in_card_name, in_card_no,
 		interest_month, in_bank,
-		type_name, start_date, begin_date, end_date
+		type_name, start_date, begin_date, terminate_date,del_flg,tender_name,tel
 	</sql>
 
 	<select id="selectCertificateByCondition" resultMap="BaseResultMap">
@@ -32,6 +36,9 @@
 			</if>
 			<if test="endTime != null and endTime != ''">
 				and start_date &lt;=#{endTime}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and del_flg = #{delFlg}
 			</if>
 		</where>
 	</select>
@@ -70,8 +77,17 @@
 			<if test="beginDate != null and beginDate != ''">
 				begin_date,
 			</if>
-			<if test="endDate != null and endDate != ''">
-				end_date,
+			<if test="terminateDate != null and terminateDate != ''">
+				terminate_date,
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				del_flg,
+			</if>
+			<if test="tenderName != null and tenderName != ''">
+				tender_name,
+			</if>
+			<if test="tel != null and tel != ''">
+				tel,
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -105,8 +121,17 @@
 			<if test="beginDate != null and beginDate != ''">
 				#{beginDate,jdbcType=DATE},
 			</if>
-			<if test="endDate != null and endDate != ''">
-				#{endDate,jdbcType=DATE},
+			<if test="terminateDate != null and terminateDate != ''">
+				#{terminateDate,jdbcType=DATE},
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				#{delFlg,jdbcType=CHAR},
+			</if>
+			<if test="tenderName != null and tenderName != ''">
+				#{tenderName,jdbcType=CHAR},
+			</if>
+			<if test="tel != null and tel != ''">
+				#{tel,jdbcType=CHAR},
 			</if>
 		</trim>
 	</insert>

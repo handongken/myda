@@ -1,4 +1,5 @@
 package com.bqhx.yyb.util;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -8,6 +9,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,6 +18,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.*;
 
 public class ExcelUtil {
@@ -43,31 +47,56 @@ public class ExcelUtil {
 	private ExcelTemplate handlerObj2Excel(String template, List objs, Class clz, boolean isClasspath) {
 		ExcelTemplate et = ExcelTemplate.getInstance();
 		try {
-			//获取模板
+			// 获取模板
 			if (isClasspath) {
 				et.readTemplateByClasspath(template);
 			} else {
 				et.readTemplateByPath(template);
 			}
-			//获取模板中要替换的数据行
+			// 获取模板中要替换的数据行
 			int readLine = et.getCurDataRowNum();
+//			System.out.println("模板中要替换的数据行在： " + readLine + " 行");//3
 			String[] datas = getDatasByTemplate(et, clz, readLine);
 			// 输出值
 			for (int j = 0; j < objs.size(); j++) {
 				Object obj = objs.get(j);
 				et.createNewRow();
+//				System.out.println("表格最后一行：" + et.getLastRowIndex());
 				for (int i = 0; i < datas.length; i++) {
-					//创建带公式单元格
+					// 创建带公式单元格
 					if (datas[i].contains("@")) {
 						et.createCell(Cell.CELL_TYPE_FORMULA, createCurColFormula(datas[i], readLine + j + 1));
 						continue;
 					}
-					//创建数据单元格
+					// 创建数据单元格
 					if (datas[i].startsWith("#")) {
-						@SuppressWarnings("unchecked")
-						Method m = clz.getDeclaredMethod(getMethodName(datas[i]));
-						String rel = String.valueOf(m.invoke(obj));
-						et.createCell(rel);
+						String rel = "";
+						if (datas[i].indexOf("-") != -1) {
+							String begin = datas[i].substring(0, datas[i].indexOf("-"));// #{beginDate}
+							@SuppressWarnings("unchecked")
+							Method beginM = clz.getDeclaredMethod(getMethodName(begin));
+							String beginD = String.valueOf(beginM.invoke(obj));
+							String end = datas[i].substring(datas[i].indexOf("-") + 1);// #{endDate}
+							@SuppressWarnings("unchecked")
+							Method endM = clz.getDeclaredMethod(getMethodName(end));
+							String endD = String.valueOf(endM.invoke(obj));
+							rel = beginD + "-" + endD;
+							et.createCell(rel);
+						} else {
+							if(datas[i].contains("ser")){
+								rel = String.valueOf(et.getCurRowIndex()-3);
+								et.createCell(rel);
+							}else{
+								@SuppressWarnings("unchecked")
+								Method m = clz.getDeclaredMethod(getMethodName(datas[i]));
+								rel = String.valueOf(m.invoke(obj));
+								if(m.getReturnType().getName().contains("BigDecimal")){
+									et.createCell(new BigDecimal(rel).doubleValue());
+									continue;
+								}
+									et.createCell(rel);
+							}
+						}
 					}
 				}
 			}
@@ -84,6 +113,7 @@ public class ExcelUtil {
 
 	/**
 	 * 根据字段获取方法名
+	 * 
 	 * @param s
 	 * @return
 	 */
@@ -94,6 +124,7 @@ public class ExcelUtil {
 			buffer.append("get");
 			buffer.append(s.substring(2, 3).toUpperCase());
 			buffer.append(s.substring(3, s.length() - 1));
+
 		}
 		return buffer.toString();
 	}
@@ -433,11 +464,18 @@ public class ExcelUtil {
 
 	@SuppressWarnings("deprecation")
 	private String[] getDatasByTemplate(ExcelTemplate et, Class clz, int readLine) {
-		HSSFSheet sheet = (HSSFSheet) et.getWb().getSheetAt(0);
-		HSSFRow row = sheet.getRow(readLine);
+		/*if(version.equals("2007")){
+			XSSFSheet sheet = (XSSFSheet)et.getWb().getSheetAt(0);
+			XSSFRow row = sheet.getRow(readLine);
+		}else{
+			HSSFSheet sheet = (HSSFSheet) et.getWb().getSheetAt(0);
+			HSSFRow row = sheet.getRow(readLine);
+		}*/
+		Sheet sheet = et.getWb().getSheetAt(0);
+		Row row = sheet.getRow(readLine);
 		// 总列数
 		int colNum = row.getPhysicalNumberOfCells();
-		System.out.println("colNum:" + colNum);
+//		System.out.println("colNum:" + colNum);
 		String[] data = new String[colNum];
 		for (int i = 0; i < colNum; i++) {
 			data[i] = getCellFormatValue(row.getCell((short) i));
@@ -460,7 +498,7 @@ public class ExcelUtil {
 		return maps;
 	}
 
-	private String getCellFormatValue(HSSFCell cell) {
+	private String getCellFormatValue(Cell cell) {
 		String cellvalue = "";
 		if (cell != null) {
 			// 判断当前Cell的Type
@@ -498,7 +536,7 @@ public class ExcelUtil {
 				break;
 			// 默认的Cell值
 			default:
-				cellvalue = " "; 
+				cellvalue = " ";
 			}
 		} else {
 			cellvalue = "";
@@ -509,6 +547,7 @@ public class ExcelUtil {
 
 	/**
 	 * 创建当前行公式
+	 * 
 	 * @param formula
 	 * @param rowNum
 	 * @return 当前行公式
@@ -520,4 +559,6 @@ public class ExcelUtil {
 		}
 		return formulaRepalce;
 	}
+	
+	
 }

@@ -1,15 +1,17 @@
 package com.bqhx.yyb.vo;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.bqhx.yyb.util.ExcelResources;
+
 
 public class InformationVO extends BaseVO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	/**合同编号  */ 
 	private String contract;
-	/**出借金额 */ 
+	/**出借金额(投资金额) */ 
 	private Integer money;
 	/**产品名称  */ 
 	private String type;  
@@ -17,35 +19,35 @@ public class InformationVO extends BaseVO implements Serializable{
 	private BigDecimal zbRatio;
 	/**绩效业绩  */ 
 	private BigDecimal jxAchievement;
-	/**理财经理  */ 
+	/**客户经理  */ 
 	private String lcManager;
 	/**理财经理id  */ 
 	private String lcId;
 	/**团队经理  */ 
 	private String tmanager;
-	/**营业部  */ 
+	/**营业部名称  */ 
 	private String yyb;
 	/**营业部经理  */ 
 	private String yybManager;
-	/**分公司  */ 
+	/**分公司名称  */ 
 	private String fgs;
 	/**分公司经理  */ 
 	private String fgsManager;
-	/**大区  */ 
+	/**大区名称  */ 
 	private String dq;
 	/**大区经理  */ 
 	private String dqManager;
-	/**事业部  */ 
+	/**事业部名称  */ 
 	private String syb;
 	/**事业部经理  */ 
 	private String sybManager;
 	/**期数  */ 
 	private Integer periods;
-	/**年化收益  */ 
+	/**年化收益（预期年化收益率）  */ 
 	private BigDecimal rate;
-	/**利息总额  */ 
+	/**利息总额（投资收益总额）  */ 
 	private BigDecimal interestAll;
-	/**月付利息  */
+	/**月付利息（月付投资收益）  */
     private BigDecimal interestMonth;
     /**划扣日期  */
 	private String paymentDate;
@@ -58,7 +60,7 @@ public class InformationVO extends BaseVO implements Serializable{
 	/**即将到期天数  */ 
 	private Integer surplusDate;
 	/**状态  */ 
-	private String status;
+	private String status;//划扣时间
 	/**pos机终端号  */ 
 	private String posNo;
 	/**出借人  */ 
@@ -73,7 +75,7 @@ public class InformationVO extends BaseVO implements Serializable{
 	private String tel;
 	/**推广渠道  */ 
 	private String spreadType;
-	/**汇入银行  */ 
+	/**汇入银行（精确到支行）  */ 
 	private String bank;
 	/**银行支行名称  */ 
 	private String branch;
@@ -91,13 +93,13 @@ public class InformationVO extends BaseVO implements Serializable{
 	private String inBank;
 	/**银行支行名称  */ 
 	private String inBranch;
-	/**账号  */ 
+	/**回款账号  */ 
 	private String inCardNo;
-	/**开户人姓名  */ 
+	/**回款开户人姓名  */ 
 	private String inCardName;
-	/**开卡省份  */ 
+	/**回款开卡省份  */ 
 	private String inCardProvince;
-	/**开卡城市  */ 
+	/**回款开卡城市  */ 
 	private String inCardCity;
 	/**出借人地址  */ 
 	private String borrowAddress;

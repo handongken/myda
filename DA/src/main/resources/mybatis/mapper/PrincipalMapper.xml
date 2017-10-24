@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.PrincipalMapper">
+	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.PrincipalVO">
+		<id column="contract" property="contract" jdbcType="CHAR" />
+		<result column="money" property="money" jdbcType="INTEGER" />
+		<result column="type_name" property="typeName" jdbcType="CHAR" />
+		<result column="lc_manager" property="lcManager" jdbcType="CHAR" />
+		<result column="t_manager" property="tmanager" jdbcType="CHAR" />
+		<result column="yyb" property="yyb" jdbcType="CHAR" />
+		<result column="yyb_manager" property="yybManager" jdbcType="CHAR" />
+		<result column="fgs" property="fgs" jdbcType="CHAR" />
+		<result column="start_date" property="startDate" jdbcType="DATE" />
+		<result column="end_date" property="endDate" jdbcType="DATE" />
+		<result column="tender_name" property="tenderName" jdbcType="CHAR" />
+		<result column="del_flg" property="delFlg" jdbcType="CHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		contract, money, type_name,lc_manager,t_manager,yyb,yyb_manager,fgs, start_date, end_date, tender_name,del_flg
+	</sql>
+
+	<select id="selectPrincipalByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_principal
+		<where>
+			<if test="startTime != null and startTime != ''">
+				start_date &gt;=#{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and start_date &lt;=#{endTime}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and del_flg = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertPrincipal" useGeneratedKeys="true"
+		keyProperty="contract" parameterType="java.lang.String">
+		INSERT INTO t_principal
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contract != null and contract != ''">
+				contract,
+			</if>
+			<if test="money != null and money != ''">
+				money,
+			</if>
+			<if test="typeName != null and typeName != ''">
+				type_name,
+			</if>
+			<if test="lcManager != null and lcManager != ''">
+				lc_manager,
+			</if>
+			<if test="tmanager != null and tmanager != ''">
+				t_manager,
+			</if>
+			<if test="yyb != null and yyb != ''">
+				yyb,
+			</if>
+			<if test="yybManager != null and yybManager != ''">
+				yyb_manager,
+			</if>
+			<if test="fgs != null and fgs != ''">
+				fgs,
+			</if>
+			<if test="startDate != null and startDate != ''">
+				start_date,
+			</if>
+			<if test="endDate != null and endDate != ''">
+				end_date,
+			</if>
+			<if test="tenderName != null and tenderName != ''">
+				tender_name,
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				del_flg,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contract != null and contract != ''">
+				#{contract,jdbcType=CHAR},
+			</if>
+			<if test="money != null and money != ''">
+				#{money,jdbcType=INTEGER},
+			</if>
+			<if test="typeName != null and typeName != ''">
+				#{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="lcManager != null and lcManager != ''">
+				#{lcManager,jdbcType=VARCHAR},
+			</if>
+			<if test="tmanager != null and tmanager != ''">
+				#{tmanager,jdbcType=VARCHAR},
+			</if>
+			<if test="yyb != null and yyb != ''">
+				#{yyb,jdbcType=VARCHAR},
+			</if>
+			<if test="yybManager != null and yybManager != ''">
+				#{yybManager,jdbcType=VARCHAR},
+			</if>
+			<if test="fgs != null and fgs != ''">
+				#{fgs,jdbcType=VARCHAR},
+			</if>
+			<if test="startDate != null and startDate != ''">
+				#{startDate,jdbcType=DATE},
+			</if>
+			<if test="endDate != null and endDate != ''">
+				#{endDate,jdbcType=DATE},
+			</if>
+			<if test="tenderName != null and tenderName != ''">
+				#{tenderName,jdbcType=CHAR},
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				#{delFlg,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

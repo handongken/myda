@@ -14,6 +14,16 @@ var $_GET = (function() { //获取上一页数据
 	}
 })();
 function downExcelExcel(downUrl){//导出表格
+	var statementDateS = document.getElementById('statementDateS').value;
+	var success = function(data){
+		alert(data);
+	};
+	var faild = function(error){
+		alert(error);
+	};
+	ajaxDownExcel(downUrl,{'startTime':statementDateS},success,faild); 
+} 
+function downDataExcel(downUrl){//数据导出表格
 	var success = function(data){
 		alert(data);
 	};
@@ -66,4 +76,15 @@ function tabList(num,obj){ //tab选项
 	var tabBoxOn = document.getElementById('tabBox').getElementsByClassName('tabShow')[0];
 	if(tabBoxOn) tabBoxOn.className = 'tabHide';
 	document.getElementById('tab'+num).className = 'tabHide tabShow';
+}
+function emptySeach(){ //清空搜索框
+	document.getElementById('statementDateS').value = '';
+	document.getElementById('statementDateE').value = '';
+	loaddataList();
+}
+function seachLoad(){ //搜索条件
+	var statementDateS = document.getElementById('statementDateS').value;
+	var statementDateE = document.getElementById('statementDateE').value;
+	if(statementDateS == '' || statementDateE == ''){alert('搜索日期不能为空');return false;}
+	loaddataList();
 }

@@ -1,4 +1,5 @@
 package com.bqhx.yyb.dao;
+
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -11,11 +12,13 @@ public interface InformationVOMapper {
 
 	int insert(InformationVO record);
 
-	int insertSelective(InformationVO record);
+	int insertSelective(ConditionVO condition);
 
 	List<InformationVO> selectByCondition(ConditionVO condition);
 	
-	InformationVO selectByPrimaryKey(InformationVO record);
+	List<InformationVO> selectRePaymentByCondition(ConditionVO condition);
+	
+	InformationVO selectByPrimaryKey(ConditionVO condition);
    
     List<InformationVO> selectAll(InformationVO record);
     

@@ -1,7 +1,7 @@
 queryData();
 var numReg = /^(0|[1-9][0-9]*)$/;
 var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
-var moneySum = '';//计算值
+var moneySum = 0;//计算值
 function selectOnchange(){ //选择产品 自动生成
 	if($("#type")[0].selectedIndex == 0){
 		$("#zbRatio").val('');
@@ -113,18 +113,65 @@ $('#money').keyup(function(){ //出借金额
 		 $('#interestMonth').val(($('#interestAll').val()/$('#periods').val()).toFixed(2));
 	 }
 });
-$('#statementDate').keyup(function(){
-	if($('#startDate').val() == ''){
-		return false;
-	}else{
-		$('#statementDate').val($('#startDate').val().substring($('#startDate').val().length,$('#startDate').val().length-2));
+$('#startDate').blur(function(){ //账单日是初始出借日期的day
+	$('#statementDate').val($('#startDate').val().substring($('#startDate').val().length,$('#startDate').val().length-2));
+});
+Date.prototype.Format = function (fmt) { //格式年月日
+    var o = {  
+        "M+": this.getMonth() + 1, //月份   
+        "d+": this.getDate(), //日   
+        "h+": this.getHours(), //小时   
+        "m+": this.getMinutes(), //分   
+        "s+": this.getSeconds(), //秒   
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+        "S": this.getMilliseconds() //毫秒   
+    };  
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));  
+    for (var k in o)  
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));  
+    return fmt;  
+} 
+$('#startDate').blur(function(){ //计算到期日
+	var nowVal = $("#startDate").val().replace(/-/g,"-");
+	var nowDate,time= ''; 
+	if($(periods).val() == '3'){
+		 nowDate = new Date(nowVal);//获取当前时间  
+		 nowDate.setMonth(nowDate.getMonth()+3);//设置月份 +3 月  
+		 nowDate.setDate(nowDate.getDate()-1);//设置天数 -1 天  
+		 time = nowDate.Format("yyyy-MM-dd");
+		 $("#endDate").val(time);
+	}else if($(periods).val() == '6'){
+		 nowDate = new Date(nowVal);//获取当前时间  
+		 nowDate.setMonth(nowDate.getMonth()+6);//设置月份 +6 月  
+		 nowDate.setDate(nowDate.getDate()-1);//设置天数 -1 天  
+	     var time = nowDate.Format("yyyy-MM-dd");  
+	     $("#endDate").val(time);
+	}else if($(periods).val() == '12'){
+		 nowDate = new Date(nowVal);//获取当前时间  
+		 nowDate.setMonth(nowDate.getMonth()+12);//设置月份 +12 月  
+		 nowDate.setDate(nowDate.getDate()-1);//设置天数 -1 天  
+	     var time = nowDate.Format("yyyy-MM-dd");  
+	     $("#endDate").val(time);
+	}else if($(periods).val() == '18'){
+		 nowDate = new Date(nowVal);//获取当前时间  
+		 nowDate.setMonth(nowDate.getMonth()+18);//设置月份 +18 月  
+		 nowDate.setDate(nowDate.getDate()-1);//设置天数 -1 天  
+	     var time = nowDate.Format("yyyy-MM-dd");  
+	     $("#endDate").val(time);
+	}else if($(periods).val() == '24'){
+		 nowDate = new Date(nowVal);//获取当前时间  
+		 nowDate.setMonth(nowDate.getMonth()+24);//设置月份 +24 月  
+		 nowDate.setDate(nowDate.getDate()-1);//设置天数 -1 天  
+	     var time = nowDate.Format("yyyy-MM-dd");  
+	     $("#endDate").val(time);
+	}else if($(periods).val() == '36'){
+		 nowDate = new Date(nowVal);//获取当前时间  
+		 nowDate.setMonth(nowDate.getMonth()+36);//设置月份 +36 月  
+		 nowDate.setDate(nowDate.getDate()-1);//设置天数 -1 天  
+	     var time = nowDate.Format("yyyy-MM-dd");  
+	     $("#endDate").val(time);
 	}
 });
-var todayDate = new Date();
-var str = "" + todayDate.getFullYear() + "-";
-	str += (todayDate.getMonth()+1) + "-";
-	str += todayDate.getDate();
-$('#endDate').keyup(function(){$(this).val(str)});
 function saveData(){ //保存
 	var type = document.getElementById("type").value; //产品名称
 	if(type == ""){alert("请选择产品名称");return false;}
@@ -384,7 +431,7 @@ function addData(){ //新增
 	var paymentDate = document.getElementById('paymentDate').value;//划扣日期
 	if(paymentDate == ""){alert("请输入正确划扣日期");return false;}
 	var endDate = document.getElementById('endDate').value;//到期日
-	if(endDate == ""){alert("请输入正确到期日");return false;}
+	if(endDate == ""){alert("到期日不能为空,请选择产品自动计算!");return false;}
 	var statementDate = document.getElementById('statementDate').value;//账单日
 	if(statementDate == ""){alert("请输入正确账单日");return false;}
 	var startDate = document.getElementById('startDate').value;//初始出借日期

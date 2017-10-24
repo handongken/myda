@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.MovableCheckMapper">
+	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.MovableCheckVO">
+		<id column="contract" property="contract" jdbcType="CHAR" />
+		<id column="pay_flg" property="payFlg" jdbcType="VARCHAR" />
+		<result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+		<result column="amount_limit" property="amountLimit" jdbcType="DECIMAL" />
+		<result column="start_date" property="startDate" jdbcType="DATE" />
+		<result column="effective_dates" property="effectiveDates"
+			jdbcType="VARCHAR" />
+		<result column="invalid_dates" property="invalidDates"
+			jdbcType="VARCHAR" />
+		<result column="check_authority" property="checkAuthority"
+			jdbcType="VARCHAR" />
+		<result column="authorized_user" property="authorizedUser"
+			jdbcType="VARCHAR" />
+		<result column="receiver_type" property="receiverType"
+			jdbcType="VARCHAR" />
+		<result column="in_card_no" property="inCardNo" jdbcType="VARCHAR" />
+		<result column="in_card_name" property="inCardName" jdbcType="VARCHAR" />
+		<result column="remit_type" property="remitType" jdbcType="VARCHAR" />
+		<result column="in_branch" property="inBranch" jdbcType="VARCHAR" />
+		<result column="card_line" property="cardLine" jdbcType="VARCHAR" />
+		<result column="in_card_address" property="inCardAddress"
+			jdbcType="VARCHAR" />
+		<result column="postscript" property="postscript" jdbcType="VARCHAR" />
+		<result column="in_tel" property="inTel" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		contract,pay_flg, card_no, amount_limit, start_date,
+		effective_dates,
+		invalid_dates, check_authority,
+		authorized_user,
+		receiver_type, in_card_no,
+		in_card_name,remit_type,in_branch,card_line,in_card_address,postscript,in_tel
+	</sql>
+
+	<select id="selectMovableCheckByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_movable_check
+		<where>
+			<if test="startTime != null and startTime != ''">
+				start_date &gt;=#{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and start_date &lt;=#{endTime}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertMovableCheck" useGeneratedKeys="true"
+		keyProperty="contract" parameterType="java.lang.String">
+		INSERT INTO t_movable_check
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contract != null and contract != ''">
+				contract,
+			</if>
+			<if test="payFlg != null and payFlg != ''">
+				pay_flg,
+			</if>
+			<if test="cardNo != null and cardNo != ''">
+				card_no,
+			</if>
+			<if test="amountLimit != null and amountLimit != ''">
+				amount_limit,
+			</if>
+			<if test="startDate != null and startDate != ''">
+				start_date,
+			</if>
+			<if test="effectiveDates != null and effectiveDates != ''">
+				effective_dates,
+			</if>
+			<if test="invalidDates != null and invalidDates != ''">
+				invalid_dates,
+			</if>
+			<if test="checkAuthority != null and checkAuthority != ''">
+				check_authority,
+			</if>
+			<if test="authorizedUser != null and authorizedUser != ''">
+				authorized_user,
+			</if>
+			<if test="receiverType != null and receiverType != ''">
+				receiver_type,
+			</if>
+			<if test="inCardNo != null and inCardNo != ''">
+				in_card_no,
+			</if>
+			<if test="inCardName != null and inCardName != ''">
+				in_card_name,
+			</if>
+			<if test="remitType != null and remitType != ''">
+				remit_type,
+			</if>
+			<if test="inBranch != null and inBranch != ''">
+				in_branch,
+			</if>
+			<if test="cardLine != null and cardLine != ''">
+				card_line,
+			</if>
+			<if test="inCardAddress != null and inCardAddress != ''">
+				in_card_address,
+			</if>
+			<if test="postscript != null and postscript != ''">
+				postscript,
+			</if>
+			<if test="inTel != null and inTel != ''">
+				in_tel,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contract != null and contract != ''">
+				#{contract,jdbcType=CHAR},
+			</if>
+			<if test="payFlg != null and payFlg != ''">
+				#{payFlg,jdbcType=VARCHAR},
+			</if>
+			<if test="cardNo != null and cardNo != ''">
+				#{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="amountLimit != null and amountLimit != ''">
+				#{amountLimit,jdbcType=DECIMAL},
+			</if>
+			<if test="startDate != null and startDate != ''">
+				#{startDate,jdbcType=DATE},
+			</if>
+			<if test="effectiveDates != null and effectiveDates != ''">
+				#{effectiveDates,jdbcType=VARCHAR},
+			</if>
+			<if test="invalidDates != null and invalidDates != ''">
+				#{invalidDates,jdbcType=VARCHAR},
+			</if>
+			<if test="checkAuthority != null and checkAuthority != ''">
+				#{checkAuthority,jdbcType=VARCHAR},
+			</if>
+			<if test="authorizedUser != null and authorizedUser != ''">
+				#{authorizedUser,jdbcType=VARCHAR},
+			</if>
+			<if test="receiverType != null and receiverType != ''">
+				#{receiverType,jdbcType=VARCHAR},
+			</if>
+			<if test="inCardNo != null and inCardNo != ''">
+				#{inCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="inCardName != null and inCardName != ''">
+				#{inCardName,jdbcType=VARCHAR},
+			</if>
+			<if test="remitType != null and remitType != ''">
+				#{remitType,jdbcType=VARCHAR},
+			</if>
+			<if test="inBranch != null and inBranch != ''">
+				#{inBranch,jdbcType=VARCHAR},
+			</if>
+			<if test="cardLine != null and cardLine != ''">
+				#{cardLine,jdbcType=VARCHAR},
+			</if>
+			<if test="inCardAddress != null and inCardAddress != ''">
+				#{inCardAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="postscript != null and postscript != ''">
+				#{postscript,jdbcType=VARCHAR},
+			</if>
+			<if test="inTel != null and inTel != ''">
+				#{inTel,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

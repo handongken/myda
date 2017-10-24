@@ -1,4 +1,5 @@
 package com.bqhx.yyb.util;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -90,9 +91,9 @@ public class DateUtil {
 	}
 
 	/**
-	 * 获取初始发放期间
+	 * 转换月份
 	 */
-	public static String getBeginDate(int periods,String startDate) {
+	public static String convertMonth(int periods,String startDate) {
 		Calendar bCalendar = StringConvert2Calendar(startDate, Constant.PATTERN);
 		bCalendar.add(Calendar.MONTH, -periods);
 		String beginDate = DateUtil.CalendarConvert2String(bCalendar, Constant.PATTERN);
@@ -100,9 +101,9 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 获取结束发放期间
+	 * 转换天数
 	 */
-	public static String getEndDate(String startDate,int day) {
+	public static String convertDay(String startDate,int day) {
 		Calendar eCalendar = StringConvert2Calendar(startDate, Constant.PATTERN);
 		eCalendar.add(Calendar.DAY_OF_YEAR, -day);
 		String endDate = DateUtil.CalendarConvert2String(eCalendar, Constant.PATTERN);

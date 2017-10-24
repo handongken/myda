@@ -1,4 +1,6 @@
 package com.bqhx.yyb.controller;
+
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -11,14 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bqhx.yyb.constant.Constant;
 import com.bqhx.yyb.dao.CertificateMapper;
 import com.bqhx.yyb.dao.InformationVOMapper;
+import com.bqhx.yyb.dao.MovableCheckMapper;
+import com.bqhx.yyb.dao.PrincipalMapper;
 import com.bqhx.yyb.dao.TypeMapper;
 import com.bqhx.yyb.util.DateUtil;
 import com.bqhx.yyb.vo.CertificateVO;
 import com.bqhx.yyb.vo.ConditionVO;
 import com.bqhx.yyb.vo.InformationVO;
 import com.bqhx.yyb.vo.MessageVO;
+import com.bqhx.yyb.vo.MovableCheckVO;
+import com.bqhx.yyb.vo.PrincipalVO;
 import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.vo.UserVO;
+
 
 /**
  * @author Administrator InformationController
@@ -34,6 +41,10 @@ public class InformationController {
 	private CertificateMapper certificateMapper;
 	@Autowired
 	private TypeMapper typeMapper;
+	@Autowired
+	private MovableCheckMapper movableCheckMapper;
+	@Autowired
+	private PrincipalMapper principalMapper;
 	/**
 	 * 
 	 * @param record
@@ -72,20 +83,23 @@ public class InformationController {
 	 * @return messageVO insert
 	 */
 	@RequestMapping(value = "/insertSelective", method = RequestMethod.POST)
-	MessageVO insertSelective(InformationVO record, UserVO user) {
+	MessageVO insertSelective(ConditionVO condition, UserVO user) {
 		MessageVO messageVO = new MessageVO();
-		InformationVO informationVO = informationVOMapper.selectByPrimaryKey(record);
+		InformationVO informationVO = informationVOMapper.selectByPrimaryKey(condition);
 		if (informationVO != null) {
 			messageVO.setCode(Constant.FLAG_ZERO);
 			messageVO.setMessage(Constant.FAILED);
 		} else {
 			String insDate = DateUtil.formatDate(new Date(), Constant.PATTERN_HMS);
 			if (insDate != null && insDate != "") {
-				record.setInsDate(insDate);
+				condition.setInsDate(insDate);
 			}
-			record.setInsUser(user.getName());
-			informationVOMapper.insertSelective(record);
-			insertCertificate(record);
+			condition.setInsUser(user.getName());
+			informationVOMapper.insertSelective(condition);
+			//插入付息表
+			insertCertificate(condition);
+			//插入还本表
+			insertPrincipal(condition);
 			messageVO.setCode(Constant.FLAG_ONE);
 			messageVO.setMessage(Constant.SUCCESS);
 		}
@@ -93,8 +107,8 @@ public class InformationController {
 	}
 
 	@RequestMapping(value = "/selectByPrimaryKey", method = RequestMethod.POST)
-	InformationVO selectByPrimaryKey(InformationVO record) throws ParseException {
-		InformationVO informationVO = informationVOMapper.selectByPrimaryKey(record);
+	InformationVO selectByPrimaryKey(ConditionVO condition) throws ParseException {
+		InformationVO informationVO = informationVOMapper.selectByPrimaryKey(condition);
 		String insDate = DateUtil.convertDate(informationVO.getInsDate(), Constant.PATTERN_HMS);
 		String updDate = DateUtil.convertDate(informationVO.getUpdDate(), Constant.PATTERN_HMS);
 		if (insDate != null && insDate != "") {
@@ -179,30 +193,126 @@ public class InformationController {
 	}
 
 	/**
-	 * 
+	 * 插入付息凭证表
 	 * @param record
-	 * @return messageVO insert
+	 * insertCertificate
 	 */
-	void insertCertificate(InformationVO record){
+	void insertCertificate(ConditionVO condition){
 		CertificateVO certificateVO = new CertificateVO();
-		String startDate = record.getStartDate();
-		TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(record.getType());
+		String startDate = condition.getStartDate();
+		TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(condition.getType());
 		String typeName = typeVO.getTypeName();
 		int returnInterval = typeVO.getReturnInterval();
-		String endDate = DateUtil.getEndDate(startDate,Constant.ONE);
-		String beginDate = DateUtil.getBeginDate(returnInterval, startDate);
+		String terminateDate = DateUtil.convertDay(startDate,-Constant.ONE);
+		String beginDate = DateUtil.convertMonth(-returnInterval, startDate);
+		String tenderName = condition.getTenderName();
+		String tel = condition.getTel();
 		certificateVO.setStartDate(startDate);
-		certificateVO.setEndDate(endDate);
 		certificateVO.setBeginDate(beginDate);
-		certificateVO.setContract(record.getContract());
-		certificateVO.setInBank(record.getInBank());
-		certificateVO.setInCardName(record.getInCardName());
-		certificateVO.setInCardNo(record.getInCardNo());
-		certificateVO.setInterestMonth(record.getInterestMonth());
-		certificateVO.setMoney(record.getMoney());
+		certificateVO.setTerminateDate(terminateDate);
+		certificateVO.setContract(condition.getContract());
+		certificateVO.setInBank(condition.getInBank());
+		certificateVO.setInCardName(condition.getInCardName());
+		certificateVO.setInCardNo(condition.getInCardNo());
+		certificateVO.setInterestMonth(condition.getInterestMonth());
+		certificateVO.setMoney(condition.getMoney());
 		certificateVO.setTypeName(typeName);
 		certificateVO.setReturnInterval(returnInterval);
+		certificateVO.setTenderName(tenderName);
+		certificateVO.setTel(tel);
 		certificateMapper.insertCertificate(certificateVO);
+		//插入移动支票表
+		condition.setPayFlg(Constant.FLAG_ONE);
+		condition.setBeginDate(beginDate);
+		condition.setTerminateDate(terminateDate);
+		insertMovableCheck(condition);
 	}
 	
+	/**
+	 * 插入还本信息表
+	 * @param record
+	 * insertCertificate
+	 */
+	void insertPrincipal(ConditionVO condition){
+		PrincipalVO principalVO = new PrincipalVO();
+		principalVO.setContract(condition.getContract());
+		principalVO.setMoney(condition.getMoney());
+		TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(condition.getType());
+		principalVO.setTypeName(typeVO.getTypeName());
+		principalVO.setLcManager(condition.getLcManager());
+		principalVO.setTmanager(condition.getTmanager());
+		principalVO.setYyb(condition.getYyb());
+		principalVO.setYybManager(condition.getYybManager());
+		principalVO.setFgs(condition.getFgs());
+		principalVO.setStartDate(condition.getStartDate());
+		principalVO.setEndDate(condition.getEndDate());
+		principalVO.setTenderName(condition.getTenderName());
+		principalMapper.insertPrincipal(principalVO);
+		//插入移动支票表
+		condition.setPayFlg(Constant.FLAG_ZERO);
+		insertMovableCheck(condition);
+	}
+	
+	/**
+	 * 插入移动支票表
+	 * @param record
+	 * insertCertificate
+	 */
+	void insertMovableCheck(ConditionVO condition){
+		MovableCheckVO movableCheckVO = new MovableCheckVO();
+		
+		String contract = condition.getContract();
+		String payFlg = condition.getPayFlg();
+		String startDate = condition.getStartDate();
+		String inCardNo = condition.getInCardNo();
+		String inCardName = condition.getInCardName();
+		String inBranch = condition.getInBank();
+		String cardLine = condition.getCardLine();
+		
+		movableCheckVO.setContract(contract);
+		movableCheckVO.setPayFlg(payFlg);
+		movableCheckVO.setStartDate(startDate);
+		movableCheckVO.setInCardNo(inCardNo);
+		movableCheckVO.setInCardName(inCardName);
+		movableCheckVO.setInBranch(inBranch);
+		movableCheckVO.setCardLine(cardLine);
+		//付方账号
+		movableCheckVO.setCardNo(Constant.CARDNO);
+		//金额上限&附言
+		String postscript = "";
+		if(payFlg.equals("1")){//付息
+			movableCheckVO.setAmountLimit(condition.getInterestMonth());
+			postscript = condition.getBeginDate() + "-" + condition.getTerminateDate() + Constant.PROFIT;
+		}else{//还本
+			movableCheckVO.setAmountLimit(new BigDecimal(condition.getMoney()));
+			postscript = Constant.POSTSCRIPT + contract;
+		}
+		movableCheckVO.setPostscript(postscript);
+		//生效日期
+		movableCheckVO.setEffectiveDates(startDate.replaceAll("-", ""));
+		//失效日期
+		String invalidDate = DateUtil.convertDay(startDate, +Constant.INVALIDTIME);
+		System.out.println("失效日期: " + invalidDate.replaceAll("-", ""));
+		movableCheckVO.setInvalidDates(invalidDate.replaceAll("-", ""));
+		//支票权限
+		movableCheckVO.setCheckAuthority(Constant.CHECKAUTHORITY);
+		//授权使用人
+		movableCheckVO.setAuthorizedUser(Constant.AUTHORIZEDUSER);
+		//收方信息填写类型
+		movableCheckVO.setReceiverType(Constant.RECIEVERTYPE);
+		//汇路类型
+		if(inBranch.equals("招商银行")){
+			movableCheckVO.setRemitType(Constant.REMITTYPEMERCHANTSBANK);
+		}else if(movableCheckVO.getAmountLimit() != null){
+			if(movableCheckVO.getAmountLimit().compareTo(Constant.AMOUNTLIMIT) <= 0){
+				movableCheckVO.setRemitType(Constant.REMITTYPEREALTIME);
+			}else{
+				movableCheckVO.setRemitType(Constant.REMITTYPECOMMON);
+			}
+		}
+		//收方行地址
+		String inCardAddress = condition.getCardProvince() + condition.getCardCity();
+		movableCheckVO.setInCardAddress(inCardAddress);
+		movableCheckMapper.insertMovableCheck(movableCheckVO);
+	}
 }

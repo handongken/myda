@@ -113,21 +113,19 @@
 			        </div>
 			        <div class="form-group">
 			            <label for="paymentDate">划扣日期</label>
-			            <input type="text" class="laydate-icon"  id="paymentDate" name="paymentDate" value="" placeholder="请选择划扣日期" onClick="laydate({elem: '#paymentDate',istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" disabled>
+			            <input type="text" class="Wdate"  id="paymentDate" name="paymentDate" value="" placeholder="请选择划扣日期" onClick="WdatePicker()" disabled>
 			            <label for="hksj" class="visibilityHidden">划扣时间</label>
 			            <input type="text" class="visibilityHidden" value="" name="hksj" placeholder="请输入划扣时间" disabled />
 			        </div>
 			        <div class="form-group">
-			            <label for="endDate">到期日</label>
-			            <input type="text" id="endDate" value="" name="endDate" placeholder="请输入到期日" disabled />
-			          <!--   <input placeholder="请选择到期日" type="text" class="laydate-icon"  id="endDate" name="endDate" value="" onClick="laydate({elem: '#endDate',istime: false, format: 'YYYY-MM-DD'})"  disabled> -->
+			            <label for="startDate">初始出借日期</label>
+			            <input type="text" class="Wdate"  id="startDate" name="startDate" value="" placeholder="请选择初始出借日期" onClick="WdatePicker()" disabled>
 			            <label for="statementDate">账单日</label>
 			             <input type="text" id="statementDate" value="" name="statementDate" placeholder="请输入账单日" disabled />
-			            <!-- <input placeholder="请选择账单日" type="text" class="laydate-icon"  id="statementDate" name="statementDate" value="" onClick="laydate({elem: '#statementDate',istime: false, format: 'YYYY-MM-DD'})"  disabled> -->
 			        </div>
 			        <div class="form-group">
-			            <label for="startDate">初始出借日期</label>
-			            <input type="text" class="laydate-icon"  id="startDate" name="startDate" value="" placeholder="请选择初始出借日期" onClick="laydate({elem: '#startDate',istime: false, format: 'YYYY-MM-DD'})" disabled>
+			            <label for="endDate">到期日</label>
+			            <input type="text" id="endDate" value="" name="endDate" placeholder="请输入到期日" disabled />
 			            <label for="surplusDate">即将到期天数</label>
 			            <!--到期日-TODAY()&"天到期"或"0"-->
 			            <input type="text" id="surplusDate" value="" name="surplusDate" placeholder="请输入即将到期天数" disabled />
@@ -286,7 +284,7 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
-		<script src="/js/laydate.js"></script>
+		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/data.common.js"></script>
 	</body>
 </html>
