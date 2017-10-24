@@ -1,5 +1,7 @@
 package com.bqhx.yyb.constant;
 
+import java.math.BigDecimal;
+
 /**
  * 常量类
  *
@@ -38,51 +40,135 @@ public final class Constant {
 	 */
 	public static final String FAILED = "failed";
 	/**
-	 * exceltemplate
-	 */
-	public static final String EXCELTEMPLATE = "information-template.xls";
-	/**
 	 * totaltemplate
 	 */
-	public static final String TOTALTEMPLATE = "info-template.xls";
+	public static final String TOTALTEMPLATE = "info-template.xlsx";
 	/**
 	 * interesttemplate
 	 */
-	public static final String INTERESTTEMPLATE = "interest-template.xls";
+	public static final String INTERESTTEMPLATE = "interest-template.xlsx";
 	/**
-	 * summary table's title
+	 * 业绩日报总表标题
 	 */
 	public static final String SUMMARYTABLETITLE = "业绩日报总表";
 	/**
-	 * summary table's name
+	 * 业绩日报总表名
 	 */
-	public static final String SUMMARYTABLE = "D:/业绩日报总表_";
+	public static final String SUMMARYNAME = "业绩日报总表_";
 	/**
-	 * redeemedtable's tilte
+	 * 已赎回表标题
 	 */
 	public static final String REDEEMEDTABLETITLE = "已赎回名单";
 	/**
-	 * redeemedtable's name
+	 * 已赎回表名
 	 */
-	public static final String REDEEMEDTABLE = "D:/已赎回名单_";
+	public static final String REDEEMEDNAME = "已赎回名单_";
 	/**
-	 * redeemabletable's tilte
+	 * 提前赎回表标题
 	 */
 	public static final String REDEEMABLETABLETITLE = "申请提前赎回";
 	/**
-	 * redeemabletable's name
+	 * 提前赎回表名
 	 */
-	public static final String REDEEMABLETABLE = "D:/申请提前赎回_";
+	public static final String REDEEMABLENAME = "申请提前赎回_";
 	/**
-	 * investmenttable's tilte
+	 * 续投业绩表标题
 	 */
 	public static final String INVESTMENTTABLETITLE = "续投业绩";
 	/**
-	 * investmenttable's name
+	 * 续投业绩表名
 	 */
-	public static final String INVESTMENTTABLE = "D:/续投业绩_";
+	public static final String INVESTMENTNAME = "续投业绩_";
 	/**
-	 * interest's tilte
+	 * 付息凭证表标题
 	 */
-	public static final String INTERESTTITLE = "受让方收益发放凭证(付息申请)";
+	public static final String INTERESTCERTIFICATETITLE = "受让方收益发放凭证(付息申请)";
+	/**
+	 * 付息凭证表名
+	 */
+	public static final String INTERESTCERTIFICATENAME = "付息凭证_";
+	/**
+	 * 还本凭证表标题
+	 */
+	public static final String RELEASECERTIFICATETITLE = "受让方本金发放凭证(付本申请)";
+	/**
+	 * 还本凭证表名
+	 */
+	public static final String RELEASECERTIFICATENAME = "还本凭证_";
+	/**
+	 * 还本信息表标题
+	 */
+	public static final String PRINCIPALTITLE = "还本信息";
+	/**
+	 * 还本信息表名
+	 */
+	public static final String PRINCIPALNAME = "还本大表_";
+	/**
+	 * 移动支票表标题
+	 */
+	public static final String MOVABLECHECKTITLE = "移动支票";
+	/**
+	 * 移动支票表名
+	 */
+	public static final String MOVABLECHECKNAME = "移动支票_";
+	/**
+	 * 银行短信回息表标题
+	 */
+	public static final String SMSINTERESTTITLE = "银行短信回息表";
+	/**
+	 * 银行短信回息表名
+	 */
+	public static final String SMSINTERESTNAME = "银行短信回息表_";
+	/**
+	 * 银行短信回本表标题
+	 */
+	public static final String SMSCAPITALTITLE = "银行短信回本表";
+	/**
+	 * 银行短信回本表名
+	 */
+	public static final String SMSCAPITALNAME = "银行短信回本表_";
+	/** 
+	 * 付方账号
+	 */ 
+	public static final String CARDNO = "411906450710918";
+	/**
+	 * 失效时间：5天
+	 */
+	public static final int INVALIDTIME = 5;
+	/**
+	 * 支票权限  
+	 */ 
+	public static final String CHECKAUTHORITY = "可支付、不可转让";
+	/** 
+	 * 授权使用人
+	 */ 
+	public static final String AUTHORIZEDUSER = "博琪融资经办";
+	/** 
+	 * 收方信息填写类型
+	 */ 
+	public static final String RECIEVERTYPE = "预先录入(支付时不可修改)";
+	/** 
+	 * 金额上限50000
+	 */ 
+	public static final BigDecimal AMOUNTLIMIT = new BigDecimal(50000.00);
+	/** 
+	 * 汇路类型:招商银行
+	 */ 
+	public static final String REMITTYPEMERCHANTSBANK = "招商银行";
+	/**
+	 * 汇路类型:他行实时
+	 */
+	public static final String REMITTYPEREALTIME = "他行实时";
+	/**
+	 * 汇路类型:他行普通
+	 */
+	public static final String REMITTYPECOMMON = "他行普通";
+	/**
+	 * 收益
+	 */
+	public static final String PROFIT = "收益";
+	/**
+	 * 附言：还款，合同号
+	 */
+	public static final String POSTSCRIPT = "还款，合同号";
 }
