@@ -113,9 +113,7 @@ $('#money').keyup(function(){ //出借金额
 		 $('#interestMonth').val(($('#interestAll').val()/$('#periods').val()).toFixed(2));
 	 }
 });
-$('#startDate').blur(function(){ //账单日是初始出借日期的day
-	$('#statementDate').val($('#startDate').val().substring($('#startDate').val().length,$('#startDate').val().length-2));
-});
+
 Date.prototype.Format = function (fmt) { //格式年月日
     var o = {  
         "M+": this.getMonth() + 1, //月份   
@@ -132,6 +130,8 @@ Date.prototype.Format = function (fmt) { //格式年月日
     return fmt;  
 } 
 $('#startDate').blur(function(){ //计算到期日
+	 //账单日是初始出借日期的day
+	$('#statementDate').val($('#startDate').val().substring($('#startDate').val().length,$('#startDate').val().length-2));
 	var nowVal = $("#startDate").val().replace(/-/g,"-");
 	var nowDate,time= ''; 
 	if($(periods).val() == '3'){
@@ -170,6 +170,19 @@ $('#startDate').blur(function(){ //计算到期日
 		 nowDate.setDate(nowDate.getDate()-1);//设置天数 -1 天  
 	     var time = nowDate.Format("yyyy-MM-dd");  
 	     $("#endDate").val(time);
+	}
+	//计算到期天数
+	var newDate,newDay,endDate,diff,diff_newD = '';
+	var endDate = $("#endDate").val().replace(/-/g,"-");
+	newDate = new Date();
+	newDay = newDate.getFullYear() + '-' + (newDate.getMonth()+1) + '-' + newDate.getDate();
+	endDate = new Date(endDate);
+	newDate = new Date(newDay);
+	if(endDate <= newDate){$('#surplusDate').val('0');}
+	else{
+		diff = endDate.valueOf() - newDate.valueOf();
+		diff_newD = parseInt(diff/(1000*60*60*24));
+		$('#surplusDate').val('还有'+diff_newD+'天到期');
 	}
 });
 function saveData(){ //保存
@@ -304,6 +317,7 @@ function saveData(){ //保存
 }
 function queryData(){ //查询
 	var user = JSON.parse(localStorage.user);
+	var contract = $_GET['contract'];
 	var success = function(data){
 		if(contract !=''){
 			document.getElementById("contract").value = data[0].contract; //合同编号
@@ -374,18 +388,17 @@ function queryData(){ //查询
 	var faild = function(error){
 		alert(error);
 	};
-	var contract = $_GET['contract'];
 	if(contract == ""){
 		$("#contract").attr("disabled",false);
 		$("#addBtn").css("display","block");
 		$("#editBtn").css("display","none");
-		$(".addHidden").css("display","none");
+		/*$(".addHidden").css("display","none");*/
 	}else{
 		$("#addBtn").css("display","none");
 		$("#editBtn").css("display","block");
-		$(".addHidden").css("display","block");
+		/*$(".addHidden").css("display","block");*/
 	}
-	ajaxPost('/selectByCondition',{"contract":contract},success,faild);
+	ajaxPost('/selectByCondition',{"typeId":user.typeId,"contract":contract},success,faild);
 }
 function addData(){ //新增
 	var contract = document.getElementById('contract').value;//合同编号 
@@ -511,8 +524,7 @@ function addData(){ //新增
 								 "contactRelationship":contactRelationship,"continueFlg":continueFlg,"spreadType":spreadType,"bank":bank,
 								 "branch":branch,"cardName":cardName,"cardNo":cardNo,"cardProvince":cardProvince,"cardCity":cardCity,
 								 "cardLine":cardLine,"inBank":inBank,"inBranch":inBranch,"inCardName":inCardName,"inCardNo":inCardNo,
-								 "inCardProvince":inCardProvince,"inCardCity":inCardCity
-								 },success,faild);
+								 "inCardProvince":inCardProvince,"inCardCity":inCardCity},success,faild);
 }
 function VerifierData(){//审批提交
 	var managerNo = document.getElementById('managerNo').value;//审批者

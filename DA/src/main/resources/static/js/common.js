@@ -15,6 +15,7 @@ var $_GET = (function() { //获取上一页数据
 })();
 function downExcelExcel(downUrl){//导出表格
 	var statementDateS = document.getElementById('statementDateS').value;
+	if(statementDateS ==''){alert('请输入搜索日期');return false;}
 	var success = function(data){
 		alert(data);
 	};
@@ -56,8 +57,7 @@ function exit(){ //退出
 		alert(error);
 	};
 	var user = JSON.parse(localStorage.user);
-	ajaxPost('/login',{},success,faild); //像服务器发送
-*/
+	ajaxPost('/login',{},success,faild); //像服务器发送	*/
 	localStorage.clear(); //直接清空
 	location.href = "loginPage.html";
 }
