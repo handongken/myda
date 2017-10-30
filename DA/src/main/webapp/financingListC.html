@@ -16,7 +16,7 @@
 	<body>
 		<div class="container">
 			<div id="nav" class="sidebar"> </div>
-			<div class="content">
+	 		<div class="content">
 				<h2>移动支票</h2>
 				<div class="SeachBox">
 					<label for="statementDateS" class="time">付款日期： <input type="text" class="Wdate" id="statementDateS" name="statementDateS" value="" placeholder="请输入开始日" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'statementDateE\')||\'2020-10-01\'}'})" required> - <input type="text" class="Wdate" id="statementDateE" name="statementDateE" value="" placeholder="请输入结束日" onClick="WdatePicker({minDate:'#F{$dp.$D(\'statementDateS\')}',maxDate:'2020-10-01'})" required></label>
