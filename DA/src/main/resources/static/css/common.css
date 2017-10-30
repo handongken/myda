@@ -16,10 +16,11 @@ a:hover{opacity:.8}
 .sidebar-dropdown,.sidenav{padding:0}
 .sidenav a{color:#9d9d9d}
 .sidenav>li>a{overflow:hidden;display:block;padding:10px;font:700 16px "微软雅黑";color:#495200;border-left:2px solid transparent;transition:.3s linear;border-bottom:1px solid #ccc;vertical-align:middle}
-.sidenav>li>a>i{display:inline-block;width:26px;height:22px;vertical-align:middle;padding-right:8px}
+.sidenav>li>a>i{display:inline-block;width:26px;height:22px;vertical-align:middle;padding-right:8px;margin-top: -6px;}
+.sidenav>li>a>i.level{background:url(/images/level.png) no-repeat;}
 .sidenav>li>a>i.levela{background:url(/images/levela.png) no-repeat}
-.sidenav>li>a>i.levelb{background:url(/images/levelb.png) no-repeat}
-.sidenav>li>a>i.levelc{background:url(/images/levelc.png) no-repeat}
+.sidenav>li>a>i.levelb{background:url(/images/levelb.png) no-repeat;}
+.sidenav>li>a>i.levelc{background:url(/images/levelc.png) no-repeat;}
 .sidebar-dropdown{overflow:hidden;font-size:14px;background:#b1b183;border-bottom:1px solid #ccc}
 .sidebar-dropdown>li>a{float:left;display:inline-block;width: 100px;color:#FFF;padding:10px 0 10px 4px;text-align: center;}
 .sidebar-dropdown>li>a.currentA{color:#495200;font-weight:700}
