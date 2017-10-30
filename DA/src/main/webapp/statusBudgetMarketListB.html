@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>申请提前赎回列表页</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="/css/dataStyle.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div id="nav" class="sidebar"> </div>
+			<div class="content">
+				<h2>申请提前赎回列表区</h2>
+				<div class="addExitBox">
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downURL)">导出提前赎回表格</a></p>
+				</div>
+				<div id="tableHtml"> </div>
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/common.js"></script>
+		<script src="/js/jquery.dataTables.min.js"></script>
+ 		<script>
+			loaddataList();
+			var downURL = '/downloadRedeemableTable';
+			function loaddataList(){//读取表格
+				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
+				var success = function(data){
+					createTh(data);
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				//取user
+				var user = JSON.parse(localStorage.user);
+				/* var status = $_GET['status']; */
+				var status = 2;
+				ajaxPost('/selectByCondition',{"userId":user.userId,"typeId":user.typeId,"status":status},success,faild); 
+			}
+			//读表格
+			function createTh(data){
+				var tableTh = [
+					'合同编号','产品名称','出借金额','折标系数','绩效业绩',
+					'客户编号','客户经理','团队经理','营业部名称','营业部经理','分公司名称',
+					'分公司经理','大区名称','大区经理','事业部名称','事业部经理',
+					'划扣日期','状态'
+				]; //创建th内容
+				var thsHtml = ' '; //为了保存th值
+				for(var i = 0; i < tableTh.length; i++){
+					thsHtml += '<th>' + tableTh[i] + '</th>';
+				}
+				$("#tableBox thead tr").html(thsHtml); //添加到table中 
+				var tableTd = []; //保存td
+				if(data.length>0){
+					for(var i = 0; i<data.length; i++){
+						tableTd[i] = [
+							data[i]['contract'], //合同编号
+							data[i]['type'], //产品名称
+							data[i]['money'], //出借金额
+							data[i]['zbRatio'], //折标系数
+							data[i]['jxAchievement'],//绩效业绩
+							data[i]['lcId'],//客户编号
+							data[i]['lcManager'], //客户经理
+							data[i]['tmanager'], //团队经理
+							data[i]['yyb'], //营业部名称
+							data[i]['yybManager'], //营业部经理
+							data[i]['fgs'], //分公司名称
+							data[i]['fgsManager'], //分公司经理
+							data[i]['dq'],//大区名称
+							data[i]['dqManager'],//大区经理
+							data[i]['syb'],//事业部名称
+							data[i]['sybManager'], //事业部经理
+							data[i]['paymentDate'],//划扣日期
+							data[i]['status']//状态
+						];
+					}
+				}
+				var tables = $("#tableBox").DataTable({
+					'data': tableTd,
+			        'dom': 'tip',
+			        'info': true,
+			        "processing": true,
+                    'scrollX': true,
+					'iDisplayLength': 10,
+//					'scrollY': '350px',
+//					"scrollCollapse": true, 
+					'order': [],
+					"ordering": true,
+			        'columnDefs': [
+			        	{
+							"targets": 0,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html("<p>"+cellData+"</p>");
+						    }
+						},
+						{
+							"targets": 1, 
+							"createdCell": function (td, cellData, rowData, row, col) {
+								if(cellData == 0){$(td).html("<span>聚惠丰</span>")}
+								else if(cellData == 1){$(td).html("<span>聚惠盈</span>");}
+								else if(cellData == 2){$(td).html("<span>聚惠享</span>");}
+								else if(cellData == 3){$(td).html("<span>聚惠丰（50）</span>");}
+								else if(cellData == 4){$(td).html("<span>聚惠盈（50）</span>");}
+								else if(cellData == 5){$(td).html("<span>聚惠享（50）</span>");}
+								else if(cellData == 6){$(td).html("<span>聚惠丰（100）</span>");}
+								else if(cellData == 7){$(td).html("<span>聚惠盈（100）</span>");}
+								else if(cellData == 8){$(td).html("<span>聚惠享（100）</span>");}
+								else if(cellData == 9){$(td).html("<span>聚惠福</span>");}
+								else if(cellData == 10){$(td).html("<span>聚惠鑫</span>");}
+								else if(cellData == 11){$(td).html("<span>聚惠福（50）</span>");}
+								else if(cellData == 12){$(td).html("<span>聚惠福（100）</span>");}
+								else if(cellData == 13){$(td).html("<span>聚惠鑫（50）</span>");}
+								else if(cellData == 14){$(td).html("<span>聚惠鑫（100）</span>");}
+								else if(cellData == 15){$(td).html("<span>惠添利</span>");}
+								else if(cellData == 16){$(td).html("<span>惠添金</span>");}
+								else if(cellData == 17){$(td).html("<span>惠添利（50）</span>");}
+								else if(cellData == 18){$(td).html("<span>惠添利（100）</span>");}
+								else if(cellData == 19){$(td).html("<span>惠添金（50）</span>");}
+								else if(cellData == 20){$(td).html("<span>惠添金（100）</span>");}
+						    }
+						},
+						{
+							"targets": 17,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+								if(cellData == 0){$(td).html("<span>正常</span>");}
+								else if(cellData == 1){$(td).html("<span>已赎回</span>");}
+								else if(cellData == 2){$(td).html("<span>即将到期</span>");}
+								else if(cellData == 3){$(td).html("<span>申请提前赎回</span>");}
+						    	
+						    }
+						}
+					],
+					'language': {
+				    	"emptyTable": "暂无数据",
+				    	"loadingRecords": "读取中请稍候...",
+				    	"zeroRecords": "暂无数据",
+				    	"info": "共 _TOTAL_条记录 显示_START_到 _END_条记录",
+				    	"paginate": {
+					    	"previous": "上一页",
+					    	"next": "下一页",
+					    }
+					}
+			    } );
+			}
+		</script>
+	</body>
+</html>
