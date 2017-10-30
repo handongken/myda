@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
+		<script src="/js/base-loading.js"></script>
 		<style>.content h2:after{left: 40%;}.content h2:before{left: 45%;}</style>    
 	</head>
 	<body>
@@ -67,21 +68,21 @@
 					for(var i = 0; i<data.length; i++){
 						tableTd[i] = [
 							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,
-							i+1,	
-							i+1,
-							i+1,
-							i+1
+							data[i]["cardNo"],
+							data[i]["amountLimit"],
+							data[i]["effectiveDates"],
+							data[i]["invalidDates"],
+							data[i]["checkAuthority"],
+							data[i]["authorizedUser"],
+							data[i]["receiverType"],
+							data[i]["inCardNo"],
+							data[i]["inCardName"],
+							data[i]["remitType"],
+							data[i]["inBranch"],
+							data[i]["cardLine"],	
+							data[i]["inCardAddress"],
+							data[i]["postscript"],
+							data[i]["inTel"]
 						];
 					}
 				}

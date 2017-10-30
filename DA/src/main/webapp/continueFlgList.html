@@ -41,7 +41,7 @@
 				var user = JSON.parse(localStorage.user);
 				/* var status = $_GET['status']; */
 				var continueFlg = 0;
-				ajaxPost('/selectByCondition',{"continueFlg":continueFlg},success,faild); 
+				ajaxPost('/selectByCondition',{"userId":user.userId,"typeId":user.typeId,"continueFlg":continueFlg},success,faild); 
 			}
 			function createTh(data){//读表格
 				var tableTh = [

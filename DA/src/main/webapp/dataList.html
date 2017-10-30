@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
+		<script src="/js/base-loading.js"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -57,7 +58,7 @@
 				</div>
 				<div class="addExitBox">
 					<!-- <p id="addList" class="addList"><a href="">新增列表</a></p> -->
-					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downURL)">导出Excel表格</a></p>
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel()">导出Excel表格</a></p>
 					<!-- <p class="downLoadBtn"><a href="javascript:;" onclick="downloadExcel()">下载文件</a></p>
 					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p>
 					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p> -->
@@ -71,8 +72,19 @@
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
+			var user = '';
 			loaddataList();
-			var downURL = '/downloadSummaryTable';
+			user = JSON.parse(localStorage.user);
+			function downDataExcel(){//数据导出表格
+				var success = function(data){
+					alert(data);
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				user = JSON.parse(localStorage.user);
+				ajaxDownExcel('/downloadSummaryTable',{"typeId":user.typeId,"userId":user.userId},success,faild); 
+			}
 			function emptySeach(){ //清空搜索框
 				document.getElementById("Contract").value = '';
 				document.getElementById("Phone").value = '';
@@ -110,11 +122,13 @@
 				var epaymentDate = document.getElementById("epaymentDate").value;
 				var success = function(data){
 					createTh(data);
+					
 				};
 				var faild = function(error){
 					alert(error);
 				};
-				ajaxPost('/selectByCondition',{"contract":contract,"tel":tel,"status":status,"tenderName":tenderName,
+				user = JSON.parse(localStorage.user);
+				ajaxPost('/selectByCondition',{"userId":user.userId,"typeId":user.typeId,"contract":contract,"tel":tel,"status":status,"tenderName":tenderName,
 												"lcManager":lcManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,
 												"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,"syb":syb,
 												"sybManager":sybManager,"startTime":spaymentDate,"endTime":epaymentDate},success,faild); 
@@ -136,6 +150,10 @@
 					thsHtml += '<th>' + tableTh[i] + '</th>';
 				}
 				$("#tableBox thead tr").html(thsHtml); //添加到table中 
+				
+				if(user.typeId == "3" || user.typeId == "4" || user.typeId == "5" || user.typeId == "6" || user.typeId == "7" || user.typeId == "8" || user.typeId == "9"){//理、团、营、分、大、事/机构数据
+					$("#tableBox thead tr th").eq('57').css('display','none');
+				}
 				var tableTd = []; //保存td
 				if(data.length>0){
 					for(var i = 0; i<data.length; i++){
@@ -246,18 +264,6 @@
 								else if(cellData == 20){$(td).html("<span>惠添金（100）</span>");}
 						    }
 						},
-						/* {
-							"targets": 18,
-							"createdCell": function (td, cellData, rowData, row, col) {
-						    	$(td).html(rowData[2]*rowData[17]);
-						    }
-						},
-						{
-							"targets": 19,
-							"createdCell": function (td, cellData, rowData, row, col) {
-						    	$(td).html(rowData[18]/rowData[16]);
-						    }
-						}, */
 						{
 							"targets": 25,
 							"createdCell": function (td, cellData, rowData, row, col) {
@@ -302,8 +308,19 @@
 							"createdCell": function (td, cellData, rowData, row, col) {
 								if(rowData[51] == '1'){
 									$(td).html('');
-								} else{
-									$(td).html('<a href="dataVerifier.html?contract='+ cellData +'" class="listTableBtn C66CC66" title="审批">审批</a><a href="dataEdit.html?contract='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a><a href="javascript:;" class="listTableBtn" id="delTr" title="删除" onclick="bindListener(this,'+cellData+')">删除</a>');
+								} else {
+									$(td).html('<a href="dataVerifier.html?contract='+ cellData +'" class="listTableBtn C66CC66 hideTypeId" title="审批">审批</a><a href="dataEdit.html?contract='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a><a href="javascript:;" class="listTableBtn hideTypeId" title="删除" onclick="bindListener(this,'+cellData+')">删除</a>');
+								}
+								if(user.typeId == "3" || user.typeId == "4" || user.typeId == "5" || user.typeId == "6" || user.typeId == "7" || user.typeId == "8"){//理财经理
+									$(td).css('display','none');
+								} else if(user.typeId == "9"){
+									$(td).css('display','none');
+								} else if(user.typeId == "10"){
+									if(rowData[51] =='1'){
+										$(td).html('<a href="dataEdit.html?contract='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a>');
+									}else {
+										$(td).html('');
+									}
 								}
 						    }
 						}

@@ -128,7 +128,7 @@
 			            <input type="text" id="endDate" value="" name="endDate" placeholder="请输入到期日（格式：yyyy-mm-dd）" readonly required/>
 			            <label for="surplusDate">即将到期天数</label>
 			            <!--到期日-TODAY()&"天到期"或"0"-->
-			            <input type="text" id="surplusDate" value="" name="surplusDate" placeholder="请输入即将到期天数" required />
+			            <input type="text" id="surplusDate" value="" name="surplusDate" placeholder="请输入即将到期天数" readonly required />
 			        </div>
 			        <div class="form-group">
 			            <label for="status">状态</label>
@@ -147,7 +147,7 @@
 				        <label for="tenderName">出借人</label>
 				        <input type="text" id="tenderName" value="" name="tenderName" maxlength="8" placeholder="请输入出借人" required />
 			            <label for="tel">联系方式</label>
-			            <input type="text" id="tel" name="tel" value=""  maxlength="11" placeholder="请输入联系方式" required />
+			            <input type="text" id="tel" name="tel" value=""  maxlength="13" placeholder="请输入联系方式" required />
 			        </div>
 			        <div class="form-group">
 			            <label for="idType">证件类型</label>
@@ -171,7 +171,7 @@
 			        </div>
 			        <div class="form-group">
 			            <label for="contactTel">紧急联系人电话</label>
-			            <input type="text" id="contactTel" value=""  name="contactTel" maxlength="11" placeholder="请输入紧急联系人电话" required />
+			            <input type="text" id="contactTel" value=""  name="contactTel" maxlength="13" placeholder="请输入紧急联系人电话" required />
 			            <label for="contactRelationship">与出借人关系</label>
 			            <input type="text" id="contactRelationship" value=""  name="contactRelationship" maxlength="6" placeholder="请输入与出借人关系" required />
 			        </div>
@@ -213,12 +213,6 @@
 			            <label for="cardCity">开卡城市</label>
 			            <input type="text" id="cardCity" value="" name="cardCity" placeholder="请输入开卡城市" required />
 			        </div>
-			        <div class="form-group">
-			            <label for="cardLine">银行行号</label>
-			            <input type="text" id="cardLine" value="" name="cardLine" maxlength="12" placeholder="请输入银行行号" required />
-			            <label class="visibilityHidden"></label>
-			            <input type="text" required  class="visibilityHidden"/>
-			        </div>
 			         <div class="form-group">
 			        	<label for="inBank">回款银行</label>
 			            <input type="text" id="inBank" value="" name="inBank" placeholder="请输入回款银行" required />
@@ -236,6 +230,12 @@
 			            <input type="text" id="inCardProvince" value="" name="inCardProvince" placeholder="请输入开卡省份" required />	
 			            <label for="inCardCity">开卡城市</label>
 			            <input type="text" id="inCardCity" value="" name="inCardCity" placeholder="请输入开卡城市" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="cardLine">银行行号</label>
+			            <input type="text" id="cardLine" value="" name="cardLine" maxlength="12" placeholder="请输入银行行号" required />
+			            <label class="visibilityHidden"></label>
+			            <input type="text" required  class="visibilityHidden"/>
 			        </div>
 			        <div class="marB addHidden"></div>
 			        <div class="form-group addHidden">

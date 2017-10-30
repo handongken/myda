@@ -40,8 +40,8 @@
 				//取user
 				var user = JSON.parse(localStorage.user);
 				/* var status = $_GET['status']; */
-				var status = 3;
-				ajaxPost('/selectByCondition',{"status":status},success,faild); 
+				var status = 2;
+				ajaxPost('/selectByCondition',{"userId":user.userId,"typeId":user.typeId,"status":status},success,faild); 
 			}
 			//读表格
 			function createTh(data){
