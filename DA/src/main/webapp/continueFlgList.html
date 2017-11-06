@@ -25,8 +25,10 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
+		<script src="/js/base-loading1.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
+			loading();
 			loaddataList();
 			var downURL = '/downloadInvestmentTable';
 			function loaddataList(){//读取表格
@@ -41,7 +43,7 @@
 				var user = JSON.parse(localStorage.user);
 				/* var status = $_GET['status']; */
 				var continueFlg = 0;
-				ajaxPost('/selectByCondition',{"userId":user.userId,"typeId":user.typeId,"continueFlg":continueFlg},success,faild); 
+				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"continueFlg":continueFlg},success,faild); 
 			}
 			function createTh(data){//读表格
 				var tableTh = [
@@ -228,6 +230,7 @@
 					    }
 					}
 			    } );
+				delLoading();
 			}
 		</script>
 	</body>

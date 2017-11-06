@@ -25,17 +25,19 @@
 					</div>
 				</div>
 				<div class="addExitBox">
-					<p class="downExcelBtn"><a href="javascript:;" onclick="downExcelExcel(downURl)">导出移动支票表格</a></p>
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downURl)">导出移动支票表格</a></p>
 				</div>
 				<div id="tableHtml" class="tableHtml"> </div>
 			</div>
 		</div>
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
+		<script src="/js/base-loading1.js"></script>
 		<script src="/js/common.js"></script>
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
+			loading();
 			loaddataList();
 			var downURl = '/downloadMovableCheck';
 			function loaddataList(){//读取表格
@@ -116,6 +118,7 @@
 					    }
 					}
 			    } );
+				//delLoading();
 			}
 		</script>
 	</body>

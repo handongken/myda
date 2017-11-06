@@ -29,9 +29,12 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
+		<script src="/js/base-loading1.js"></script>
  		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
+			loading();
 			loaddataList();
+			var user = JSON.parse(localStorage.user);
 			function emptySeach(){
 				document.getElementById('userId').value = '';
 				document.getElementById('name').value = '';
@@ -136,8 +139,11 @@
 			        	{
 							"targets": 15,"orderable": false,
 							"createdCell": function (td, cellData, rowData, row, col) {
-								$(td).html('<a href="userEdit.html?userId='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a><a href="javascript:;" class="listTableBtn hideTypeId" title="删除" onclick="bindListener(this,'+cellData+')">删除</a>');
-						    }
+								$(td).html('<a href="userEdit.html?userId='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a><a href="javascript:;" class="listTableBtn" title="删除" onclick="bindListener(this,'+cellData+')">删除</a>');
+								if(user.typeId == "9"){
+									$(td).html('<a href="userEdit.html?userId='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a>');
+								}
+							}
 			        	}
 					],
 					'language': {
@@ -151,10 +157,7 @@
 					    }
 					}
 			    });
-				var user = JSON.parse(localStorage.user);
-				if(user.typeId == "9"){
-					$('.hideTypeId').css('display',"none");
-				}
+				delLoading();
 			}
 		</script>
 	</body>

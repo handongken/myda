@@ -33,10 +33,12 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
+		<script src="/js/base-loading1.js"></script>
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/finance.common.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
+			loading();
 			var downURl = '/downloadInterestCertificate';
 			function createTh(data){//读表格字段
 				var tableTh = [//创建th内容
@@ -100,6 +102,7 @@
 					    }
 					}
 			    } );
+				delLoading();
 			}
 		</script>
 	</body>

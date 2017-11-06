@@ -32,9 +32,11 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
+		<script src="/js/base-loading1.js"></script>
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
+			loading();
 			loaddataList();
 			var downURl = '/downloadSMSInterest';
 			function loaddataList(){//读取表格
@@ -106,6 +108,7 @@
 					    }
 					}
 			    } );
+				delLoading();
 			}
 		</script>
 	</body>

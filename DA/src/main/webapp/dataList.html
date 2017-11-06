@@ -10,7 +10,7 @@
 	 	<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
-		<script src="/js/base-loading.js"></script>
+		<!-- <script src="/js/base-loading.js"></script> -->
 	</head>
 	<body>
 		<div class="container">
@@ -58,7 +58,9 @@
 				</div>
 				<div class="addExitBox">
 					<!-- <p id="addList" class="addList"><a href="">新增列表</a></p> -->
-					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel()">导出Excel表格</a></p>
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel('downloadSummaryTable')">导出Excel表格</a></p>
+					<p id="downActualTimeExcel" class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel('downloadActualTimeTable')">实时业绩导出Excel表格</a></p>
+					<p id="downPerformanceExcel" class="downExcelBtn"><a href="javascript:;" onclick="downPerformanceExcel()">每日业绩导出Excel表格</a></p>
 					<!-- <p class="downLoadBtn"><a href="javascript:;" onclick="downloadExcel()">下载文件</a></p>
 					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p>
 					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p> -->
@@ -69,13 +71,25 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
+		<script src="/js/base-loading1.js"></script>
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
 			var user = '';
+			loading();
 			loaddataList();
 			user = JSON.parse(localStorage.user);
-			function downDataExcel(){//数据导出表格
+			if(user.typeId == '1' || user.typeId == 'system'){
+				document.getElementById('downActualTimeExcel').style.display = 'block';
+				document.getElementById('downPerformanceExcel').style.display = 'block';
+			}else{
+				document.getElementById('downActualTimeExcel').style.display = 'none';
+				document.getElementById('downPerformanceExcel').style.display = 'none';
+			}
+			var downloadSummaryTable = '/downloadSummaryTable';
+			var downloadActualTimeTable = '/downloadActualTimeTable';
+			function downDataExcel(){//数据导出表格 实时业绩表
+				loading();
 				var success = function(data){
 					alert(data);
 				};
@@ -83,7 +97,22 @@
 					alert(error);
 				};
 				user = JSON.parse(localStorage.user);
-				ajaxDownExcel('/downloadSummaryTable',{"typeId":user.typeId,"userId":user.userId},success,faild); 
+				ajaxDownExcel(downloadSummaryTable,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId},success,faild); 
+			}
+			function downPerformanceExcel(){//每日业绩表
+				var spaymentDate = document.getElementById("spaymentDate").value;
+				if(spaymentDate == ""){alert("开始时间不能为空！");return false;}
+				var epaymentDate = document.getElementById("epaymentDate").value;
+				if(epaymentDate == ""){alert("结束时间不能为空！");return false;}
+				loading();
+				var success = function(data){
+					alert(data);
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				user = JSON.parse(localStorage.user);
+				ajaxDownExcel('/downloadPerformancePD',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,'startTime':spaymentDate,'endTime':epaymentDate},success,faild); 
 			}
 			function emptySeach(){ //清空搜索框
 				document.getElementById("Contract").value = '';
@@ -128,7 +157,7 @@
 					alert(error);
 				};
 				user = JSON.parse(localStorage.user);
-				ajaxPost('/selectByCondition',{"userId":user.userId,"typeId":user.typeId,"contract":contract,"tel":tel,"status":status,"tenderName":tenderName,
+				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"contract":contract,"tel":tel,"status":status,"tenderName":tenderName,
 												"lcManager":lcManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,
 												"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,"syb":syb,
 												"sybManager":sybManager,"startTime":spaymentDate,"endTime":epaymentDate},success,faild); 
@@ -315,8 +344,8 @@
 									$(td).css('display','none');
 								} else if(user.typeId == "9"){
 									$(td).css('display','none');
-								} else if(user.typeId == "10"){
-									if(rowData[51] =='1'){
+								} else if(user.typeId == "10" || user.typeId =='11'|| user.typeId =='12' || user.typeId =='13'){
+									if(rowData[51] !='1'){
 										$(td).html('<a href="dataEdit.html?contract='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a>');
 									}else {
 										$(td).html('');
@@ -336,6 +365,7 @@
 					    }
 					}
 			    } );
+				delLoading();
 			}
 		</script>
 	</body>

@@ -5,213 +5,107 @@
 		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>数据列表页</title>
+		<title>人资列表页</title>
 		<link rel="stylesheet" href="/css/reset.css" />
 		<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
+		<style>
+			table.dataTable tbody tr:nth-of-type(even),table.tableBox tbody tr:nth-of-type(even){background: none;}
+			.tableBox td{border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;vertical-align: middle;}
+			.tableBox td:last-child{border-right: none;}
+			#tableBoxTbody tr.tableSum{background: rgba(0,0,0,.2); }
+		</style>
 	</head>
 	<body>
 		<div class="container">
 			<div id="nav" class="sidebar"> </div>
 			<div class="content">
-				<h2>数据管理列表区</h2>
-				<div class="show" id="overAll">
-					<div class="SeachBox sbHide">
-						<div>
-							<label for="Contract">合同号： <input type="text" id="Contract" placeholder="请输入合同号"/></label>
-							<label for="Phone">电话号码： <input type="tel" id="Phone" maxlength="11" placeholder="请输入电话号码"/></label>
- 							<label for="Status">状态类型：
-								<select id="Status" name="Status">
-						            	<option value="" selected>请选择状态类型</option>
-						            	<option value="0">正常</option>
-						            	<option value="1">已赎回</option>
-						            	<option value="2">申请提前赎回</option>
-						            </select>
-							</label>
-						</div>
-						<div>
-							<label for="TenderName">出借人： <input type="text" id="TenderName" placeholder="请输入出借人"/></label>
-							<label for="LcManager">客户经理 ： <input type="text" id="LcManager" placeholder="请输入客户经理 "/></label>
-							<label for="Yyb">营业部名称： <input type="text" id="Yyb" placeholder="请输入营业部名称"/></label>
-						</div>
-						<div>
-							<label for="YybManager">营业部经理： <input type="text" id="YybManager" placeholder="请输入营业部经理"/></label>
-							<label for="Fgs">分公司名称 ： <input type="text" id="Fgs" placeholder="请输入分公司名称 "/></label>
-							<label for="FgsManager">分公司经理： <input type="text" id="FgsManager" placeholder="请输入分公司经理"/></label>
-						</div>
-						<div>
-							<label for="Dq">大区名称 ： <input type="text" id="Dq" placeholder="请输入大区名称 "/></label>
-							<label for="DqManager">大区经理： <input type="text" id="DqManager" placeholder="请输入大区经理"/></label>
-							<label for="Syb">事业部名称： <input type="text" id="Syb" placeholder="请输入事业部名称"/></label>
-						</div>
-						<div>
-							<label for="SybManager">事业部经理： <input type="text" id="SybManager" placeholder="请输入事业部经理"/></label>
-							<label for="spaymentDate" class="time">划扣日期： <input type="text" class="laydate-icon"  id="spaymentDate" name="paymentDate" value="" placeholder="请选择开始时间" onClick="laydate({elem: '#spaymentDate',istime: false, format: 'YYYY-MM-DD'})" required> - <input class="laydate-icon" id="epaymentDate"  placeholder="请选择结束时间" onClick="laydate({elem: '#epaymentDate',istime: false, format: 'YYYY-MM-DD'})" required></label>
-						</div>
-						<div style="overflow: hidden;">
-							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
-						</div>
+				<h2>人力资源管理下载区</h2>
+				<div class="SeachBox">
+					<div>
+						<label for="statementDateS" class="time">当前日期： <input type="text" class="Wdate" id="dateS" name="dateS" value="" placeholder="请输入开始日" onClick="WdatePicker()" required> - <input type="text" class="Wdate" id="dateE" name="dateE" value="" placeholder="请输入结束日" onClick="WdatePicker()" required></label>
+						<!-- <div style="overflow: hidden;">
+							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach();" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="seachLoad()" class="btn seachBtn">搜索</a></p>
+						</div> -->
 					</div>
-					<div id="showHideBtn"><a href="javascript:;" class="clickSH" id="clickSh" onClick="showOverAll()"><i></i><span class="up">收起</span><span class="down">展开更多</span></a></div>
 				</div>
 				<div class="addExitBox">
-					<!-- <p id="addList" class="addList"><a href="">新增列表</a></p> -->
-					<p class="downExcelBtn"><input type="file" id="downloadPath"/><a href="javascript:;" onclick="downExcelExcel()">导出Excel表格</a></p>
-					<!-- <p class="downLoadBtn"><a href="javascript:;" onclick="downloadExcel()">下载文件</a></p>
-					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p>
-					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p> -->
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downPersonnelExcel(downURl)">导出人力资源管理Excel表格查看</a></p>
 				</div>
-				<div id="tableHtml"> </div>
+				<!-- <div id="tableHtml">
+					<table id="tableBox" class="tableBox" width="100%">
+						<thead>
+					     <tr>
+					       <th>序号</th>
+					       <th>事业部</th>
+					       <th>大区</th>
+					       <th>分公司</th>
+					       <th>开单人数</th>
+					       <th>规模业绩(万元)</th>
+					       <th>绩效业绩(万元)</th>
+					     </tr>
+					   </thead>
+					   <tbody id="tableBoxTbody"> </tbody>
+					</table>
+				</div> -->
 			</div>
 		</div>
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
-		<script src="/js/laydate.js"></script>
-		<script src="/js/jquery.dataTables.min.js"></script>
+		<script src="/js/base-loading1.js"></script>
+		<script src="/js/WdatePicker.js"></script>
+		<!-- <script src="/js/jquery.dataTables.min.js"></script> -->
 		<script>
-			loaddataList();
-			function emptySeach(){ //清空搜索框
-				document.getElementById("Contract").value = '';
-				document.getElementById("Phone").value = '';
-				document.getElementById("Status").value = '';
-				document.getElementById("TenderName").value = '';
-				document.getElementById("LcManager").value = '';
-				document.getElementById("Yyb").value = '';
-				document.getElementById("YybManager").value = '';
-				document.getElementById("Fgs").value = '';
-				document.getElementById("FgsManager").value = '';
-				document.getElementById("Dq").value = '';
-				document.getElementById("DqManager").value = '';
-				document.getElementById("Syb").value = '';
-				document.getElementById("SybManager").value = '';
-				document.getElementById("spaymentDate").value = '';
-				document.getElementById("epaymentDate").value = '';
-				loaddataList();
-			}
-			function bindListener(obj,contract){ //删除单行table
-				var thisLi = obj.parentNode.parentNode;
-				thisLi.parentNode.removeChild(thisLi);
-				var success = function(data){
-					if(data.code == 1){
-						alert("删除成功！");
-						window.location.reload();
-					}else{
-						alert('删除不成功！');
-					}
-				};
-				var faild = function(error){
-					alert(error);
-				};
-				ajaxPost('/deleteByPrimaryKey',{"contract":contract},success,faild); 
-			}
-			function downExcelExcel(){//导出表格
+			var downURl = '/downloadHumanAndPerformance';
+			function downPersonnelExcel(downURl){//数据导出表格
+				var dateS = document.getElementById("dateS").value;
+				if(dateS == ""){alert("开始时间不能为空！");return false;}
+				var dateE = document.getElementById("dateE").value;
+				if(dateE == ""){alert("结束时间不能为空！");return false;}
+				loading(); 
 				var success = function(data){
 					alert(data);
 				};
 				var faild = function(error){
 					alert(error);
 				};
-				ajaxDownExcel('/downloadSummaryTable',{},success,faild); 
+				//取user
+				var user = JSON.parse(localStorage.user);
+				ajaxDownExcel(downURl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,'startTime':dateS,'endTime':dateE},success,faild); //,'startTime':dateS,'endTime':dateE
+			} 
+			/*
+			loading();
+			loaddataList();
+			var tbody = '';
+			function emptySeach(){ //清空搜索框
+				document.getElementById("dateS").value = '';
+				document.getElementById("dateE").value = '';
+				loaddataList();
 			}
 			function loaddataList(){//读取表格
-				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
-				var contract = document.getElementById("Contract").value;
-				var status = document.getElementById("Status").value;
-				var tel = document.getElementById("Phone").value;
-				var tenderName = document.getElementById("TenderName").value;
-				var lcManager = document.getElementById("LcManager").value;
-				var yyb = document.getElementById("Yyb").value;
-				var yybManager = document.getElementById("YybManager").value;
-				var fgs = document.getElementById("Fgs").value;
-				var fgsManager = document.getElementById("FgsManager").value;
-				var dq = document.getElementById("Dq").value;
-				var dqManager = document.getElementById("DqManager").value;
-				var syb = document.getElementById("Syb").value;
-				var sybManager = document.getElementById("SybManager").value;
-				var spaymentDate = document.getElementById("spaymentDate").value;
-				var epaymentDate = document.getElementById("epaymentDate").value;
+				//document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
+				var dateS = document.getElementById("dateS").value;
+				var dateE = document.getElementById("dateE").value;
 				var success = function(data){
-					createTh(data);
+					//console.log(data);
+					//createTh(data);
+					for(var i = 0;i<data.length;i++){
+						tbody += '<tr><td rowspan="3">'+(i+1)+'</td><td rowspan="2">'+data[i].syb+'</td><td>'+data[i].dq+'</td>'+
+					       '<td>'+data[i].fgs+'</td><td>'+data[i].lcNum+'</td><td>'+data[i].moneySum+'</td><td>'+data[i].jxSum+'</td></tr>'+
+					     	'<tr class="tableSum"><td colspan="2">大区小计</td><td>10</td><td>181.6</td><td>78.4450</td></tr>'+
+					     	'<tr><td colspan="3">第一事业部合计</td><td>10</td><td>181.6</td><td>78.4450</td></tr>';
+					}
+					tbody += '<tr class="tableSum"><td colspan="3">总计</td><td>10</td><td>10</td><td>181.6</td><td>78.4450</td></tr>';
+					document.getElementById('tableBoxTbody').innerHTML = tbody;
+					delLoading();
 				};
 				var faild = function(error){
 					alert(error);
 				};
-				ajaxPost('/selectByCondition',{"contract":contract,"tel":tel,"status":status,"tenderName":tenderName,
-												"lcManager":lcManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,
-												"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,"syb":syb,
-												"sybManager":sybManager,"startTime":spaymentDate,"endTime":epaymentDate},success,faild); 
-			}
-			function createTh(data){//读表格字段
-				var tableTh = [//创建th内容
-					'序号','事业部','大区','分公司','归属城市',
-					'营业部','事业部经理','大区经理','分公司经理','营业部经理',
-					'团队经理','姓名','岗位名称','员工编号','入职日期',
-					'基本工资','绩效工资','规模业绩','绩效业绩'
-				]; 
-				var thsHtml = ' '; //为了保存th值
-				for(var i = 0; i < tableTh.length; i++){
-					thsHtml += '<th>' + tableTh[i] + '</th>';
-				}
-				$("#tableBox thead tr").html(thsHtml); //添加到table中 
-				var tableTd = []; //保存td
-				if(data.length>0){
-					for(var i = 0; i<data.length; i++){
-						tableTd[i] = [
-							i+1, //序号
-							data[i]['syb'], //事业部
-							data[i]['dq'], //大区
-							data[i]['fgs'], //分公司
-							data[i]['inCardCity'],//归属城市
-							data[i]['yyb'],//营业部
-							data[i]['sybManager'], //事业部经理
-							data[i]['dqManager'], //大区经理
-							data[i]['fgsManager'], //分公司经理
-							data[i]['yybManager'], //营业部经理
-							data[i]['tmanager'], //团队经理
-							data[i]['inCardName'], //姓名
-							i+1,//岗位名称
-							i+1,//员工编号
-							i+1,//入职日期
-							i+1, //基本工资
-							i+1,//绩效工资
-							i+1, //规模业绩
-							i+1 //绩效业绩
-						];
-					}
-				}
-				var tables = $("#tableBox").DataTable({
-					'data': tableTd,
-			        'dom': 'tip',
-			        'info': true,
-			        "processing": true,
-                    'scrollX': true,
-					'iDisplayLength': 10,
-//					'scrollY': '350px',
-//					"scrollCollapse": true, 
-					'order': [],
-					"ordering": true,
-			        'columnDefs': [
-			        	{
-							"targets": 0,"orderable": false,
-							"createdCell": function (td, cellData, rowData, row, col) {
-						    	$(td).html("<p>"+cellData+"</p>");
-						    }
-			        	}
-					],
-					'language': {
-				    	"emptyTable": "暂无数据",
-				    	"loadingRecords": "读取中请稍候...",
-				    	"zeroRecords": "暂无数据",
-				    	"info": "共 _TOTAL_条记录 显示_START_到 _END_条记录",
-				    	"paginate": {
-					    	"previous": "上一页",
-					    	"next": "下一页",
-					    }
-					}
-			    } );
-			}
+				ajaxPost('/selectHumanAndPerformanceByCondition',{'startTime':dateS,'endTime':dateE},success,faild); 
+			} */
 		</script>
 	</body>
 </html>

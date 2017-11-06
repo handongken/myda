@@ -41,7 +41,7 @@
 				var user = JSON.parse(localStorage.user);
 				/* var status = $_GET['status']; */
 				var status = 1;
-				ajaxPost('/selectByCondition',{"userId":user.userId,"typeId":user.typeId,"status":status},success,faild); 
+				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"status":status},success,faild); 
 			}
 			//读表格
 			function createTh(data){
