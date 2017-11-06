@@ -14,8 +14,10 @@ import com.bqhx.yyb.constant.Constant;
 import com.bqhx.yyb.dao.CertificateMapper;
 import com.bqhx.yyb.dao.InformationVOMapper;
 import com.bqhx.yyb.dao.MovableCheckMapper;
+import com.bqhx.yyb.dao.OrganizationCodeMapper;
 import com.bqhx.yyb.dao.PrincipalMapper;
 import com.bqhx.yyb.dao.TypeMapper;
+import com.bqhx.yyb.util.ConditionUtil;
 import com.bqhx.yyb.util.DateUtil;
 import com.bqhx.yyb.vo.CertificateVO;
 import com.bqhx.yyb.vo.ConditionVO;
@@ -23,6 +25,7 @@ import com.bqhx.yyb.vo.InformationVO;
 import com.bqhx.yyb.vo.MessageVO;
 import com.bqhx.yyb.vo.MovableCheckVO;
 import com.bqhx.yyb.vo.PrincipalVO;
+import com.bqhx.yyb.vo.ResultTypeVO;
 import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.vo.UserVO;
 
@@ -45,6 +48,8 @@ public class InformationController {
 	private MovableCheckMapper movableCheckMapper;
 	@Autowired
 	private PrincipalMapper principalMapper;
+	@Autowired
+	private OrganizationCodeMapper organizationCodeMapper;
 	/**
 	 * 
 	 * @param record
@@ -121,8 +126,8 @@ public class InformationController {
 	}
 
 	@RequestMapping(value = "/selectByCondition", method = RequestMethod.POST)
-	List<InformationVO> selectByCondition(ConditionVO condition) {
-		condition.setDelFlg(Constant.FLAG_ZERO);
+	List<InformationVO> selectByCondition(ConditionVO conditionVO, UserVO user) {
+		ConditionVO condition = ConditionUtil.getConditionVOByRole(conditionVO,user);
 		List<InformationVO> informationVOList = informationVOMapper.selectByCondition(condition);
 		if (informationVOList != null) {
 			for (int i = 0; i < informationVOList.size(); i++) {
@@ -141,7 +146,32 @@ public class InformationController {
 		}
 		return informationVOList;
 	}
-
+	/**
+	 * 
+	 * 人力与业绩
+	 */
+	@RequestMapping(value = "/selectHumanAndPerformanceByCondition", method = RequestMethod.POST)
+	List<ResultTypeVO> selectHumanAndPerformanceByCondition(ConditionVO conditionVO, UserVO user) {
+		ConditionVO condition = ConditionUtil.getConditionVOByRole(conditionVO,user);
+		condition.setJxAchievement(new BigDecimal(12500.00));
+		List<ResultTypeVO> informationVOList = informationVOMapper.selectHumanAndPerformanceByCondition(condition);
+		if (informationVOList != null) {
+			for (int i = 0; i < informationVOList.size(); i++) {
+               //insDate and updDate
+				ResultTypeVO informationVO = informationVOList.get(i);
+				String insDate = DateUtil.convertDate(informationVO.getInsDate(), Constant.PATTERN_HMS);
+				String updDate = DateUtil.convertDate(informationVO.getUpdDate(), Constant.PATTERN_HMS);
+				if (insDate != null && insDate != "") {
+					informationVO.setInsDate(insDate);
+				}
+				if (updDate != null && updDate != "") {
+					informationVO.setUpdDate(updDate);
+				}
+			}
+		}
+		return informationVOList;
+	}
+	
 	@RequestMapping(value = "/updateByPrimaryKeySelective", method = RequestMethod.POST)
 	String updateByPrimaryKeySelective(InformationVO record) {
 		informationVOMapper.updateByPrimaryKeySelective(record);
@@ -315,4 +345,5 @@ public class InformationController {
 		movableCheckVO.setInCardAddress(inCardAddress);
 		movableCheckMapper.insertMovableCheck(movableCheckVO);
 	}
+	
 }

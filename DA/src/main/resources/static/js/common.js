@@ -16,22 +16,28 @@ var $_GET = (function() { //获取上一页数据
 function downExcelExcel(downUrl){//导出表格
 	var statementDateS = document.getElementById('statementDateS').value;
 	if(statementDateS ==''){alert('请输入搜索日期');return false;}
+	loading();
 	var success = function(data){
 		alert(data);
 	};
 	var faild = function(error){
 		alert(error);
 	};
-	ajaxDownExcel(downUrl,{'startTime':statementDateS},success,faild); 
+	//取user
+	var user = JSON.parse(localStorage.user);
+	ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"startTime":statementDateS},success,faild); 
 } 
 function downDataExcel(downUrl){//数据导出表格
+	loading();
 	var success = function(data){
 		alert(data);
 	};
 	var faild = function(error){
 		alert(error);
 	};
-	ajaxDownExcel(downUrl,{},success,faild); 
+	//取user
+	var user = JSON.parse(localStorage.user);
+	ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId},success,faild); 
 } 
 function bindListener(obj,contract){ //删除单行table
 	var thisLi = obj.parentNode.parentNode;

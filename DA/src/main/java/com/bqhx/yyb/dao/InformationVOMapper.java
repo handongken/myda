@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.bqhx.yyb.vo.ConditionVO;
 import com.bqhx.yyb.vo.InformationVO;
+import com.bqhx.yyb.vo.ResultTypeVO;
 @Mapper
 public interface InformationVOMapper {
 	int deleteByPrimaryKey(InformationVO record);
@@ -18,9 +19,11 @@ public interface InformationVOMapper {
 	
 	List<InformationVO> selectRePaymentByCondition(ConditionVO condition);
 	
+	List<ResultTypeVO> selectHumanAndPerformanceByCondition(ConditionVO condition);
+	Integer testSelect();
 	InformationVO selectByPrimaryKey(ConditionVO condition);
    
-    List<InformationVO> selectAll(InformationVO record);
+    List<InformationVO> selectAll();
     
     int updateByPrimaryKeySelective(InformationVO record);
 

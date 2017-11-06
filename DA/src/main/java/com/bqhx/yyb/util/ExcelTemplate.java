@@ -3,9 +3,11 @@ package com.bqhx.yyb.util;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileNotFoundException;
@@ -49,6 +51,10 @@ public class ExcelTemplate {
 	 */
 	private int curColIndex;
 	/**
+	 * 特殊当前列数
+	 */
+	private int specialColIndex;
+	/**
 	 * 当前行数
 	 */
 	private int curRowIndex;
@@ -80,20 +86,8 @@ public class ExcelTemplate {
 	 * 序号的列
 	 */
 	private int serColIndex;
-	/**
-	 * excel's version
-	 */
-	private String version = "2007";
 	
 	
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
 	public Workbook getWb() {
 		return wb;
 	}
@@ -118,7 +112,6 @@ public class ExcelTemplate {
 				wb = new XSSFWorkbook(TemplateFileUtil.getTemplates(path));
 			}else{
 				wb = new HSSFWorkbook(TemplateFileUtil.getTemplates(path));
-				version = "2003";
 			}
 			initTemplate();
 		} catch (IOException e) {
@@ -198,6 +191,23 @@ public class ExcelTemplate {
 		curColIndex++;
 	}
 
+	/**
+	 * 在指定列创建单元格
+	 * 
+	 * @param value
+	 */
+	public void createCellByCol(int colNum,String value) {
+		Cell c = curRow.createCell(colNum);
+		setCellStyle(c);
+//		CellStyle style = wb.createCellStyle();  
+		
+		
+//		c.setCellStyle(style);
+		c.setCellType(defaultType);
+		setCellValue(c, value);
+		specialColIndex++;
+	}
+	
 	/**
 	 * 根据cellType创建单元格
 	 * 
@@ -326,7 +336,7 @@ public class ExcelTemplate {
 	 * 创建新行，在使用时只要添加完一行，需要调用该方法创建
 	 */
 	public void createNewRow() {
-		if (lastRowIndex > curRowIndex && curRowIndex != initRowIndex) {
+		if (lastRowIndex >= curRowIndex && curRowIndex != initRowIndex) {
 			sheet.shiftRows(curRowIndex, lastRowIndex, 1, true, true);
 			lastRowIndex++;
 		}
@@ -336,6 +346,20 @@ public class ExcelTemplate {
 		curColIndex = initColIndex;
 	}
 
+	/**
+	 * 根据行、列创建新行
+	 */
+	public void createNewRow(int rowNum,int colNum) {
+		if (lastRowIndex >= rowNum && rowNum != initRowIndex) {
+			sheet.shiftRows(rowNum, lastRowIndex, 1, true, true);
+			lastRowIndex++;
+		}
+		curRow = sheet.createRow(rowNum);
+		curRow.setHeightInPoints(rowHeight);
+		curRowIndex++;
+		specialColIndex = colNum;
+	}
+	
 	/**
 	 * 创建新行，在使用时只要添加完一行，需要调用该方法创建
 	 */
@@ -395,15 +419,79 @@ public class ExcelTemplate {
 						}
 					}
 				} else if (str.contains("@") && !str.startsWith("@")) {
-					String formula = getCurColFormula(str, getFormulaRowNum()+1);
-//					System.out.println("公式： " + formula);
-					int curFormulaColNum = getFormulaColNum(getFormulaRowNum(),str);
-					createFormulaCell(getFormulaRowNum(),curFormulaColNum , formula);
+					if(str.contains("SUM") || str.contains("COUNT")){
+						String formula = getCurColFormula(str, getFormulaRowNum());
+//						System.out.println("公式： " + formula);
+						int curFormulaColNum = getFormulaColNum(getFormulaRowNum(),str);
+						createFormulaCell(getFormulaRowNum(),curFormulaColNum , formula);
+					}else{
+						String formula = getCurColFormula(str, getFormulaRowNum()+1);
+//						System.out.println("公式： " + formula);
+						int curFormulaColNum = getFormulaColNum(getFormulaRowNum(),str);
+						createFormulaCell(getFormulaRowNum(),curFormulaColNum , formula);
+					}
 				}
 			}
 		}
 	}
 
+	/**
+	 * 设置合并单元格样式(合计)
+	 */
+	public void setSumRegionStyle(Sheet sheet, CellRangeAddress region) {
+		CellStyle cs = wb.createCellStyle();  
+		//设置边框
+		cs.setBorderBottom(CellStyle.BORDER_THIN); //下边框    
+		cs.setBorderLeft(CellStyle.BORDER_THIN);//左边框    
+		cs.setBorderTop(CellStyle.BORDER_THIN);//上边框    
+		cs.setBorderRight(CellStyle.BORDER_THIN);//右边框 
+		//设置颜色
+		cs.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		cs.setFillForegroundColor(IndexedColors.LEMON_CHIFFON.getIndex());
+		//设置垂直居中
+		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
+        for (int i = region.getFirstRow(); i <= region.getLastRow(); i++) {
+            Row row = sheet.getRow(i);
+            for (int j = region.getFirstColumn(); j <= region.getLastColumn(); j++) {
+                Cell cell = row.getCell(j);
+                if (cell == null) {
+                    cell = row.createCell(j);
+                    cell.setCellValue("");
+                }
+                cell.setCellStyle(cs);
+
+            }
+        }
+    }
+	
+	/**
+	 * 设置合并单元格样式
+	 */
+	public void setRegionStyle(Sheet sheet, CellRangeAddress region) {
+		CellStyle cs = wb.createCellStyle();  
+		//设置边框
+		cs.setBorderBottom(CellStyle.BORDER_THIN); //下边框    
+		cs.setBorderLeft(CellStyle.BORDER_THIN);//左边框    
+		cs.setBorderTop(CellStyle.BORDER_THIN);//上边框    
+		cs.setBorderRight(CellStyle.BORDER_THIN);//右边框 
+		//设置垂直居中
+		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
+        for (int i = region.getFirstRow(); i <= region.getLastRow(); i++) {
+            Row row = sheet.getRow(i);
+            for (int j = region.getFirstColumn(); j <= region.getLastColumn(); j++) {
+                Cell cell = row.getCell(j);
+                if (cell == null) {
+                    cell = row.createCell(j);
+                    cell.setCellValue("");
+                }
+                cell.setCellStyle(cs);
+
+            }
+        }
+    }
+	
 	/**
 	 * 从模板中获取的常量，通过Map中的值来替换$开头的值
 	 * 
@@ -541,11 +629,11 @@ public class ExcelTemplate {
 	}
 
 	/**
-	 * 从0开始根据模板中获取当前数据行数，默认是2
+	 * 从0开始根据模板中获取#开头数据行数，默认是2
 	 * 
 	 * @return 当前数据行数
 	 */
-	public int getCurDataRowNum() {
+	public int getDataRowNum() {
 		int curDataRowNum = 2;
 		for (Row row : sheet) {
 			for (Cell c : row) {
@@ -562,6 +650,7 @@ public class ExcelTemplate {
 		return curDataRowNum;
 	}
 
+	
 	/**
 	 * 从模板中获取带公式的行
 	 * 
@@ -593,11 +682,15 @@ public class ExcelTemplate {
 		int formulaColNum = 0;
 		Row row = sheet.getRow(formulaRowNum);
 		if (row != null) {
-			int cells = row.getPhysicalNumberOfCells();// 总列数
-//			System.out.println("总列数: " + cells);
-			for (int j = 0; j < cells; j++) {
+//			int cells = row.getPhysicalNumberOfCells();// 是获取不为空的列个数。 
+			int cellNum = row.getLastCellNum();// 是获取最后一个不为空的列是第几个。 
+//			System.out.println("总列数: " + cellNum);
+			for (int j = 0; j < cellNum; j++) {
 				// 获取到列的值
 				Cell c = row.getCell(j);
+				if(c == null){
+					continue;
+				}
 				if (c.getCellType() != Cell.CELL_TYPE_STRING) {
 					continue;
 				}
@@ -656,5 +749,10 @@ public class ExcelTemplate {
 	public int getCurColIndex() {
 		return curColIndex;
 	}
+
+	public float getRowHeight() {
+		return rowHeight;
+	}
+
 
 }

@@ -53,7 +53,11 @@ var ajaxDownExcel = function(url,params,success,faild){//表格下载
 	                         '" value="' + v + '">'));
 	             });
 	             $('body').append(form);
-	             form.submit(); //自动提交
+	             if(status == 'success'){
+	            	 form.submit(); //自动提交
+	            	 delLoading();
+	             }
+	             
 	         }
 	     },
 	     error:function(res){

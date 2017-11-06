@@ -1,24 +1,23 @@
 package com.bqhx.yyb.dao;
+
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
+import com.bqhx.yyb.vo.UserConditionVO;
 import com.bqhx.yyb.vo.UserVO;
 
 @Mapper
 public interface UserMapper {
 
-	List<UserVO> getAll();
+	List<UserVO> selectUserByCondition(UserConditionVO condition);
 
-	UserVO getOne(String userId);
+	int insertUserSelective(UserConditionVO condition);
+	
+	UserVO selectUserByPrimaryKey(UserConditionVO condition);
 
-	void addUser(@Param("userId") String userId, @Param("name") String name, @Param("password") String password,
-			@Param("tel") String tel);
+	int updateUserByPrimaryKey(UserConditionVO condition);
 
-	void updateUser(@Param("userId") String userId, @Param("name") String name, @Param("password") String password,
-			@Param("tel") String tel);
-
-	void deleteUserById(String userId);
+	int updateUserByPrimaryKeySelective(UserConditionVO condition);
 
 }

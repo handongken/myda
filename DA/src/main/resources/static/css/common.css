@@ -12,8 +12,9 @@ a:hover{opacity:.8}
 .tabHide{display:none}
 .tabShow{display:block} 
 /*---------------------------------------------------------nav ---------------------------------------------------------*/
-.sidebar{position:fixed;width:215px;height:100%;transition:all .3s ease;background:#CC9;box-shadow:1px 0 0 0 rgba(210,204,255,.52)}
+.sidebar{overflow: hidden;position:fixed;width:215px;height:100%;transition:all .3s ease;background:#CC9;box-shadow:1px 0 0 0 rgba(210,204,255,.52)}
 .sidebar-dropdown,.sidenav{padding:0}
+.sidebar .sideUl{overflow-y: auto;width: 232px;height: 680px}
 .sidenav a{color:#9d9d9d}
 .sidenav>li>a{overflow:hidden;display:block;padding:10px;font:700 16px "微软雅黑";color:#495200;border-left:2px solid transparent;transition:.3s linear;border-bottom:1px solid #ccc;vertical-align:middle}
 .sidenav>li>a>i{display:inline-block;width:26px;height:22px;vertical-align:middle;padding-right:8px;margin-top: -6px;}

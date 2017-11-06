@@ -2,15 +2,13 @@ package com.bqhx.yyb.util;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.Region;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,6 +17,8 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class ExcelUtil {
@@ -54,14 +54,14 @@ public class ExcelUtil {
 				et.readTemplateByPath(template);
 			}
 			// 获取模板中要替换的数据行
-			int readLine = et.getCurDataRowNum();
-//			System.out.println("模板中要替换的数据行在： " + readLine + " 行");//3
+			int readLine = et.getDataRowNum();
+			// System.out.println("模板中要替换的数据行在： " + readLine + " 行");//3
 			String[] datas = getDatasByTemplate(et, clz, readLine);
 			// 输出值
 			for (int j = 0; j < objs.size(); j++) {
 				Object obj = objs.get(j);
 				et.createNewRow();
-//				System.out.println("表格最后一行：" + et.getLastRowIndex());
+				// System.out.println("表格最后一行：" + et.getLastRowIndex());
 				for (int i = 0; i < datas.length; i++) {
 					// 创建带公式单元格
 					if (datas[i].contains("@")) {
@@ -83,24 +83,39 @@ public class ExcelUtil {
 							rel = beginD + "-" + endD;
 							et.createCell(rel);
 						} else {
-							if(datas[i].contains("ser")){
-								rel = String.valueOf(et.getCurRowIndex()-3);
+							if (datas[i].startsWith("#ser")) {
+								rel = String.valueOf(et.getCurRowIndex() - readLine);
 								et.createCell(rel);
-							}else{
+							} else {
 								@SuppressWarnings("unchecked")
 								Method m = clz.getDeclaredMethod(getMethodName(datas[i]));
 								rel = String.valueOf(m.invoke(obj));
-								if(m.getReturnType().getName().contains("BigDecimal")){
+								String methodReturnType = m.getReturnType().getName();
+								if (methodReturnType.contains("BigDecimal")) {
 									et.createCell(new BigDecimal(rel).doubleValue());
 									continue;
+								} else if (methodReturnType.contains("Integer")) {
+									et.createCell(Integer.valueOf(rel));
+									continue;
 								}
-									et.createCell(rel);
+								et.createCell(rel);
 							}
 						}
 					}
 				}
 			}
-			et.getWb().getSheetAt(0).setForceFormulaRecalculation(true);
+			Sheet sheetModel = et.getWb().getSheetAt(0);
+			sheetModel.setForceFormulaRecalculation(true);
+			int firstrow = sheetModel.getFirstRowNum();
+			int lasttrow = sheetModel.getLastRowNum();
+			// System.out.println("模板第一个sheet第一行： " + firstrow + " , " +
+			// "模板第一个sheet最后一行： " + lasttrow);
+			/*
+			 * for(int i = 0;i < sheetNames.length;i++){ Sheet newSheet =
+			 * et.getWb().createSheet(sheetNames[i]);
+			 * copySheet(et.getWb(),sheetModel,newSheet,firstrow,lasttrow); }
+			 */
+
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
@@ -109,6 +124,402 @@ public class ExcelUtil {
 			e.printStackTrace();
 		}
 		return et;
+	}
+
+	private ExcelTemplate handlerObj2ExcelHP(String template, List objs, Class clz, boolean isClasspath) {
+		ExcelTemplate et = ExcelTemplate.getInstance();
+		CellRangeUtil cellRangeUtil = new CellRangeUtil();
+		try {
+			// 获取模板
+			if (isClasspath) {
+				et.readTemplateByClasspath(template);
+			} else {
+				et.readTemplateByPath(template);
+			}
+			// 获取模板中要替换的数据行
+			int readLine = et.getDataRowNum();
+			// System.out.println("模板中要替换的数据行在： " + readLine + " 行");//3
+			String[] datas = getDatasByTemplate(et, clz, readLine);
+			Sheet sheetModel = et.getWb().getSheetAt(0);
+			sheetModel.setForceFormulaRecalculation(true);
+			Integer ser = 1;
+			Integer serRowNum = 1;
+			Integer sybRowNum = 1;
+			Integer dqRowNum = 1;
+			// 输出值
+			for (int j = 0; j < objs.size(); j++) {
+				Object obj = objs.get(j);
+				et.createNewRow();
+				// System.out.println("表格最后一行：" + et.getLastRowIndex());
+				for (int i = 0; i < datas.length; i++) {
+					// dqindex
+					int index = getDataIndex(datas, "#{dq}");
+					// 创建带公式单元格
+					if (datas[i].contains("@")) {
+						et.createCell(Cell.CELL_TYPE_FORMULA, createCurColFormula(datas[i], readLine + j + 1));
+						continue;
+					}
+					// 创建数据单元格
+					if (datas[i].startsWith("#")) {
+						String rel = "";
+						// 序号
+						if (datas[i].startsWith("#ser")) {
+							// 当前syb
+							String curSyb = getDataValue(obj, datas[i + 1], clz);
+							if (objs.size() > 1) {
+								// 首行
+								if (j == 0) {
+									et.createCell(ser);
+									// 下一行syb
+									String nextSyb = getDataValue(objs.get(j + 1), datas[i + 1], clz);
+									if (!curSyb.equals(nextSyb)) {
+										serRowNum = et.getCurRowIndex();
+									}
+								} // 不是首行也不是最后一行
+								else if (j + 1 < objs.size()) {
+									// 上一行syb
+									String syb = getDataValue(objs.get(j - 1), datas[i + 1], clz);
+									// 下一行syb
+									String nextSyb = getDataValue(objs.get(j + 1), datas[i + 1], clz);
+									if (!curSyb.equals(syb)) {
+										ser = ser + 1;
+										serRowNum = et.getCurRowIndex();
+										et.createCell(ser);
+									} else {
+										if (!curSyb.equals(nextSyb)) {
+										}
+										et.createCell(ser);
+									}
+								} // 最后一行
+								else if (j + 1 == objs.size()) {
+									// 上一行syb
+									String syb = getDataValue(objs.get(j - 1), datas[i + 1], clz);
+									if (curSyb.equals(syb)) {
+										et.createCell(ser);
+									} else {
+										ser = ser + 1;
+										et.createCell(ser);
+										serRowNum = et.getCurRowIndex();
+									}
+								}
+							} else {
+								et.createCell(ser);
+							}
+						} // 除去ser的data
+						else {
+							@SuppressWarnings("unchecked")
+							Method m = clz.getDeclaredMethod(getMethodName(datas[i]));
+							rel = String.valueOf(m.invoke(obj));
+							String methodReturnType = m.getReturnType().getName();
+							if (methodReturnType.contains("String")) {
+								//// 记录每个大区首行dqRowNum
+								if (datas[i].equals("#{dq}")) {
+									et.createCell(rel);
+									// 当前dq
+									String curDq = getDataValue(obj, datas[i], clz);
+									if (objs.size() > 1) {
+										// 首行
+										if (j == 0) {
+											dqRowNum = et.getCurRowIndex();
+										} // 不是首行也不是最后一行
+										else if (j + 1 < objs.size()) {
+											// 上一行dq
+											String dq = getDataValue(objs.get(j - 1), datas[i], clz);
+											if (!curDq.equals(dq)) {
+												dqRowNum = et.getCurRowIndex();
+											}
+										} // 最后一行
+										else if (j + 1 == objs.size()) {
+											// 上一行dq
+											String dq = getDataValue(objs.get(j - 1), datas[i], clz);
+											if (!curDq.equals(dq)) {
+												dqRowNum = et.getCurRowIndex();
+											}
+										}
+									} else {
+										et.createCell(rel);
+									}
+								} // 记录每个事业部首行sybRowNum
+								else if (datas[i].equals("#{syb}")) {
+									et.createCell(rel);
+									// 当前syb
+									String curSyb = getDataValue(obj, datas[i], clz);
+									if (objs.size() > 1) {
+										// 首行
+										if (j == 0) {
+											sybRowNum = et.getCurRowIndex();
+										} // 不是首行也不是最后一行
+										else if (j + 1 < objs.size()) {
+											// 上一行syb
+											String syb = getDataValue(objs.get(j - 1), datas[i], clz);
+											if (!curSyb.equals(syb)) {
+												sybRowNum = et.getCurRowIndex();
+											}
+										} // 最后一行
+										else if (j + 1 == objs.size()) {
+											// 上一行syb
+											String syb = getDataValue(objs.get(j - 1), datas[i], clz);
+											if (!curSyb.equals(syb)) {
+												sybRowNum = et.getCurRowIndex();
+											}
+										}
+									} else {
+										sybRowNum = et.getCurRowIndex();
+									}
+								} else {
+									et.createCell(rel);
+								}
+							} else if (methodReturnType.contains("BigDecimal")) {
+								double value = new BigDecimal(rel).doubleValue()/10000.0;
+								System.out.println("before: " + new BigDecimal(rel).doubleValue() + "after: " + value);
+								et.createCell(value);
+							} else if (methodReturnType.contains("Integer")) {
+								if(datas[i].equals("#{moneySum}")){
+									double value = Double.valueOf(rel)/10000.0;
+									/*DecimalFormat df = new DecimalFormat("####.####"); 
+									String str = df.format(value);
+									System.out.println("String: " + rel + " double: " + value + " string: " + str);*/
+									et.createCell(value);
+								}else{
+									et.createCell(Integer.valueOf(rel));
+								}
+							}
+						}
+					}
+					// 最后data[i]
+					if (i == datas.length - 1) {
+						// 当前dq
+						String curDq = getDataValue(obj, datas[index], clz);
+						// 当前syb
+						String curSyb = getDataValue(obj, datas[index - 1], clz);
+						String dqSum = "大区小计";
+						String total = "总计";
+						if (objs.size() > 1) {
+							// 首行
+							if (j == 0) {
+								// 下一行dq
+								String nextDq = getDataValue(objs.get(j + 1), datas[index], clz);
+								if (!curDq.equals(nextDq)) {
+									// 大区小计合并
+									cellRangeUtil.firstRowCreateCellRange(et, sheetModel, dqSum, index,
+											et.getCurRowIndex(), et.getCurRowIndex(), index, index + 1);
+								}
+								// 下一行syb
+								String nextSyb = getDataValue(objs.get(j + 1), datas[index - 1], clz);
+								if (!curSyb.equals(nextSyb)) {
+									// 事业部合计合并
+									String sybSum = curSyb + "合计";
+									cellRangeUtil.firstRowCreateCellRange(et, sheetModel, sybSum, index,
+											et.getCurRowIndex(), et.getCurRowIndex(), 0, index + 1);
+									// 序号合并
+									cellRangeUtil.serCellRange(et, sheetModel, sybRowNum - 1, et.getCurRowIndex() - 2,
+											0);
+									// 事业部合并
+									cellRangeUtil.sybCellRange(et, sheetModel, sybRowNum - 1, et.getCurRowIndex() - 2,
+											1);
+								}
+							} // 不是首行也不是最后一行
+							else if (j + 1 < objs.size()) {
+								// 上一行dq
+								String dq = getDataValue(objs.get(j - 1), datas[index], clz);
+								// 下一行dq
+								String nextDq = getDataValue(objs.get(j + 1), datas[index], clz);
+								if (!curDq.equals(nextDq)) {
+									// 大区小计合并
+									cellRangeUtil.middleRowCreateCellRange(et, sheetModel, dqSum, index, dqRowNum,
+											et.getCurRowIndex(), et.getCurRowIndex(), index, index + 1);
+									// 大区合并
+									cellRangeUtil.dqCellRange(et, sheetModel, dqRowNum - 1, et.getCurRowIndex() - 2,
+											index);
+								}
+								// 上一行syb
+								String syb = getDataValue(objs.get(j - 1), datas[index - 1], clz);
+								// 下一行syb
+								String nextSyb = getDataValue(objs.get(j + 1), datas[index - 1], clz);
+								if (!curSyb.equals(nextSyb)) {
+									// 事业部合计合并
+									String sybSum = curSyb + "合计";
+									cellRangeUtil.middleRowCreateCellRange(et, sheetModel, sybSum, index, sybRowNum,
+											et.getCurRowIndex(), et.getCurRowIndex(), 0, index + 1);
+									// 序号合并
+									cellRangeUtil.serCellRange(et, sheetModel, sybRowNum - 1, et.getCurRowIndex() - 2,
+											0);
+									// 事业部合并
+									cellRangeUtil.sybCellRange(et, sheetModel, sybRowNum - 1, et.getCurRowIndex() - 2,
+											1);
+								}
+							} // 最后一行
+							else if (j + 1 == objs.size()) {
+								// 大区小计合并
+								cellRangeUtil.middleRowCreateCellRange(et, sheetModel, dqSum, index, dqRowNum,
+										et.getCurRowIndex(), et.getCurRowIndex(), index, index + 1);
+								// 大区合并
+								cellRangeUtil.dqCellRange(et, sheetModel, dqRowNum - 1, et.getCurRowIndex() - 2, index);
+								// 事业部合计合并
+								String sybSum = curSyb + "合计";
+								cellRangeUtil.middleRowCreateCellRange(et, sheetModel, sybSum, index, sybRowNum,
+										et.getCurRowIndex(), et.getCurRowIndex(), 0, index + 1);
+								// 序号合并
+								cellRangeUtil.serCellRange(et, sheetModel, sybRowNum - 1, et.getCurRowIndex() - 2, 0);
+								// 事业部合并
+								cellRangeUtil.sybCellRange(et, sheetModel, sybRowNum - 1, et.getCurRowIndex() - 2, 1);
+								// 总计
+								cellRangeUtil.totalCreateCellRange(et, sheetModel, total, index, et.getCurRowIndex(),
+										et.getCurRowIndex(), 0, index);
+							}
+						} else {// 只有一条数据
+							// 大区小计合并
+							cellRangeUtil.middleRowCreateCellRange(et, sheetModel, dqSum, index, dqRowNum,
+									et.getCurRowIndex(), et.getCurRowIndex(), index, index + 1);
+							// 大区合并
+							cellRangeUtil.dqCellRange(et, sheetModel, dqRowNum - 1, et.getCurRowIndex() - 2, index);
+							// 事业部合计合并
+							String sybSum = curSyb + "合计";
+							cellRangeUtil.middleRowCreateCellRange(et, sheetModel, sybSum, index, sybRowNum,
+									et.getCurRowIndex(), et.getCurRowIndex(), 0, index + 1);
+							// 序号合并
+							cellRangeUtil.serCellRange(et, sheetModel, sybRowNum - 1, et.getCurRowIndex() - 2, 0);
+							// 事业部合并
+							cellRangeUtil.sybCellRange(et, sheetModel, sybRowNum - 1, et.getCurRowIndex() - 2, 1);
+							// 总计
+							cellRangeUtil.totalCreateCellRange(et, sheetModel, total, index, et.getCurRowIndex(),
+									et.getCurRowIndex(), 0, index);
+						}
+					}
+				}
+			}
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		return et;
+	}
+
+	/**
+	 * 获取模板中大区的index
+	 */
+	private int getDataIndex(String[] datas, String data) {
+		int index = 0;
+		boolean isExit = false;
+		for (int i = 0; i < datas.length; i++) {
+			if (datas[i].equals(data)) {
+				index = i;
+				isExit = true;
+			}
+		}
+		if (!isExit) {
+			System.out.println("模板中未找到: " + data);
+		}
+		return index;
+	}
+
+	/**
+	 * 获取值
+	 * 
+	 */
+	private String getDataValue(Object obj, String datas, Class clz) {
+		String syb = "";
+		// Object obj = objs.get(j);
+		try {
+			@SuppressWarnings("unchecked")
+			Method m = clz.getDeclaredMethod(getMethodName(datas));
+			syb = String.valueOf(m.invoke(obj));
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return syb;
+	}
+
+	/**
+	 * 
+	 * @param Excel工作簿对象
+	 * @param 模板Sheet页
+	 * @param 新建Sheet页
+	 * @param 模板页的第一行
+	 * @param 模板页的最后一行
+	 */
+	private static void copySheet(Workbook wb, Sheet sheetModel, Sheet newSheet, int firstrow, int lasttrow) {
+		// 复制一个单元格样式到新建单元格
+		if ((firstrow == -1) || (lasttrow == -1) || lasttrow < firstrow) {
+			return;
+		}
+		// 复制合并的单元格
+		CellRangeAddress region = null;
+		for (int i = 0; i < sheetModel.getNumMergedRegions(); i++) {
+			region = sheetModel.getMergedRegion(i);
+			region.getFirstRow();
+			if ((region.getFirstRow() >= firstrow) && (region.getLastRow() <= lasttrow)) {
+				newSheet.addMergedRegion(region);
+			}
+		}
+		Row fromRow = null;
+		Row newRow = null;
+		Cell newCell = null;
+		Cell fromCell = null;
+		// 设置列宽
+		for (int i = firstrow; i < lasttrow; i++) {
+			fromRow = sheetModel.getRow(i);
+			if (fromRow != null) {
+				for (int j = fromRow.getLastCellNum(); j >= fromRow.getFirstCellNum(); j--) {
+					int colnum = sheetModel.getColumnWidth((short) j);
+					if (colnum > 100) {
+						newSheet.setColumnWidth((short) j, (short) colnum);
+					}
+					if (colnum == 0) {
+						newSheet.setColumnHidden((short) j, true);
+					} else {
+						newSheet.setColumnHidden((short) j, false);
+					}
+				}
+				break;
+			}
+		}
+		// 复制行并填充数据
+		for (int i = 0; i < lasttrow; i++) {
+			fromRow = sheetModel.getRow(i);
+			if (fromRow == null) {
+				continue;
+			}
+			newRow = newSheet.createRow(i - firstrow);
+			newRow.setHeight(fromRow.getHeight());
+			for (int j = fromRow.getFirstCellNum(); j < fromRow.getPhysicalNumberOfCells(); j++) {
+				fromCell = fromRow.getCell((short) j);
+				if (fromCell == null) {
+					continue;
+				}
+				newCell = newRow.createCell((short) j);
+				newCell.setCellStyle(fromCell.getCellStyle());
+				int cType = fromCell.getCellType();
+				newCell.setCellType(cType);
+				switch (cType) {
+				case HSSFCell.CELL_TYPE_STRING:
+					newCell.setCellValue(fromCell.getRichStringCellValue());
+					break;
+				case HSSFCell.CELL_TYPE_NUMERIC:
+					newCell.setCellValue(fromCell.getNumericCellValue());
+					break;
+				case HSSFCell.CELL_TYPE_FORMULA:
+					newCell.setCellValue(fromCell.getCellFormula());
+					break;
+				case HSSFCell.CELL_TYPE_BOOLEAN:
+					newCell.setCellValue(fromCell.getBooleanCellValue());
+					break;
+				case HSSFCell.CELL_TYPE_ERROR:
+					newCell.setCellValue(fromCell.getErrorCellValue());
+					break;
+				default:
+					newCell.setCellValue(fromCell.getRichStringCellValue());
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -161,6 +572,19 @@ public class ExcelUtil {
 			Class clz, boolean isClasspath) {
 		try {
 			ExcelTemplate et = handlerObj2Excel(template, objs, clz, isClasspath);
+			et.replaceFinalData(datas);
+			et.wirteToStream(os);
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void exportObj2ExcelByTemplateHP(Map<String, String> datas, String template, OutputStream os, List objs,
+			Class clz, boolean isClasspath) {
+		try {
+			ExcelTemplate et = handlerObj2ExcelHP(template, objs, clz, isClasspath);
 			et.replaceFinalData(datas);
 			et.wirteToStream(os);
 			os.flush();
@@ -464,18 +888,17 @@ public class ExcelUtil {
 
 	@SuppressWarnings("deprecation")
 	private String[] getDatasByTemplate(ExcelTemplate et, Class clz, int readLine) {
-		/*if(version.equals("2007")){
-			XSSFSheet sheet = (XSSFSheet)et.getWb().getSheetAt(0);
-			XSSFRow row = sheet.getRow(readLine);
-		}else{
-			HSSFSheet sheet = (HSSFSheet) et.getWb().getSheetAt(0);
-			HSSFRow row = sheet.getRow(readLine);
-		}*/
+		/*
+		 * if(version.equals("2007")){ XSSFSheet sheet =
+		 * (XSSFSheet)et.getWb().getSheetAt(0); XSSFRow row =
+		 * sheet.getRow(readLine); }else{ HSSFSheet sheet = (HSSFSheet)
+		 * et.getWb().getSheetAt(0); HSSFRow row = sheet.getRow(readLine); }
+		 */
 		Sheet sheet = et.getWb().getSheetAt(0);
 		Row row = sheet.getRow(readLine);
 		// 总列数
 		int colNum = row.getPhysicalNumberOfCells();
-//		System.out.println("colNum:" + colNum);
+		// System.out.println("colNum:" + colNum);
 		String[] data = new String[colNum];
 		for (int i = 0; i < colNum; i++) {
 			data[i] = getCellFormatValue(row.getCell((short) i));
@@ -559,6 +982,5 @@ public class ExcelUtil {
 		}
 		return formulaRepalce;
 	}
-	
-	
+
 }

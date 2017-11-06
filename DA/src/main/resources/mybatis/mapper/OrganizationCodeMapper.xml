@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.OrganizationCodeMapper">
+	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.OrganizationCodeVO">
+		<id column="O_ID" property="oid" jdbcType="VARCHAR" />
+		<result column="O_NAME" property="oname" jdbcType="VARCHAR" />
+		<result column="M_NAME" property="mname" jdbcType="VARCHAR" />
+		<result column="LEVEL_TYPE" property="levelType" jdbcType="INTEGER" />
+		<result column="DEL_FLG" property="delFlg" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		O_ID, O_NAME, M_NAME, LEVEL_TYPE, DEL_FLG
+	</sql>
+
+	<select id="selectOrganizationCodeByOid" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_organization_code
+		<where>
+			<if test="oid != null and oid != ''">
+				O_ID =#{oid}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and del_flg = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertOrganizationCode" useGeneratedKeys="true"
+		keyProperty="oid" parameterType="java.lang.String">
+		INSERT INTO t_organization_code
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="oid != null and oid != ''">
+				O_ID,
+			</if>
+			<if test="oname != null and oname != ''">
+				O_NAME,
+			</if>
+			<if test="mname != null and mname != ''">
+				M_NAME,
+			</if>
+			<if test="levelType != null and levelType != ''">
+				LEVEL_TYPE,
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				DEL_FLG,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="oid != null and oid != ''">
+				#{oid,jdbcType=VARCHAR},
+			</if>
+			<if test="oname != null and oname != ''">
+				#{oname,jdbcType=VARCHAR},
+			</if>
+			<if test="mname != null and mname != ''">
+				#{mname,jdbcType=VARCHAR},
+			</if>
+			<if test="levelType != null and levelType != ''">
+				#{levelType,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				#{delFlg,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

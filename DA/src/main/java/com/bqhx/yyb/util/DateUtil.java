@@ -95,7 +95,7 @@ public class DateUtil {
 	 */
 	public static String convertMonth(int periods,String startDate) {
 		Calendar bCalendar = StringConvert2Calendar(startDate, Constant.PATTERN);
-		bCalendar.add(Calendar.MONTH, -periods);
+		bCalendar.add(Calendar.MONTH, periods);
 		String beginDate = DateUtil.CalendarConvert2String(bCalendar, Constant.PATTERN);
 		return beginDate;
 	}
@@ -105,7 +105,7 @@ public class DateUtil {
 	 */
 	public static String convertDay(String startDate,int day) {
 		Calendar eCalendar = StringConvert2Calendar(startDate, Constant.PATTERN);
-		eCalendar.add(Calendar.DAY_OF_YEAR, -day);
+		eCalendar.add(Calendar.DAY_OF_YEAR, day);
 		String endDate = DateUtil.CalendarConvert2String(eCalendar, Constant.PATTERN);
 		return endDate;
 	}

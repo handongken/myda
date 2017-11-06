@@ -58,7 +58,7 @@ public class ConditionVO extends BaseVO implements Serializable{
 	/**账单日  */ 
 	private String statementDate;
 	/**即将到期天数  */ 
-	private Integer surplusDate;
+	private String surplusDate;
 	/**状态  */ 
 	private String status;
 	/**pos机终端号  */ 
@@ -155,7 +155,7 @@ public class ConditionVO extends BaseVO implements Serializable{
 	private String inTel;
 	/**付息or还本,1or0  */ 
 	private String payFlg;
-	
+
 	public BigDecimal getAmountLimit() {
 		return amountLimit;
 	}
@@ -489,11 +489,11 @@ public class ConditionVO extends BaseVO implements Serializable{
 	}
 
 	@ExcelResources(title="即将到期天数",order=25)
-	public Integer getSurplusDate() {
+	public String getSurplusDate() {
 		return surplusDate;
 	}
 
-	public void setSurplusDate(Integer surplusDate) {
+	public void setSurplusDate(String surplusDate) {
 		this.surplusDate = surplusDate;
 	}
 

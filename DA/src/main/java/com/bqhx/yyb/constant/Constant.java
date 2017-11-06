@@ -44,9 +44,37 @@ public final class Constant {
 	 */
 	public static final String TOTALTEMPLATE = "info-template.xlsx";
 	/**
+	 * marketAndBudgettemplate
+	 */
+	public static final String MBTEMPLATE = "marketAndBudget-template.xlsx";
+	/**
 	 * interesttemplate
 	 */
 	public static final String INTERESTTEMPLATE = "interest-template.xlsx";
+	/**
+	 * movableChecktemplate
+	 */
+	public static final String MOVABLECHECKTEMPLATE = "movableCheck-template.xlsx";
+	/**
+	 * SMSInteresttemplate
+	 */
+	public static final String SMSINTERESTTEMPLATE = "SMSInterest-template.xlsx";
+	/**
+	 * SMSCapitaltemplate
+	 */
+	public static final String SMSCAPITALTEMPLATE = "SMSCapital-template.xlsx";
+	/**
+	 * principaltemplate
+	 */
+	public static final String PRINCIPALTEMPLATE = "principal-template.xlsx";
+	/**
+	 * nationalsummarytemplate
+	 */
+	public static final String NATIONALSUMMARYTEMPLATE = "nationalSummary-template.xlsx";
+	/**
+	 * humanAndPerformancetemplate
+	 */
+	public static final String HUMANANDPERFORMANCETEMPLATE = "humanAndPerformance-template.xlsx";
 	/**
 	 * 业绩日报总表标题
 	 */
@@ -127,6 +155,18 @@ public final class Constant {
 	 * 银行短信回本表名
 	 */
 	public static final String SMSCAPITALNAME = "银行短信回本表_";
+	/**
+	 * 全国汇总表名
+	 */
+	public static final String NATIONALSUMMARYNAME = "全国汇总表_";
+	/**
+	 * 全国基本架构表名
+	 */
+	public static final String HUMANANDPERFORMANCENAME = "全国基本架构_";
+	/**
+	 * 人力与业绩表标题
+	 */
+	public static final String HUMANANDPERFORMANCETITLE = "人力与业绩表";
 	/** 
 	 * 付方账号
 	 */ 
@@ -171,4 +211,53 @@ public final class Constant {
 	 * 附言：还款，合同号
 	 */
 	public static final String POSTSCRIPT = "还款，合同号";
+	/**
+	 * 人力与业绩汇总表标题
+	 */
+	public static final String HUMANANDRESOURCETITLE = "人力与业绩汇总表";
+	/**
+	 * 市场和预算权限typeid
+	 */
+	public static final String MB = "2";
+	/**
+	 * 客户经理权限typeid
+	 */
+	public static final String LCMANAGER = "3";
+	/**
+	 * 团队经理权限typeid
+	 */
+	public static final String TMANAGER = "4";
+	/**
+	 * 营业部经理权限typeid
+	 */
+	public static final String YYBMANAGER = "5";
+	/**
+	 * 分公司经理权限typeid
+	 */
+	public static final String FGSMANAGER = "6";
+	/**
+	 * 大区经理权限typeid
+	 */
+	public static final String DQMANAGER = "7";
+	/**
+	 * 事业部经理权限typeid
+	 */
+	public static final String SYBMANAGER = "8";
+	/**
+	 * 事业部内勤权限typeid
+	 */
+	public static final String SYBOFFICE = "10";
+	/**
+	 * 大区内勤权限typeid
+	 */
+	public static final String DQOFFICE = "11";
+	/**
+	 * 分公司内勤权限typeid
+	 */
+	public static final String FGSOFFICE = "12";
+	/**
+	 * 营业部内勤权限typeid
+	 */
+	public static final String YYBOFFICE = "13";
+	
 }
