@@ -62,6 +62,23 @@
 		<result column="upd_user" jdbcType="CHAR" property="updUser" />
 		<result column="upd_date" jdbcType="CHAR" property="updDate" />
 	</resultMap>
+	<resultMap id="ResultTypeMap" type="com.bqhx.yyb.vo.ResultTypeVO">
+		<result column="syb" jdbcType="VARCHAR" property="syb" />
+		<result column="dq" jdbcType="VARCHAR" property="dq" />
+		<result column="fgs" jdbcType="VARCHAR" property="fgs" />
+		<result column="money" jdbcType="INTEGER" property="money" />
+		<result column="jx_achievement" jdbcType="DECIMAL" property="jxAchievement" />
+		<result column="lc_id" jdbcType="VARCHAR" property="lcId" />
+		<result column="payment_date" jdbcType="VARCHAR" property="paymentDate" />
+		<result column="del_flg" jdbcType="CHAR" property="delFlg" />
+		<result column="ins_user" jdbcType="CHAR" property="insUser" />
+		<result column="ins_date" jdbcType="CHAR" property="insDate" />
+		<result column="upd_user" jdbcType="CHAR" property="updUser" />
+		<result column="upd_date" jdbcType="CHAR" property="updDate" />
+		<result column="lcNum" jdbcType="NUMERIC" property="lcNum" />
+		<result column="moneySum" jdbcType="NUMERIC" property="moneySum" />
+		<result column="jxSum" jdbcType="DECIMAL" property="jxSum" />
+		</resultMap>
 	<sql id="Base_Column_List">
 		contract, money, type, zb_ratio, jx_achievement, lc_manager, lc_id, t_manager,
 		yyb,
@@ -84,32 +101,35 @@
 		<include refid="Base_Column_List" />
 		from t_information
 		<where>
+			<if test="tmanager != null and tmanager != ''">
+				and t_manager = #{tmanager,jdbcType=VARCHAR}
+			</if>
 			<if test="yyb != null and yyb != ''">
 				and yyb LIKE "%"#{yyb,jdbcType=VARCHAR}"%"
 			</if>
 			<if test="yybManager != null and yybManager != ''">
-				and yyb_manager LIKE "%"#{yybManager,jdbcType=VARCHAR}"%"
+				and yyb_manager = #{yybManager,jdbcType=VARCHAR}
 			</if>
 			<if test="lcManager != null and lcManager != ''">
-				and lc_manager LIKE "%"#{lcManager,jdbcType=VARCHAR}"%"
+				and lc_manager = #{lcManager,jdbcType=VARCHAR}
 			</if>
 			<if test="fgs != null and fgs != ''">
 				fgs LIKE "%"#{fgs,jdbcType=VARCHAR}"%"
 			</if>
 			<if test="fgsManager != null and fgsManager != ''">
-				and fgs_manager LIKE "%"#{fgsManager,jdbcType=VARCHAR}"%"
+				and fgs_manager = #{fgsManager,jdbcType=VARCHAR}
 			</if>
 			<if test="dq != null and dq != ''">
 				and dq LIKE "%"#{dq,jdbcType=VARCHAR}"%"
 			</if>
 			<if test="dqManager != null and dqManager != ''">
-				and dq_manager LIKE "%"#{dqManager,jdbcType=VARCHAR}"%"
+				and dq_manager = #{dqManager,jdbcType=VARCHAR}
 			</if>
 			<if test="syb != null and syb != ''">
 				and syb LIKE "%"#{syb,jdbcType=VARCHAR}"%"
 			</if>
 			<if test="sybManager != null and sybManager != ''">
-				and syb_manager LIKE "%"#{sybManager,jdbcType=VARCHAR}"%"
+				and syb_manager = #{sybManager,jdbcType=VARCHAR}
 			</if>
 			<if test="tenderName != null and tenderName != ''">
 				and tender_name LIKE "%"#{tenderName,jdbcType=CHAR}"%"
@@ -154,6 +174,52 @@
 				and del_flg = #{delFlg,jdbcType=CHAR}
 			</if>
 		</where>
+	</select>
+	
+	<!-- 人力与业绩总表 -->
+	<select id="selectHumanAndPerformanceByCondition" parameterType="java.lang.String"
+		resultMap="ResultTypeMap">
+		select
+		  syb,dq,fgs,count(lc_id) as lcNum,sum(money) as moneySum,sum(jx_achievement) as jxSum
+		from t_information
+		<where>
+			<if test="startTime != null and startTime != ''">
+				and payment_date &gt;=#{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and payment_date &lt;=#{endTime}
+			</if>
+			<if test="jxAchievement != null and jxAchievement != ''">
+				and jx_achievement &gt;=#{jxAchievement,jdbcType=DECIMAL}
+			</if>
+			<if test="delFlg != null">
+				and del_flg = #{delFlg,jdbcType=CHAR}
+			</if>
+		</where>
+		group by syb,dq,fgs
+		order by syb
+		<!-- having syb='第一事业部' -->
+	</select>
+	
+	<!-- 每日业绩分表 -->
+	<select id="selectPerformancePDByCondition" parameterType="java.lang.String"
+		resultMap="ResultTypeMap">
+		select
+		  sum(money) as moneySum,payment_date
+		from t_information
+		<where>
+			<if test="startTime != null and startTime != ''">
+				and payment_date &gt;=#{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and payment_date &lt;=#{endTime}
+			</if>
+			<if test="delFlg != null">
+				and del_flg = #{delFlg,jdbcType=CHAR}
+			</if>
+		</where>
+		group by payment_date
+		order by payment_date
 	</select>
 	
 	<select id="selectByPrimaryKey" parameterType="java.lang.String"
@@ -656,7 +722,7 @@
 				statement_date = #{statementDate,jdbcType=CHAR},
 			</if>
 			<if test="surplusDate != null">
-				surplus_date = #{surplusDate,jdbcType=INTEGER},
+				surplus_date = #{surplusDate,jdbcType=VARCHAR},
 			</if>
 			<if test="status != null">
 				status = #{status,jdbcType=CHAR},
@@ -785,7 +851,7 @@
 		start_date = #{startDate,jdbcType=DATE},
 		end_date = #{endDate,jdbcType=DATE},
 		statement_date = #{statementDate,jdbcType=CHAR},
-		surplus_date = #{surplusDate,jdbcType=INTEGER},
+		surplus_date = #{surplusDate,jdbcType=VARCHAR},
 		status = #{status,jdbcType=CHAR},
 		pos_no = #{posNo,jdbcType=CHAR},
 		tender_name = #{tenderName,jdbcType=CHAR},
