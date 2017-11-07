@@ -51,7 +51,7 @@
 							<label for="spaymentDate" class="time">划扣日期： <input type="text" class="Wdate" id="spaymentDate" name="spaymentDate" value="" placeholder="请选择开始时间" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'epaymentDate\')||\'2020-10-01\'}'})" required> - <input class="Wdate" id="epaymentDate"  placeholder="请选择结束时间" onClick="WdatePicker({minDate:'#F{$dp.$D(\'spaymentDate\')}',maxDate:'2020-10-01'})" required></label>
 						</div>
 						<div style="overflow: hidden;">
-							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
+							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="loading();emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loading();loaddataList()" class="btn seachBtn">搜索</a></p>
 						</div>
 					</div>
 					<div id="showHideBtn"><a href="javascript:;" class="clickSH" id="clickSh" onClick="showOverAll()"><i></i><span class="up">收起</span><span class="down">展开更多</span></a></div>
@@ -60,7 +60,7 @@
 					<!-- <p id="addList" class="addList"><a href="">新增列表</a></p> -->
 					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel('downloadSummaryTable')">导出Excel表格</a></p>
 					<p id="downActualTimeExcel" class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel('downloadActualTimeTable')">实时业绩导出Excel表格</a></p>
-					<p id="downPerformanceExcel" class="downExcelBtn"><a href="javascript:;" onclick="downPerformanceExcel()">每日业绩导出Excel表格</a></p>
+					<p id="downPerformanceExcel" class="downExcelBtn"><a href="javascript:;" onclick="downPerformanceExcel('downloadPerformancePD')">每日业绩导出Excel表格</a></p>
 					<!-- <p class="downLoadBtn"><a href="javascript:;" onclick="downloadExcel()">下载文件</a></p>
 					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p>
 					<p class="exitBtn"><a href="javascript:;" onclick="exit()">退出系统</a></p> -->
@@ -71,13 +71,12 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
-		<script src="/js/base-loading1.js"></script>
+		<script src="/js/base-loading.js"></script>
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
-			var user = '';
-			loading();
-			loaddataList();
+			loading();loaddataList();
+			var user = '',spaymentDate = '',epaymentDate = '',downloadSummaryTable = '',downloadActualTimeTable = '',downloadPerformancePD = '';
 			user = JSON.parse(localStorage.user);
 			if(user.typeId == '1' || user.typeId == 'system'){
 				document.getElementById('downActualTimeExcel').style.display = 'block';
@@ -86,9 +85,12 @@
 				document.getElementById('downActualTimeExcel').style.display = 'none';
 				document.getElementById('downPerformanceExcel').style.display = 'none';
 			}
-			var downloadSummaryTable = '/downloadSummaryTable';
-			var downloadActualTimeTable = '/downloadActualTimeTable';
-			function downDataExcel(){//数据导出表格 实时业绩表
+			downloadSummaryTable = '/downloadSummaryTable';
+			downloadActualTimeTable = '/downloadActualTimeTable';
+			downloadPerformancePD = '/downloadPerformancePD';
+			function downPerformanceExcel(downUrl){//每日业绩表
+				var spaymentDate = document.getElementById("spaymentDate").value;if(spaymentDate == ""){alert("开始时间不能为空！");return false;}
+				var epaymentDate = document.getElementById("epaymentDate").value;if(epaymentDate == ""){alert("结束时间不能为空！");return false;}
 				loading();
 				var success = function(data){
 					alert(data);
@@ -97,23 +99,8 @@
 					alert(error);
 				};
 				user = JSON.parse(localStorage.user);
-				ajaxDownExcel(downloadSummaryTable,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId},success,faild); 
-			}
-			function downPerformanceExcel(){//每日业绩表
-				var spaymentDate = document.getElementById("spaymentDate").value;
-				if(spaymentDate == ""){alert("开始时间不能为空！");return false;}
-				var epaymentDate = document.getElementById("epaymentDate").value;
-				if(epaymentDate == ""){alert("结束时间不能为空！");return false;}
-				loading();
-				var success = function(data){
-					alert(data);
-				};
-				var faild = function(error){
-					alert(error);
-				};
-				user = JSON.parse(localStorage.user);
-				ajaxDownExcel('/downloadPerformancePD',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,'startTime':spaymentDate,'endTime':epaymentDate},success,faild); 
-			}
+				ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,'startTime':spaymentDate,'endTime':epaymentDate},success,faild);
+			} 
 			function emptySeach(){ //清空搜索框
 				document.getElementById("Contract").value = '';
 				document.getElementById("Phone").value = '';

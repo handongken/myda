@@ -13,7 +13,7 @@ var $_GET = (function() { //获取上一页数据
 		return {};
 	}
 })();
-function downExcelExcel(downUrl){//导出表格
+function downExcelExcel(downUrl){//财务导出表格
 	var statementDateS = document.getElementById('statementDateS').value;
 	if(statementDateS ==''){alert('请输入搜索日期');return false;}
 	loading();
@@ -27,7 +27,7 @@ function downExcelExcel(downUrl){//导出表格
 	var user = JSON.parse(localStorage.user);
 	ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"startTime":statementDateS},success,faild); 
 } 
-function downDataExcel(downUrl){//数据导出表格
+function downDataExcel(downUrl){//数据导出表格 续投 赎回 提前赎回
 	loading();
 	var success = function(data){
 		alert(data);
@@ -83,14 +83,15 @@ function tabList(num,obj){ //tab选项
 	if(tabBoxOn) tabBoxOn.className = 'tabHide';
 	document.getElementById('tab'+num).className = 'tabHide tabShow';
 }
-function emptySeach(){ //清空搜索框
+function emptySeach(){ //清空搜索框 财务
 	document.getElementById('statementDateS').value = '';
 	document.getElementById('statementDateE').value = '';
 	loaddataList();
 }
-function seachLoad(){ //搜索条件
+function seachLoad(){ //搜索条件 财务
 	var statementDateS = document.getElementById('statementDateS').value;
 	var statementDateE = document.getElementById('statementDateE').value;
 	if(statementDateS == '' || statementDateE == ''){alert('搜索日期不能为空');return false;}
+	loading();
 	loaddataList();
 }

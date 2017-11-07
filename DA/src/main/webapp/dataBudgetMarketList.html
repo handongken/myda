@@ -10,7 +10,6 @@
 		<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
-		<script src="/js/base-loading.js"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -51,7 +50,7 @@
 							<label for="spaymentDate" class="time">划扣日期： <input type="text" class="Wdate" id="spaymentDate" name="spaymentDate" value="" placeholder="请选择开始时间" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'epaymentDate\')||\'2020-10-01\'}'})" required> - <input class="Wdate" id="epaymentDate"  placeholder="请选择结束时间" onClick="WdatePicker({minDate:'#F{$dp.$D(\'spaymentDate\')}',maxDate:'2020-10-01'})" required></label>
 						</div>
 						<div style="overflow: hidden;">
-							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
+							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="loading();emptySeach()" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loading();loaddataList()" class="btn seachBtn">搜索</a></p>
 						</div>
 					</div>
 					<div id="showHideBtn"><a href="javascript:;" class="clickSH" id="clickSh" onClick="showOverAll()"><i></i><span class="up">收起</span><span class="down">展开更多</span></a></div>
@@ -69,12 +68,14 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
+		<script src="/js/base-loading.js"></script>
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
+			loading();loaddataList();
 			var user = '';
-			loaddataList();
 			function downDataExcel(){//数据导出表格
+				loading();
 				var success = function(data){
 					alert(data);
 				};
@@ -119,7 +120,6 @@
 				var epaymentDate = document.getElementById("epaymentDate").value;
 				var success = function(data){
 					createTh(data);
-					
 				};
 				var faild = function(error){
 					alert(error);
@@ -142,13 +142,6 @@
 					thsHtml += '<th>' + tableTh[i] + '</th>';
 				}
 				$("#tableBox thead tr").html(thsHtml); //添加到table中 
-				/* if(user.typeId == "2"){
-					$("#tableBox thead tr th").eq('16').css('display','none');
-					$("#tableBox thead tr th").eq('16').css('display','none');
-					$("#tableBox thead tr th").eq('16').css('display','none');
-					$("#tableBox thead tr th").eq('16').css('display','none');
-					
-				} */ 
 				var tableTd = []; //保存td
 				if(data.length>0){
 					for(var i = 0; i<data.length; i++){
@@ -237,7 +230,8 @@
 					    	"next": "下一页",
 					    }
 					}
-			    } );
+			    });
+				delLoading();
 			}
 		</script>
 	</body>

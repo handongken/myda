@@ -25,26 +25,12 @@
 		<script src="/js/jquery-2.1.0.js"></script>
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
-		<script src="/js/base-loading1.js"></script>
+		<script src="/js/base-loading.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
+	 	<script src="/js/method.common.js"></script>
 		<script>
-			loading();
-			loaddataList();
+			loading();loaddataStatus1();
  			var downURL = '/downloadRedeemedTable';
-			function loaddataList(){//读取表格
-				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
-				var success = function(data){
-					createTh(data);
-				};
-				var faild = function(error){
-					alert(error);
-				};
-				//取user
-				var user = JSON.parse(localStorage.user);
-				/* var status = $_GET['status']; */
-				var status = 1;
-				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"status":status},success,faild); 
-			}
 			//读表格
 			function createTh(data){
 				var tableTh = [

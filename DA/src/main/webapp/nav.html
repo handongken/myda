@@ -1,17 +1,14 @@
 <meta charset="UTF-8">
-<div style="margin-top :150px;"></div>
+<div style="padding: 50px 0;text-align: center;font-size: 16px;color: #666;"><p>当前用户</p><span id="nameId"></span></div>
 <div class="sideUl">
 	<ul class="sidenav">
-		<!-- <li><a class="current" href="dataList.html"><span>首页</span></a></li> -->
-		<li id="userNavLi">
-			<a href="javascript:;"><i class="level"></i><span>用户管理</span></a>
+		<li id="userNavLi"><a href="javascript:;"><i class="level"></i><span>用户管理</span></a>
 			<ul class="sidebar-dropdown" id="sidenav">
 				<li><a href="userList.html">用户总表</a></li>
 				<li><a href="userEdit.html?userId=">新增用户</a></li>
 			</ul>
 		</li>
-		<li id="dataNavLi">
-			<a href="javascript:;"><i class="levela"></i><span>数据管理</span></a>
+		<li id="dataNavLi"><a href="javascript:;"><i class="levela"></i><span>数据管理</span></a>
 			<ul class="sidebar-dropdown" id="sidenav">
 				<li id="dataSNav"><a href="dataList.html">数据总表</a></li>
 				<li id="dataBudgetMarketSNav" style="display: none;"><a href="dataBudgetMarketList.html">数据总表</a></li>
@@ -23,8 +20,7 @@
 				<li id="continueFlgNav" ><a href="continueFlgList.html">续投业绩</a></li>
 			</ul>
 		</li>
-		<li id="financinglNavLi">
-			<a href="javascript:;"><i class="levelc"></i><span>财务管理</span></a>
+		<li id="financinglNavLi"><a href="javascript:;"><i class="levelc"></i><span>财务管理</span></a>
 			<ul class="sidebar-dropdown" id="sidenav">
 				<li><a href="financingList.html">付息凭证</a></li>
 				<li><a href="financingListA.html">发放凭证</a></li>
@@ -34,21 +30,17 @@
 				<li><a href="financingListE.html">银行短信回本</a></li>
 			</ul>
 		</li>
-		<li id="personnelNavLi">
-			<a href="javascript:;"><i class="levelb"></i><span>人力资源数据</span></a>
+		<li id="personnelNavLi"><a href="javascript:;"><i class="levelb"></i><span>人力资源数据</span></a>
 			<ul class="sidebar-dropdown" id="sidenav">
 				<li><a href="personnelList.html">人资总表</a></li>
 			</ul>
 		</li>
-		<li>
-			<a href="javascript:;"><i class="levelb"></i><span>修改密码</span></a>
+		<li><a href="javascript:;"><i class="levelb"></i><span>修改密码</span></a>
 			<ul class="sidebar-dropdown" id="sidenav">
 				<li><a href="passWordEdit.html">修改密码</a></li>
 			</ul>
 		</li>
-		<li>
-			<a href="javascript:;" class="exitBtn" onclick="exit()">退出系统</a>
-		</li>
+		<li><a href="javascript:;" class="exitBtn" onclick="exit()">退出系统</a></li>
 	</ul>
 </div>
 <script>
@@ -59,6 +51,7 @@
 	    } 
 	 });
 	var user = JSON.parse(localStorage.user);
+	document.getElementById('nameId').innerHTML = user.name; //用户名
 	if(user.typeId == '1' || user.typeId == 'system'){ //数据、超级管理
 		document.getElementById('addDataSNav').style.display = 'block';
 	}else{
