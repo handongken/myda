@@ -1,7 +1,6 @@
 package com.bqhx.yyb.constant;
 
 import java.math.BigDecimal;
-
 /**
  * 常量类
  *

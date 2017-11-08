@@ -2,7 +2,6 @@ package com.bqhx.yyb.constant;
 
 public final class ContinueFlgEnum {
 	enum cEnum {
-
 		CONTINUEFLG_0("0", "续投"), CONTINUEFLG_1("1", "非续投");
 		
 		private String enumKey;
