@@ -398,6 +398,37 @@ public class ExcelController {
 				getOutputStreamByCondition(excelName,res), list, ResultTypeVO.class, true);
 	}
 	
+	/**
+	 * 实时业绩表
+	 *
+	 */
+	@RequestMapping(value="/downloadActualTimeTable", method = RequestMethod.POST)
+	protected void downloadActualTimeTable(HttpServletResponse res,ConditionVO conditionVO, UserVO user) throws Exception {
+		
+	}
+	
+	/**
+	 * 每日业绩分表
+	 *
+	 */
+	@RequestMapping(value="/downloadPerformancePD", method = RequestMethod.POST)
+	protected void downloadPerformancePD(HttpServletResponse res,ConditionVO condition, UserVO user) throws Exception {
+		condition.setDelFlg(Constant.FLAG_ZERO);
+		String fileName = Constant.PERFORMANCEPDNAME + getDate() + ".xlsx";
+		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
+		String startTime = condition.getStartTime();
+		String endTime = condition.getEndTime();
+		String strTime = startTime + " 至 " + endTime;
+		List<ResultTypeVO> list = informationVOMapper.selectPerformancePDByCondition(condition);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("${title}", Constant.PERFORMANCEPDTITLE);
+		map.put("${date}", getDate());
+		map.put("${startTime}-${endTime}", strTime);
+		ExcelUtil.getInstance().exportObj2ExcelByTemplatePD(map, Constant.PERFORMANCEPDTEMPLATE,
+				getOutputStreamByCondition(excelName,res), list, ResultTypeVO.class, true,startTime,endTime);
+	}
+	
 	protected OutputStream getOutputStreamByCondition(String fileName,HttpServletResponse res){
 		res.setHeader("content-type", "application/octet-stream");
 	    res.setContentType("application/octet-stream");

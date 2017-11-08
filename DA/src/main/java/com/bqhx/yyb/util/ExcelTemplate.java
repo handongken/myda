@@ -3,6 +3,7 @@ package com.bqhx.yyb.util;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -122,6 +123,27 @@ public class ExcelTemplate {
 	}
 
 	/**
+	 * 从classpath路径下读取相应的模板文件
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public ExcelTemplate readTemplateByClasspathWithDate(String path) {
+		try {
+			if(path.contains("xlsx")){
+				wb = new XSSFWorkbook(TemplateFileUtil.getTemplates(path));
+			}else{
+				wb = new HSSFWorkbook(TemplateFileUtil.getTemplates(path));
+			}
+			initTemplateWithDate();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("读取模板不存在！请检查");
+		}
+		return this;
+	}
+	
+	/**
 	 * 将文件写到相应的路径下
 	 * 
 	 * @param filepath
@@ -199,10 +221,6 @@ public class ExcelTemplate {
 	public void createCellByCol(int colNum,String value) {
 		Cell c = curRow.createCell(colNum);
 		setCellStyle(c);
-//		CellStyle style = wb.createCellStyle();  
-		
-		
-//		c.setCellStyle(style);
 		c.setCellType(defaultType);
 		setCellValue(c, value);
 		specialColIndex++;
@@ -493,6 +511,110 @@ public class ExcelTemplate {
     }
 	
 	/**
+	 * 设置每日业绩表样式
+	 */
+	public void setPDStyle(Sheet sheet) {
+		CellStyle cs = wb.createCellStyle();
+		//日期行数
+		int dateRowNum = 2;
+		//规模行数
+		int moneyRowNum = 4;
+		String str = "";
+		//设置边框
+		cs.setBorderBottom(CellStyle.BORDER_THIN); //下边框    
+		cs.setBorderLeft(CellStyle.BORDER_THIN);//左边框    
+		cs.setBorderTop(CellStyle.BORDER_THIN);//上边框    
+		cs.setBorderRight(CellStyle.BORDER_THIN);//右边框 
+		//设置垂直居中
+		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
+		//设置字体
+		Font font = wb.createFont();
+		font.setFontName("宋体");
+		font.setFontHeightInPoints((short) 14);//设置字体大小
+		cs.setFont(font);
+		//sheet所有行
+		int rowNum = sheet.getLastRowNum();
+//		System.out.println("sheet所有行数: " + rowNum);
+		for(int i = 0; i < rowNum+1; i++){
+			Row row = sheet.getRow(i);
+			//遍历一行中的所有的单元格  
+		     for (Cell cell : row) {  
+		        if(cell.getCellType() != Cell.CELL_TYPE_STRING){
+		        	continue;
+		        }
+		        str = cell.getStringCellValue();
+		        //记录三种行数
+		        if(str.equals("日期")){
+		        	dateRowNum = i;
+		        	cell.setCellStyle(cs);
+		        }
+		        if(str.equals("星期")){
+		        	cell.setCellStyle(cs);
+		        }
+		        if(str.equals("规模")){
+		        	moneyRowNum = i;
+		        	cell.setCellStyle(cs);
+		        }
+		        //日期行样式
+		        if(i == dateRowNum){
+		        	//设置颜色
+		    		cs.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		    		cs.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		    		//设置字体
+		    		font.setBoldweight(Font.BOLDWEIGHT_BOLD);//粗体显示
+		    		cs.setFont(font);
+		    		cell.setCellStyle(cs);
+		        }//规模行样式
+		        else if(i == moneyRowNum){
+		        	if(!str.equals("规模") && !str.equals("")){
+		        		double moneyValue = Double.valueOf(str);
+		        		if(moneyValue > 0 && moneyValue < 100){
+		        			CellStyle cellStyle = wb.createCellStyle();
+		        			//设置边框
+		        			cellStyle.setBorderBottom(CellStyle.BORDER_THIN); //下边框    
+		        			cellStyle.setBorderLeft(CellStyle.BORDER_THIN);//左边框    
+		        			cellStyle.setBorderTop(CellStyle.BORDER_THIN);//上边框    
+		        			cellStyle.setBorderRight(CellStyle.BORDER_THIN);//右边框 
+		        			//设置垂直居中
+		        			cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		        			cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		        			//设置字体
+		        			Font font_m = wb.createFont();
+		        			font_m.setFontName("宋体");
+		        			font_m.setFontHeightInPoints((short) 14);//设置字体大小
+		        			cellStyle.setFont(font);
+			        		//设置颜色（黄）
+		        			cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		        			cellStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+				    		cell.setCellStyle(cellStyle);
+			        	}else if(moneyValue > 200){
+			        		CellStyle cellStyle = wb.createCellStyle();
+		        			//设置边框
+		        			cellStyle.setBorderBottom(CellStyle.BORDER_THIN); //下边框    
+		        			cellStyle.setBorderLeft(CellStyle.BORDER_THIN);//左边框    
+		        			cellStyle.setBorderTop(CellStyle.BORDER_THIN);//上边框    
+		        			cellStyle.setBorderRight(CellStyle.BORDER_THIN);//右边框 
+		        			//设置垂直居中
+		        			cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		        			cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		        			//设置字体
+		        			Font font_m = wb.createFont();
+		        			font_m.setFontName("宋体");
+		        			font_m.setFontHeightInPoints((short) 14);//设置字体大小
+		        			cellStyle.setFont(font);
+			        		//设置颜色（橘）
+		        			cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		        			cellStyle.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.getIndex()); 
+				    		cell.setCellStyle(cellStyle);
+			        	}
+		        	}
+		        }
+		     }
+		}
+    }
+	
+	/**
 	 * 从模板中获取的常量，通过Map中的值来替换$开头的值
 	 * 
 	 * @param datas
@@ -567,6 +689,49 @@ public class ExcelTemplate {
 		}
 	}
 
+	private void initTemplateWithDate() {
+		sheet = wb.getSheetAt(0);
+		initConfigDataWithDate();
+		lastRowIndex = sheet.getLastRowNum();
+	}
+	
+	/**
+	 * 初始化日期信息
+	 */
+	private void initConfigDataWithDate() {
+		boolean findData = false;
+		boolean findSer = false;
+		for (Row row : sheet) {
+			if (findData)
+				break;
+			for (Cell c : row) {
+				if (c.getCellType() != Cell.CELL_TYPE_STRING) {
+					continue;
+				}
+				String str = c.getStringCellValue().trim();
+				if (str.equals(SER_NUM)) {
+					serColIndex = c.getColumnIndex();// 0
+					findSer = true;
+				}
+				if (str.startsWith("日期")) {
+					initColIndex = c.getColumnIndex();
+					initRowIndex = row.getRowNum();
+					curColIndex = initColIndex;
+					curRowIndex = initRowIndex;
+					findData = true;
+					defaultStyle = c.getCellStyle();
+					defaultType = c.getCellType();
+					rowHeight = row.getHeightInPoints();
+					initStyles();
+					break;
+				}
+			}
+		}
+		if (!findSer) {
+			initSer();
+		}
+	}
+	
 	/**
 	 * 初始化序号位置
 	 */
@@ -650,6 +815,27 @@ public class ExcelTemplate {
 		return curDataRowNum;
 	}
 
+	/**
+	 * 从0开始根据模板中获取"日期"开头数据行数，默认是2
+	 * 
+	 * @return 当前数据行数
+	 */
+	public int getDataRowNumWithDate() {
+		int curDataRowNum = 2;
+		for (Row row : sheet) {
+			for (Cell c : row) {
+				if (c.getCellType() != Cell.CELL_TYPE_STRING) {
+					continue;
+				}
+				String str = c.getStringCellValue().trim();
+				if (str.startsWith("日期")) {
+					curDataRowNum = row.getRowNum();
+					return curDataRowNum;
+				}
+			}
+		}
+		return curDataRowNum;
+	}
 	
 	/**
 	 * 从模板中获取带公式的行

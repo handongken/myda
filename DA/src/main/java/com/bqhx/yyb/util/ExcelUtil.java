@@ -10,6 +10,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.Region;
 
+import com.bqhx.yyb.vo.ResultTypeVO;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -126,6 +128,15 @@ public class ExcelUtil {
 		return et;
 	}
 
+	/**
+	 * 人力与业绩
+	 * 
+	 * @param template
+	 * @param objs
+	 * @param clz
+	 * @param isClasspath
+	 * @return
+	 */
 	private ExcelTemplate handlerObj2ExcelHP(String template, List objs, Class clz, boolean isClasspath) {
 		ExcelTemplate et = ExcelTemplate.getInstance();
 		CellRangeUtil cellRangeUtil = new CellRangeUtil();
@@ -270,17 +281,20 @@ public class ExcelUtil {
 									et.createCell(rel);
 								}
 							} else if (methodReturnType.contains("BigDecimal")) {
-								double value = new BigDecimal(rel).doubleValue()/10000.0;
-								System.out.println("before: " + new BigDecimal(rel).doubleValue() + "after: " + value);
+								double value = new BigDecimal(rel).doubleValue() / 10000.0;
 								et.createCell(value);
 							} else if (methodReturnType.contains("Integer")) {
-								if(datas[i].equals("#{moneySum}")){
-									double value = Double.valueOf(rel)/10000.0;
-									/*DecimalFormat df = new DecimalFormat("####.####"); 
-									String str = df.format(value);
-									System.out.println("String: " + rel + " double: " + value + " string: " + str);*/
+								if (datas[i].equals("#{moneySum}")) {
+									double value = Double.valueOf(rel) / 10000.0;
+									/*
+									 * DecimalFormat df = new
+									 * DecimalFormat("####.####"); String str =
+									 * df.format(value);
+									 * System.out.println("String: " + rel +
+									 * " double: " + value + " string: " + str);
+									 */
 									et.createCell(value);
-								}else{
+								} else {
 									et.createCell(Integer.valueOf(rel));
 								}
 							}
@@ -398,6 +412,133 @@ public class ExcelUtil {
 		return et;
 	}
 
+	/**
+	 * 每日业绩
+	 * 
+	 * @param template
+	 * @param objs
+	 * @param clz
+	 * @param isClasspath
+	 * @return
+	 */
+	private ExcelTemplate handlerObj2ExcelPD(String template, List<ResultTypeVO> objs, Class clz, boolean isClasspath,
+			String startTime, String endTime) {
+		ExcelTemplate et = ExcelTemplate.getInstance();
+		// try {
+		// 获取模板
+		if (isClasspath) {
+			et.readTemplateByClasspathWithDate(template);
+		} else {
+			et.readTemplateByPath(template);
+		}
+		// 获取模板中要替换的数据行
+		int readLine = et.getDataRowNumWithDate();
+//		System.out.println("模板中要替换的数据行在： " + readLine + " 行");// 2
+		// 模板中data
+		String[] datas = getDatasByTemplate(et, clz, readLine);
+		// 时间段
+		List<String> dateList = DateUtil.getDatesBetweenTwoDate(startTime, endTime);
+		int divide = dateList.size() / 7;
+		int remainder = dateList.size() % 7;
+		// 输出值
+		// dateList.size()>=7
+		if (divide > 0) {
+			for (int j = 0; j < divide; j++) {
+				// 日期
+				et.createNewRow();
+				et.createCell("日期");
+				for (int i = 0; i < datas.length-1; i++) {
+					String date = dateList.get(j*7+i);
+					String day = DateUtil.getDayByTime(date);
+					et.createCell(day);
+				}
+				// 星期
+				et.createNewRow();
+				et.createCell("星期");
+				for (int i = 0; i < datas.length-1; i++) {
+					String date = dateList.get(j*7+i);
+					String week = DateUtil.getWeekByTime(date);
+					et.createCell(week);
+				}
+				// 规模
+				et.createNewRow();
+				et.createCell("规模");
+				for (int i = 0; i < datas.length-1; i++) {
+					String date = dateList.get(j*7+i);
+					createPerformance(et,objs,date);
+				}
+				et.createNewRow();
+			} // 有余数
+			if (remainder != 0) {
+				// 日期
+				et.createNewRow();
+				et.createCell("日期");
+				for (int i = 0; i < remainder; i++) {
+					String date = dateList.get(divide*7+i);
+					String day = DateUtil.getDayByTime(date);
+					et.createCell(day);
+				}
+				// 星期
+				et.createNewRow();
+				et.createCell("星期");
+				for (int i = 0; i < remainder; i++) {
+					String date = dateList.get(divide*7+i);
+					String week = DateUtil.getWeekByTime(date);
+					et.createCell(week);
+				}
+				// 规模
+				et.createNewRow();
+				et.createCell("规模");
+				for (int i = 0; i < remainder; i++){
+					String date = dateList.get(divide*7+i);
+						createPerformance(et,objs,date);
+				}
+			}
+		} // dateList.size()<7
+		else {
+			// 日期
+			et.createNewRow();
+			for (int i = 0; i < remainder; i++) {
+				String date = dateList.get(i);
+				String day = DateUtil.getDayByTime(date);
+				et.createCell(day);
+			}
+			// 星期
+			et.createNewRow();
+			et.createCell("星期");
+			for (int i = 0; i < remainder; i++) {
+				String date = dateList.get(i);
+				String week = DateUtil.getWeekByTime(date);
+				et.createCell(week);
+			}
+			// 规模
+			et.createNewRow();
+			et.createCell("规模");
+			for (int i = 0; i < remainder; i++){
+				String date = dateList.get(i);
+				createPerformance(et,objs,date);
+			}
+		}
+		Sheet sheetModel = et.getWb().getSheetAt(0);
+		et.setPDStyle(sheetModel);
+		return et;
+	}
+
+	/**
+	 * 每日业绩表创建规模
+	 */
+	private void createPerformance(ExcelTemplate et,List<ResultTypeVO> objs,String date){
+		String value = "";
+		for(ResultTypeVO obj : objs){
+			if (date.equals(obj.getPaymentDate())) {
+				double doubleValue = Double.valueOf(obj.getMoneySum())/10000.0;
+				value = String.valueOf(doubleValue);
+				break;
+			}
+		}
+		et.createCell(value);
+	}
+	
 	/**
 	 * 获取模板中大区的index
 	 */
@@ -581,10 +722,29 @@ public class ExcelUtil {
 		}
 	}
 
+	/**
+	 * 人力与业绩
+	 */
 	public void exportObj2ExcelByTemplateHP(Map<String, String> datas, String template, OutputStream os, List objs,
 			Class clz, boolean isClasspath) {
 		try {
 			ExcelTemplate et = handlerObj2ExcelHP(template, objs, clz, isClasspath);
+			et.replaceFinalData(datas);
+			et.wirteToStream(os);
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 每日业绩
+	 */
+	public void exportObj2ExcelByTemplatePD(Map<String, String> datas, String template, OutputStream os,
+			List<ResultTypeVO> objs, Class clz, boolean isClasspath, String startTime, String endTime) {
+		try {
+			ExcelTemplate et = handlerObj2ExcelPD(template, objs, clz, isClasspath, startTime, endTime);
 			et.replaceFinalData(datas);
 			et.wirteToStream(os);
 			os.flush();

@@ -18,9 +18,11 @@ public interface InformationVOMapper {
 	List<InformationVO> selectByCondition(ConditionVO condition);
 	
 	List<InformationVO> selectRePaymentByCondition(ConditionVO condition);
-	
+	/** 人力与业绩总表*/
 	List<ResultTypeVO> selectHumanAndPerformanceByCondition(ConditionVO condition);
-	Integer testSelect();
+	/** 每日业绩分表*/
+	List<ResultTypeVO> selectPerformancePDByCondition(ConditionVO condition);
+	
 	InformationVO selectByPrimaryKey(ConditionVO condition);
    
     List<InformationVO> selectAll();
