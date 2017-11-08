@@ -10,7 +10,6 @@ import com.bqhx.yyb.vo.ResultTypeVO;
 @Mapper
 public interface InformationVOMapper {
 	int deleteByPrimaryKey(InformationVO record);
-
 	int insert(InformationVO record);
 
 	int insertSelective(ConditionVO condition);

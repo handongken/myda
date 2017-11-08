@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.bqhx.yyb.vo.ConditionVO;
 import com.bqhx.yyb.vo.MovableCheckVO;
-
 @Mapper
 public interface MovableCheckMapper {
 

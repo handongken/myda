@@ -9,7 +9,6 @@ import com.bqhx.yyb.vo.UserVO;
 
 @Mapper
 public interface UserMapper {
-
 	List<UserVO> selectUserByCondition(UserConditionVO condition);
 
 	int insertUserSelective(UserConditionVO condition);
