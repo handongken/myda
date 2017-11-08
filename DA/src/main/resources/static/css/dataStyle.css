@@ -35,7 +35,7 @@ input::-webkit-inner-spin-button {
 .btn-box{width:120px;margin-left:299px}
 .btnBgCFF6666{background:#F66}
 .listTableBtn{color:#F66}
-.C66CC66{color:#6C6} 
+.C66CC66{color:#6C6}  
 /*------------------------------------------------改 dataTables 样式------------------------------------------------*/
 .dataTables_wrapper.no-footer .dataTables_scrollBody,table.dataTable thead td,table.dataTable thead th,table.dataTable.no-footer{border:none}
 .dataTables_wrapper .dataTables_paginate .paginate_button{box-sizing:border-box;display:inline-block;min-width:1.5em;padding:.2em .5em;margin-left:2px;text-align:center;text-decoration:none!important;cursor:pointer;color:#F66!important;border:1px solid transparent;border-radius:2px;box-shadow:none}
