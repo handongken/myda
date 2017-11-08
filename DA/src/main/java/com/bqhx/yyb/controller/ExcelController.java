@@ -39,7 +39,6 @@ import com.bqhx.yyb.constant.*;
 @RestController
 @RequestMapping("/")
 public class ExcelController {
-	
 	@Autowired
 	private InformationVOMapper informationVOMapper;
 	@Autowired

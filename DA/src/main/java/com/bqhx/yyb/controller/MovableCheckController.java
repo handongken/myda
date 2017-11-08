@@ -15,8 +15,7 @@ import com.bqhx.yyb.vo.MovableCheckVO;
 @RequestMapping("/")
 public class MovableCheckController {
 	@Autowired
-	private MovableCheckMapper movableCheckMapper;
-	
+	private MovableCheckMapper movableCheckMapper;	
 	/**
 	 * 根据条件查询还本信息
 	 * @param conditionVO

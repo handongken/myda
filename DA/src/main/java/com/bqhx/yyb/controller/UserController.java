@@ -20,7 +20,6 @@ import com.bqhx.yyb.vo.UserVO;
 @RestController
 @RequestMapping("/")
 public class UserController {
-
 	@Autowired
 	private UserMapper userMapper;
 

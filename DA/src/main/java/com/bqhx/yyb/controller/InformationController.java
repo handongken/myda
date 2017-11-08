@@ -29,7 +29,6 @@ import com.bqhx.yyb.vo.ResultTypeVO;
 import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.vo.UserVO;
 
-
 /**
  * @author Administrator InformationController
  */

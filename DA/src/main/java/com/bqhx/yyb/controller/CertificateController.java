@@ -15,7 +15,6 @@ import com.bqhx.yyb.vo.ConditionVO;
 public class CertificateController {
 	@Autowired
 	private CertificateMapper certificateMapper;
-	
 	@RequestMapping(value = "/selectCertificateByCondition", method = RequestMethod.POST)
 	List<CertificateVO> selectCertificateByCondition(ConditionVO conditionVO){
 		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);

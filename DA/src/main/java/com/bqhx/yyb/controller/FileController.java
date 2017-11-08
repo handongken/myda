@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @RestController
 @RequestMapping("/")
 public class FileController {
-
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	  public void testUploadFile(HttpServletRequest req,
 	      MultipartHttpServletRequest multiReq) {
