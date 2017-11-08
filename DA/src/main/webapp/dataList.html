@@ -10,7 +10,6 @@
 	 	<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
 		<link rel="stylesheet" href="/css/dataStyle.css" />
-		<!-- <script src="/js/base-loading.js"></script> -->
 	</head>
 	<body>
 		<div class="container">
@@ -98,7 +97,8 @@
 				var faild = function(error){
 					alert(error);
 				};
-				user = JSON.parse(localStorage.user);
+				 //user = JSON.parse(localStorage.user);
+				 //console.log(user.userId);
 				ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,'startTime':spaymentDate,'endTime':epaymentDate},success,faild);
 			} 
 			function emptySeach(){ //清空搜索框
@@ -243,8 +243,6 @@
 			        "processing": true,
                     'scrollX': true,
 					'iDisplayLength': 10,
-//					'scrollY': '350px',
-//					"scrollCollapse": true, 
 					'order': [],
 					"ordering": true,
 			        'columnDefs': [

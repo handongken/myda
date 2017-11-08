@@ -17,10 +17,10 @@
 			<div class="content">
 				<h2>用户列表区</h2>
 				<div class="SeachBox">
-					<label for="userId">userId： <input type="text" id="userId" name="userId" value="" placeholder="请输入userId" required></label>
+					<label for="userId">用户编号： <input type="text" id="userId" name="userId" value="" placeholder="请输入userId" required></label>
 					<label for="name">用户名： <input type="text" id="name" name="name" value="" placeholder="请输入用户名" required></label>
 					<div style="overflow: hidden;">
-						<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach();" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loaddataList()" class="btn seachBtn">搜索</a></p>
+						<p style="text-align: left;float: right;"><a href="javascript:;" onclick="loading();emptySeach();" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loading();loaddataList()" class="btn seachBtn">搜索</a></p>
 					</div>
 				</div>
 				<div id="tableHtml"> </div>
@@ -32,8 +32,7 @@
 		<script src="/js/base-loading.js"></script>
  		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
-			loading();
-			loaddataList();
+			loading();loaddataList();
 			var user = JSON.parse(localStorage.user);
 			function emptySeach(){
 				document.getElementById('userId').value = '';

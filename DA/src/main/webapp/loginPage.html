@@ -36,9 +36,9 @@
 			}  */
 			if(typeof(Storage) !== "undefined"){console.log('支持存储');}
 			function sbmBtn(){
-				var userName = document.getElementById("userName").value; //取出输入的
+				var userName = document.getElementById("userName").value; // 取出输入的
 				var userPass = document.getElementById("userPass").value; 
-				var success = function(data){ // data 是服务器返回的
+				var success = function(data){// data 是服务器返回的
 					console.log(data);
 					var user = {insDate:data.insDate,insUser:data.insUser,updDate:data.updDate,updUser:data.updUser,message:data.message,userId:data.userId,password:data.password,name:data.name,tel:data.tel,typeId:data.typeId,sid:data.sid,did:data.did,tid:data.tid,fid:data.fid,yid:data.yid,idCard:data.idCard};//存本地
 					localStorage.user = JSON.stringify(user);

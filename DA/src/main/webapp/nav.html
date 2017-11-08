@@ -51,15 +51,15 @@
 	    } 
 	 });
 	var user = JSON.parse(localStorage.user);
-	document.getElementById('nameId').innerHTML = user.name; //用户名
-	if(user.typeId == '1' || user.typeId == 'system'){ //数据、超级管理
+	document.getElementById('nameId').innerHTML = user.name; // 用户名
+	if(user.typeId == '1' || user.typeId == 'system'){ // 数据、超级管理
 		document.getElementById('addDataSNav').style.display = 'block';
 	}else{
 		document.getElementById('addDataSNav').style.display = 'none';
 	} 
-	if(user.typeId == '1'){ //数据专员
+	if(user.typeId == '1'){ // 数据专员
 		document.getElementById('personnelNavLi').style.display = 'none';
-	} else if(user.typeId == '2'){ //预算、市场专员
+	} else if(user.typeId == '2'){ // 预算、市场专员
 		document.getElementById('dataSNav').style.display = 'none';
 		document.getElementById('statusANav').style.display = 'none';
 		document.getElementById('statusBNav').style.display = 'none';

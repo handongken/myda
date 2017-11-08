@@ -31,8 +31,7 @@
 		<script>
 			loading();loaddataStatus1();
 			var downURL = '/downloadRedeemedTable';
-			//读表格
-			function createTh(data){
+			function createTh(data){//读表格
 				var tableTh = [
 					'合同编号','产品名称','出借金额','折标系数','绩效业绩',
 					'客户编号','客户经理','团队经理','营业部名称','营业部经理','分公司名称',
@@ -76,8 +75,6 @@
 			        "processing": true,
                     'scrollX': true,
 					'iDisplayLength': 10,
-//					'scrollY': '350px',
-//					"scrollCollapse": true, 
 					'order': [],
 					"ordering": true,
 			        'columnDefs': [

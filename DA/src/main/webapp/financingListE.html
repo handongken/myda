@@ -36,8 +36,7 @@
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
-			loading();
-			loaddataList();
+			loading();loaddataList();
 			var downURl = '/downloadSMSCapital';
 			function loaddataList(){//读取表格
 				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
@@ -49,8 +48,7 @@
 				var faild = function(error){
 					alert(error);
 				};
-				//取user
-				var user = JSON.parse(localStorage.user);
+				var user = JSON.parse(localStorage.user);//取user
 				ajaxPost('/selectSMSCapitalByCondition',{"startTime":statementDateS,"endTime":statementDateE},success,faild); 
 			}
 			function createTh(data){//读表格字段
@@ -85,8 +83,6 @@
 			        "processing": true,
                     'scrollX': true,
 					'iDisplayLength': 10,
-//					'scrollY': '350px',
-//					"scrollCollapse": true, 
 					'order': [],
 					"ordering": true,
 			        'columnDefs': [
