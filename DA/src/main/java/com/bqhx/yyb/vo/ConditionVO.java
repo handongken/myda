@@ -7,7 +7,6 @@ import com.bqhx.yyb.util.ExcelResources;
 
 
 public class ConditionVO extends BaseVO implements Serializable{
-
 	private static final long serialVersionUID = 1L;
 	/**合同编号  */ 
 	private String contract;

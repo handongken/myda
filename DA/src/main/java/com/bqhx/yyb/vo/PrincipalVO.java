@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * 还本信息
  */
-public class PrincipalVO implements Serializable{
-	 
+public class PrincipalVO implements Serializable{ 
 	private static final long serialVersionUID = 1L;
 	/**合同号  */ 
 	private String contract;

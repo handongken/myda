@@ -6,8 +6,7 @@ import java.math.BigDecimal;
 /**
  * 付息及发放凭证 
  */
-public class CertificateVO implements Serializable{
-	 
+public class CertificateVO implements Serializable{	 
 	private static final long serialVersionUID = 1L;
 	/**合同号  */ 
 	private String contract;

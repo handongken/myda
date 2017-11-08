@@ -4,16 +4,12 @@ import com.bqhx.yyb.util.ExcelResources;
 public class DataVO {
 	//网站名称
     private String name;
-
     //网址
     private String url;
-
     //用户名
     private String username;
-
     //密码
     private String password;
-
     //日均访问量
     private Integer readCount;
 
