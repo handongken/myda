@@ -12,7 +12,7 @@ function loaddataList(){//读取财务表格
 	};
 	var faild = function(error){
 		alert(error);
-	};
+	}; 
 	//取user 
 	var user = JSON.parse(localStorage.user);
 	ajaxPost('/selectCertificateByCondition',{'startTime':statementDateS,'endTime':statementDateE},success,faild);

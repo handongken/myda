@@ -12,7 +12,6 @@ function loading(){
 		document.body.appendChild(div);
 	}
 }
-
 function delLoading(){
 	var loadingMask = document.getElementById('loadingDiv');
 	//alert(loadingMask.innerHTML);

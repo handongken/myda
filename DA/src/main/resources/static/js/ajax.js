@@ -16,7 +16,7 @@ var ajaxPost = function(url,data,success,faild){
 		},
 		dataType:"json"
 	});
-}; 
+};  
 /*var ajaxDownExcel = function(url,data,success,faild){//表格下载
 	$.ajax({ 
 		url:url,
@@ -36,8 +36,6 @@ var ajaxPost = function(url,data,success,faild){
 		dataType:"text"
 	});
 };*/
-
-
 var ajaxDownExcel = function(url,params,success,faild){//表格下载
 	$.ajax({
 		type: "POST",

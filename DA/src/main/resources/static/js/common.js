@@ -12,7 +12,7 @@ var $_GET = (function() { //获取上一页数据
 	} else {
 		return {};
 	}
-})();
+})(); 
 function downExcelExcel(downUrl){//财务导出表格
 	var statementDateS = document.getElementById('statementDateS').value;
 	if(statementDateS ==''){alert('请输入搜索日期');return false;}

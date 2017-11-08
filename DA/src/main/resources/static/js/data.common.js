@@ -1,7 +1,7 @@
 queryData();
 var numReg = /^(0|[1-9][0-9]*)$/;
 var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
-var moneySum = 0;//计算值
+var moneySum = 0;//计算值 
 function selectOnchange(){ //选择产品 自动生成
 	if($("#type")[0].selectedIndex == 0){
 		$("#zbRatio").val('');
