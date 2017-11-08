@@ -1,5 +1,4 @@
 package com.bqhx.yyb.util;
-
 public class ExcelHeader implements Comparable<ExcelHeader>{
 	/**
      * excel的标题名称

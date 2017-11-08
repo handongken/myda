@@ -2,7 +2,6 @@ package com.bqhx.yyb.util;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
-
 public class CellRangeUtil {
 	/**
 	 * 大区合并
@@ -14,7 +13,7 @@ public class CellRangeUtil {
 			et.setRegionStyle(sheetModel, crangea_dq);
 		}
 	}
-	
+
 	/**
 	 * 大区小计合并
 	 */

@@ -9,9 +9,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.Region;
-
 import com.bqhx.yyb.vo.ResultTypeVO;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -498,6 +496,7 @@ public class ExcelUtil {
 		else {
 			// 日期
 			et.createNewRow();
+			et.createCell("日期");
 			for (int i = 0; i < remainder; i++) {
 				String date = dateList.get(i);
 				String day = DateUtil.getDayByTime(date);
