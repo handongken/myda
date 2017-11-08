@@ -1,9 +1,8 @@
-﻿/*if(!localStorage.user){
-	location.href = "login.html";
+﻿if(!localStorage.user){
+	location.href = "loginPage.html";
 }else{
 	loading();
-}*/
-
+}
 function loading(){
 	if(!document.getElementById('loadingDiv')){
 		var div = document.createElement("div");
