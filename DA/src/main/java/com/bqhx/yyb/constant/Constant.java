@@ -76,6 +76,14 @@ public final class Constant {
 	 */
 	public static final String HUMANANDPERFORMANCETEMPLATE = "humanAndPerformance-template.xlsx";
 	/**
+	 * actualTimetemplate
+	 */
+	public static final String ACTUALTIMETEMPLATE = "actualTime-template.xlsx";
+	/**
+	 * performancePDtemplate
+	 */
+	public static final String PERFORMANCEPDTEMPLATE = "performancePD-template.xlsx";
+	/**
 	 * 业绩日报总表标题
 	 */
 	public static final String SUMMARYTABLETITLE = "业绩日报总表";
@@ -167,6 +175,22 @@ public final class Constant {
 	 * 人力与业绩表标题
 	 */
 	public static final String HUMANANDPERFORMANCETITLE = "人力与业绩表";
+	/**
+	 * 实时业绩表名
+	 */
+	public static final String ACTUALTIMENAME = "惠信实时业绩表_";
+	/**
+	 * 实时业绩表标题
+	 */
+	public static final String ACTUALTIMETITLE = "实时业绩表";
+	/**
+	 * 每日业绩分表名
+	 */
+	public static final String PERFORMANCEPDNAME = "每日业绩分表_";
+	/**
+	 * 每日业绩分表标题
+	 */
+	public static final String PERFORMANCEPDTITLE = "规模业绩表";
 	/** 
 	 * 付方账号
 	 */ 
