@@ -55,3 +55,5 @@ table tr.sumTr{background: #F66 !important;}
 table tr.sumTr td{color: #fff !important; border-right: 1px solid #fff !important;}
 table tr.sumTr td:last-child{border: none !important;}
 .sumMoney{font-size: 16px;font-weight: bold;color: #FFC;margin: 20px auto;padding: 10px 0;background: #F66}
+
+.addHidden{display: none;}

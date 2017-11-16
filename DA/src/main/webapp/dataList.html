@@ -58,7 +58,7 @@
 				<div class="addExitBox">
 					<!-- <p id="addList" class="addList"><a href="">新增列表</a></p> -->
 					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel('downloadSummaryTable')">导出Excel表格</a></p>
-					<p id="downActualTimeExcel" class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel('downloadActualTimeTable')">实时业绩导出Excel表格</a></p>
+					<!-- <p id="downActualTimeExcel" class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel('downloadActualTimeTable')">实时业绩导出Excel表格</a></p>-->
 					<p id="downPerformanceExcel" class="downExcelBtn"><a href="javascript:;" onclick="downPerformanceExcel('downloadPerformancePD')">每日业绩导出Excel表格</a></p>
 					<!-- <p class="downLoadBtn"><a href="javascript:;" onclick="downloadExcel()">下载文件</a></p>
 					<p class="upLoadBtn"><a href="javascript:;" onclick="uploadExcel()">上传文件</a></p>
@@ -78,14 +78,14 @@
 			var user = '',spaymentDate = '',epaymentDate = '',downloadSummaryTable = '',downloadActualTimeTable = '',downloadPerformancePD = '';
 			user = JSON.parse(localStorage.user);
 			if(user.typeId == '1' || user.typeId == 'system'){
-				document.getElementById('downActualTimeExcel').style.display = 'block';
+				//document.getElementById('downActualTimeExcel').style.display = 'block';
 				document.getElementById('downPerformanceExcel').style.display = 'block';
 			}else{
-				document.getElementById('downActualTimeExcel').style.display = 'none';
+				//document.getElementById('downActualTimeExcel').style.display = 'none';
 				document.getElementById('downPerformanceExcel').style.display = 'none';
 			}
 			downloadSummaryTable = '/downloadSummaryTable';
-			downloadActualTimeTable = '/downloadActualTimeTable';
+			//downloadActualTimeTable = '/downloadActualTimeTable';
 			downloadPerformancePD = '/downloadPerformancePD';
 			function downPerformanceExcel(downUrl){//每日业绩表
 				var spaymentDate = document.getElementById("spaymentDate").value;if(spaymentDate == ""){alert("开始时间不能为空！");return false;}
@@ -167,7 +167,7 @@
 				}
 				$("#tableBox thead tr").html(thsHtml); //添加到table中 
 				
-				if(user.typeId == "3" || user.typeId == "4" || user.typeId == "5" || user.typeId == "6" || user.typeId == "7" || user.typeId == "8" || user.typeId == "9"){//理、团、营、分、大、事/机构数据
+				if(user.typeId == "3" || user.typeId == "4" || user.typeId == "5" || user.typeId == "6" || user.typeId == "7" || user.typeId == "8"){//理、团、营、分、大、事/机构数据  || user.typeId == "9"
 					$("#tableBox thead tr th").eq('57').css('display','none');
 				}
 				var tableTd = []; //保存td
@@ -327,8 +327,6 @@
 								}
 								if(user.typeId == "3" || user.typeId == "4" || user.typeId == "5" || user.typeId == "6" || user.typeId == "7" || user.typeId == "8"){//理财经理
 									$(td).css('display','none');
-								} else if(user.typeId == "9"){
-									$(td).css('display','none');
 								} else if(user.typeId == "10" || user.typeId =='11'|| user.typeId =='12' || user.typeId =='13'){
 									if(rowData[51] !='1'){
 										$(td).html('<a href="dataEdit.html?contract='+ cellData +'" class="listTableBtn C66CC66" style="margin : 0 20px;" title="编辑">编辑</a>');
@@ -336,6 +334,9 @@
 										$(td).html('');
 									}
 								}
+								/*  else if(user.typeId == "9"){
+									$(td).css('display','none');
+								}  */
 						    }
 						}
 					],

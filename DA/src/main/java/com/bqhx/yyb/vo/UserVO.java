@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class UserVO  extends BaseVO implements Serializable{
 	/**
-	 * */
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private String userId;
 	private String password;
@@ -12,13 +13,48 @@ public class UserVO  extends BaseVO implements Serializable{
 	private String tel;
 	private String typeId;
 	private String sid;
+	private String sname;
 	private String did;
+	private String dname;
 	private String fid;
+	private String fname;
 	private String yid;
+	private String yname;
 	private String tid;
+	private String tname;
 	private String idCard;
     private String delFlg;
 	
+	public String getSname() {
+		return sname;
+	}
+	public void setSname(String sname) {
+		this.sname = sname;
+	}
+	public String getDname() {
+		return dname;
+	}
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	public String getYname() {
+		return yname;
+	}
+	public void setYname(String yname) {
+		this.yname = yname;
+	}
+	public String getTname() {
+		return tname;
+	}
+	public void setTname(String tname) {
+		this.tname = tname;
+	}
 	public String getTypeId() {
 		return typeId;
 	}

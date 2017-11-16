@@ -17,11 +17,23 @@
 			<div class="content">
 				<h2>用户列表区</h2>
 				<div class="SeachBox">
-					<label for="userId">用户编号： <input type="text" id="userId" name="userId" value="" placeholder="请输入userId" required></label>
+					<label for="userId">用户编号： <input type="text" id="userId" name="userId" value="" placeholder="请输入用户编号" required></label>
 					<label for="name">用户名： <input type="text" id="name" name="name" value="" placeholder="请输入用户名" required></label>
-					<div style="overflow: hidden;">
+					<div style="overflow: hidden;">	
 						<p style="text-align: left;float: right;"><a href="javascript:;" onclick="loading();emptySeach();" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="loading();loaddataList()" class="btn seachBtn">搜索</a></p>
 					</div>
+				</div>
+				<div class="addExitBox">
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downloadCodingTemplate)">下载模板</a></p>
+					<!-- <p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(uploadExcelFile)">导入数据</a></p> -->
+					<!-- <div id="uploadForm">
+					    <input id="file" type="file" multiple="multiple"/>
+					    <p class="downExcelBtn"><button id="upload" type="button" value="导入数据">upload</button></p>
+					</div> -->
+					<form id="uploadForm" enctype="multipart/form-data">
+					    <input id="file" type="file" name="file"/>
+					    <p class="downExcelBtn"><button id="upload" type="button">导入数据</button></p>
+					</form>
 				</div>
 				<div id="tableHtml"> </div>
 			</div>
@@ -33,6 +45,18 @@
  		<script src="/js/jquery.dataTables.min.js"></script>
 		<script>
 			loading();loaddataList();
+			var downloadCodingTemplate = '/downloadCodingTemplate';
+			/* var uploadExcelFile = '/uploadExcelFile'; */
+			$.ajax({
+			    url: '/uploadExcelFile',
+			    type: 'POST',
+			    cache: false,
+			    data: new FormData($('#uploadForm')[0]),
+			    processData: false,
+			    contentType: false
+			}).done(function(res) {
+			}).fail(function(res) {});
+			
 			var user = JSON.parse(localStorage.user);
 			function emptySeach(){
 				document.getElementById('userId').value = '';
@@ -60,6 +84,7 @@
 				var userId = document.getElementById('userId').value;
 				var name = document.getElementById('name').value;
 				var success = function(data){
+					//console.log(data);
 					createTh(data);
 				};
 				var faild = function(error){
@@ -69,7 +94,7 @@
 			}
 			function createTh(data){//读表格字段
 				var tableTh = [//创建th内容
-					'userId','用户名','密码','电话','权限类型','sId','dId','fId','yId','tId','身份证号','加入时间','加入用户名称','更新时间','更新用户名称',''
+					'用户编号','用户名','密码','电话','权限类型','事业部名称','大区名称','分公司名称','营业部名称','团队名称','身份证号','加入时间','加入用户名称','更新时间','更新用户名称',''
 				]; 
 				var thsHtml = ' '; //为了保存th值
 				for(var i = 0; i < tableTh.length; i++){
@@ -85,11 +110,11 @@
 							data[i]['password'], //密码
 							data[i]['tel'], //电话
 							data[i]['typeId'],
-							data[i]['sid'],
-							data[i]['did'],
-							data[i]['fid'],
-							data[i]['yid'],
-							data[i]['tid'],
+							data[i]['sname'],
+							data[i]['dname'],
+							data[i]['fname'],
+							data[i]['yname'],
+							data[i]['tname'],
 							data[i]['idCard'], //身份证号
 							data[i]['insDate'],
 							data[i]['insUser'],

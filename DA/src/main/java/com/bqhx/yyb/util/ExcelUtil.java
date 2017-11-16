@@ -9,7 +9,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.Region;
+
 import com.bqhx.yyb.vo.ResultTypeVO;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -56,7 +58,7 @@ public class ExcelUtil {
 			// 获取模板中要替换的数据行
 			int readLine = et.getDataRowNum();
 			// System.out.println("模板中要替换的数据行在： " + readLine + " 行");//3
-			String[] datas = getDatasByTemplate(et, clz, readLine);
+			String[] datas = getDatasByTemplate(et, readLine);
 			// 输出值
 			for (int j = 0; j < objs.size(); j++) {
 				Object obj = objs.get(j);
@@ -148,7 +150,7 @@ public class ExcelUtil {
 			// 获取模板中要替换的数据行
 			int readLine = et.getDataRowNum();
 			// System.out.println("模板中要替换的数据行在： " + readLine + " 行");//3
-			String[] datas = getDatasByTemplate(et, clz, readLine);
+			String[] datas = getDatasByTemplate(et, readLine);
 			Sheet sheetModel = et.getWb().getSheetAt(0);
 			sheetModel.setForceFormulaRecalculation(true);
 			Integer ser = 1;
@@ -433,7 +435,7 @@ public class ExcelUtil {
 		int readLine = et.getDataRowNumWithDate();
 //		System.out.println("模板中要替换的数据行在： " + readLine + " 行");// 2
 		// 模板中data
-		String[] datas = getDatasByTemplate(et, clz, readLine);
+		String[] datas = getDatasByTemplate(et, readLine);
 		// 时间段
 		List<String> dateList = DateUtil.getDatesBetweenTwoDate(startTime, endTime);
 		int divide = dateList.size() / 7;
@@ -539,7 +541,7 @@ public class ExcelUtil {
 	}
 	
 	/**
-	 * 获取模板中大区的index
+	 * 获取模板中（大区）的index
 	 */
 	private int getDataIndex(String[] datas, String data) {
 		int index = 0;
@@ -577,6 +579,20 @@ public class ExcelUtil {
 		return syb;
 	}
 
+	/**
+	 * 下载模板
+	 */
+	public void downloadCodingTemplate(String template, OutputStream os, boolean isClasspath) {
+		try {
+			ExcelTemplate et = handleCodingTemplate(template, isClasspath);
+			et.wirteToStream(os);
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 
 	 * @param Excel工作簿对象
@@ -753,6 +769,19 @@ public class ExcelUtil {
 		}
 	}
 
+	/**
+	 * 下载模板
+	 */
+	public ExcelTemplate handleCodingTemplate(String template, boolean isClasspath) {
+		ExcelTemplate et = ExcelTemplate.getInstance();
+		if (isClasspath) {
+			et.readTemplateByClasspathWithDate(template);
+		} else {
+			et.readTemplateByPath(template);
+		}
+		return et;
+	}
+	
 	/**
 	 * 将对象转换为Excel并且导出，该方法是基于模板的导出，导出到一个具体的路径中
 	 * 
@@ -1046,7 +1075,7 @@ public class ExcelUtil {
 	}
 
 	@SuppressWarnings("deprecation")
-	private String[] getDatasByTemplate(ExcelTemplate et, Class clz, int readLine) {
+	private String[] getDatasByTemplate(ExcelTemplate et, int readLine) {
 		/*
 		 * if(version.equals("2007")){ XSSFSheet sheet =
 		 * (XSSFSheet)et.getWb().getSheetAt(0); XSSFRow row =

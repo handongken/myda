@@ -9,7 +9,6 @@ public class OrganizationCodeVO {
 	public String getOid() {
 		return oid;
 	}
-	
 	public void setOid(String oid) {
 		this.oid = oid;
 	}

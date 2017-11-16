@@ -10,19 +10,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bqhx.yyb.constant.Constant;
+import com.bqhx.yyb.dao.OrganizationMapper;
 import com.bqhx.yyb.dao.UserMapper;
 import com.bqhx.yyb.util.DateUtil;
+import com.bqhx.yyb.vo.DqVO;
+import com.bqhx.yyb.vo.FgsVO;
 import com.bqhx.yyb.vo.MessageVO;
+import com.bqhx.yyb.vo.OrganizationConditionVO;
+import com.bqhx.yyb.vo.OrganizationResultVO;
+import com.bqhx.yyb.vo.TdVO;
 import com.bqhx.yyb.vo.UserConditionVO;
 import com.bqhx.yyb.vo.UserVO;
+import com.bqhx.yyb.vo.YybVO;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/")
 public class UserController {
+
 	@Autowired
 	private UserMapper userMapper;
-
+	@Autowired
+	private OrganizationMapper organizationMapper;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	List<UserVO> home(UserConditionVO condition) {
 		List<UserVO> list = userMapper.selectUserByCondition(condition);
@@ -64,12 +74,12 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/updateUserByPrimaryKey", method = RequestMethod.POST)
-	MessageVO updateUserByPrimaryKey(UserConditionVO condition, UserVO user){
+	MessageVO updateUserByPrimaryKey(UserConditionVO condition){
 		String updDate = DateUtil.formatDate(new Date(), Constant.PATTERN_HMS);
 		if (updDate != null && updDate != "") {
 			condition.setUpdDate(updDate);
 		}
-		condition.setUpdUser(user.getName());
+		condition.setUpdUser(condition.getName());
 		int code = userMapper.updateUserByPrimaryKey(condition);
 		code = 1;
 		MessageVO messageVO = new MessageVO();
@@ -86,22 +96,28 @@ public class UserController {
 	@RequestMapping(value = "/deleteUserByPrimaryKey", method = RequestMethod.POST)
 	MessageVO deleteUserByPrimaryKey(UserConditionVO condition){
 		condition.setDelFlg(Constant.FLAG_ONE);
-		String code = updateUserByPrimaryKeySelective(condition);
+		MessageVO message = updateUserByPrimaryKeySelective(condition);
+		return message;
+	}
+	
+	@RequestMapping(value = "/updateUserByPrimaryKeySelective", method = RequestMethod.POST)
+	MessageVO updateUserByPrimaryKeySelective(UserConditionVO condition) {
+		String updDate = DateUtil.formatDate(new Date(), Constant.PATTERN_HMS);
+		if (updDate != null && updDate != "") {
+			condition.setUpdDate(updDate);
+		}
+		condition.setUpdUser(condition.getName());
+		int code = userMapper.updateUserByPrimaryKeySelective(condition);
+		code = 1;
 		MessageVO messageVO = new MessageVO();
-		if (code.equals("1")) {
-			messageVO.setCode(code);
+		if (code == 1) {
+			messageVO.setCode(Constant.FLAG_ONE);
 			messageVO.setMessage(Constant.SUCCESS);
 		} else {
 			messageVO.setCode(Constant.FLAG_ZERO);
 			messageVO.setMessage(Constant.FAILED);
 		}
 		return messageVO;
-	}
-	
-	@RequestMapping(value = "/updateUserByPrimaryKeySelective", method = RequestMethod.POST)
-	String updateUserByPrimaryKeySelective(UserConditionVO condition) {
-		userMapper.updateUserByPrimaryKeySelective(condition);
-		return Constant.FLAG_ONE;
 	}
 	
 	@RequestMapping(value = "/selectUserByCondition", method = RequestMethod.POST)
@@ -112,6 +128,67 @@ public class UserController {
 			String insDate = DateUtil.convertDate(userVO.getInsDate(), Constant.PATTERN_HMS);
 			if (insDate != null && insDate != "") {
 				userVO.setInsDate(insDate);
+			}
+			OrganizationConditionVO organizationConditionVO = new OrganizationConditionVO();
+			//syb
+			if(userVO.getSid() != null && !"".equals(userVO.getSid())){
+				organizationConditionVO.setD_ID(userVO.getSid());
+				OrganizationResultVO syb = organizationMapper.selectSybByCondition(organizationConditionVO);
+				if(syb != null){
+					userVO.setSname(syb.getDname());
+				}else{
+					userVO.setSname("");
+				}
+			}else{
+				userVO.setSname("");
+			}
+			//dq
+			if(userVO.getDid() != null && !"".equals(userVO.getDid())){
+				organizationConditionVO.setP_ID(userVO.getDid());
+				DqVO dq = organizationMapper.selectDqByCondition(organizationConditionVO);
+				if(dq != null){
+					userVO.setDname(dq.getPname());
+				}else{
+					userVO.setDname("");
+				}
+			}else{
+				userVO.setDname("");
+			}
+			//fgs
+			if(userVO.getFid() != null && !"".equals(userVO.getFid())){
+				organizationConditionVO.setF_ID(userVO.getFid());
+				FgsVO fgs = organizationMapper.selectFgsByCondition(organizationConditionVO);
+				if(fgs != null){
+					userVO.setFname(fgs.getFname());
+				}else{
+					userVO.setFname("");
+				}
+			}else{
+				userVO.setFname("");
+			}
+			//yyb
+			if(userVO.getYid() != null && !"".equals(userVO.getYid())){
+				organizationConditionVO.setY_ID(userVO.getYid());
+				YybVO yyb = organizationMapper.selectYybByCondition(organizationConditionVO);	
+				if(yyb != null){
+					userVO.setYname(yyb.getYname());
+				}else{
+					userVO.setYname("");
+				}
+			}else{
+				userVO.setYname("");
+			}
+			//td
+			if(userVO.getTid() != null && !"".equals(userVO.getTid())){
+				organizationConditionVO.setT_ID(userVO.getTid());
+				TdVO td = organizationMapper.selectTdByCondition(organizationConditionVO);
+				if(td != null){
+					userVO.setTname(td.getTname());
+				}else{
+					userVO.setTname("");
+				}
+			}else{
+				userVO.setTname("");
 			}
 		}
 		return userList;

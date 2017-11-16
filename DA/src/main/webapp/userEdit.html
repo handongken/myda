@@ -19,21 +19,48 @@
 				<form action="">
 					<div class="form-group">
 						<label for="userId">用户编号</label>
-			            <input type="text" id="userId" name="userId" value="" maxlength="10" placeholder="请输入用户编号" disabled/>
-			            <label for="sid">事业部编号</label>
-			            <input type="text" id="sid" name="sid" value="" maxlength="10" placeholder="请输入事业部编号" required/>
+			            <input type="text" id="userId" name="userId" value="" maxlength="10" placeholder="请输入用户编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" disabled/>
+			        	<label class="visibilityHidden"></label>
+			            <input type="text" required  class="visibilityHidden"/>
+			        </div>
+			        <div class="form-group" >
+			        	<label for="sid">事业部编号</label>
+			            <!-- <select id="sid" required><option value=''></option></select> -->
+			            <select id="sid" required></select>
+			           <!--  <input id="sid" required> -->
+			            <label for="sname">事业部名称</label>
+			            <input id="sname" required>
+			            <!-- <input type="text" id="sid" name="sid" value="" maxlength="10" placeholder="请输入事业部编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
 			        </div>
 			        <div class="form-group" >
 			            <label for="did">大区编号</label>
-			            <input type="text" id="did" name="did" value="" maxlength="10" placeholder="请输入大区编号" required/>
-			            <label for="fid">分公司编号</label>
-			            <input type="text" id="fid" name="fid" value="" maxlength="10" placeholder="请输入分公司编号" required/>
+			           <!--  <input id="did" required>-->
+			            <select id="did" required></select>
+			            <label for="dname">大区名称</label>
+			            <input id="dname" required>
+			            <!-- <input type="text" id="did" name="did" value="" maxlength="10" placeholder="请输入大区编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
 			        </div>
 			        <div class="form-group" >
-			            <label for="yid">营业部编号</label>
-	 		            <input type="text" id="yid" name="yid" value="" maxlength="10" placeholder="请输入营业部编号" required/>
-			            <label for="tid">团队编号</label>
-			            <input type="text" id="tid" name="tid" value="" maxlength="10" placeholder="请输入团队编号" required/>
+			        	<label for="fid">分公司编号</label>
+			            <!-- <input id="fid" required>-->
+			            <select id="fid" required>  </select>
+			        	<label for="fname">分公司名称</label>
+			            <input id="fname" required>
+			            <!-- <input type="text" id="fid" name="fid" value="" maxlength="10" placeholder="请输入分公司编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			        </div> 
+			        <div class="form-group" >
+			           <label for="yid">营业部编号</label>
+			           <!-- <input id="yid" required>  -->
+			            <select id="yid" required></select>
+			            <label for="yname">营业部名称</label>
+			            <input id="yname" required>
+	 		            <!-- <input type="text" id="yid" name="yid" value="" maxlength="10" placeholder="请输入营业部编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			        </div>
+			        <div class="form-group">
+			        	<label for="tid">团队编号</label>
+			            <input type="text" id="tid" name="tid" value="" maxlength="10" placeholder="请输入团队编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/>
+			            <label for="tname">团队名称</label>
+			            <input type="text" id="tname" name="tname" value="" maxlength="10" placeholder="请输入团队编号" required/>
 			        </div>
 			        <div id="passBox" class="form-group visibilityHidden">
 			        	<label for="password">密码</label>
@@ -45,7 +72,7 @@
 			            	<option value="2">预算、市场专员</option>
 			            	<option value="3">理财经理</option>
 			            	<option value="4">团队经理</option>
-			            	<option value="5">营业务经理</option>
+			            	<option value="5">营业部经理</option>
 			            	<option value="6">分公司经理</option>
 			            	<option value="7">大区经理</option>
 			            	<option value="8">事业部经理</option>
@@ -66,7 +93,7 @@
 			            <input type="text" required  class="visibilityHidden"/>
 			        </div>
 			        <a href="javascript:;" id="editBtn" class="btn btn-box fl" onclick="saveData()">保存</a>
-					<a href="javascript:;" id="addBtn" class="btn btn-box btnBgCFF6666 fl" style="display: none;" onclick="addData()">新增</a>
+					<!-- <a href="javascript:;" id="addBtn" class="btn btn-box btnBgCFF6666 fl" style="display: none;" onclick="addData()">新增</a> -->
 			    </form>
 			</div>
 		</div>
@@ -74,19 +101,124 @@
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
 		<script>
+			var frameWorkList = [];
+			querySelect();//事业部
+			$("#sid").change(function(){      
+				if($(this).val() == 0 || $(this).val() == '0001' || $(this).val() == '0002'){
+					document.getElementById('did').innerHTML = '<option value="">请选择</option>';
+					document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
+					document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
+				}else{
+					queryDq(); queryFid(); queryYid();
+				}
+			});
+			$("#did").change(function(){
+				if($(this).val() == 0){
+					document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
+					document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
+				}else{
+					queryFid(); queryYid();
+				}
+			});
+			$("#fid").change(function(){
+				if($(this).val() == 0){
+					document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
+				}else{
+					queryYid();
+				}
+			});
+			function querySelect(){ //查事业部
+				var success = function(data){
+					frameWorkList = data;
+					createSelect();
+				};
+				var faild = function(error){
+			 		alert(error);
+			 	};
+			 	var user = JSON.parse(localStorage.user);
+			 	ajaxPost('/selectOrganizationByCondition',{'typeId':user.typeId,'did':user.sid,'pid':user.did,'fid':user.fid,'yid':user.yid},success,faild);
+			}
+			function createSelect(){ //创建sid
+				var sid = '<option value="0" disabled>请选择</option>';
+				for(var i=0;i<frameWorkList.length;i++){
+					sid += '<option value="'+frameWorkList[i].did+'">'+ frameWorkList[i].dname +'[' + frameWorkList[i].did +']</option>';
+				}
+				document.getElementById('sid').innerHTML = sid;
+			}
+			function queryDq(){//查大区
+				var sidList = $("#sid").val();
+			     var success = function(data){
+			    	 console.log(data);
+			    	 frameWorkList = data;
+					 createDq();
+					};
+					var faild = function(error){
+				 		alert(error);
+				 	};
+				 	var user = JSON.parse(localStorage.user);
+			     ajaxPost('/getDqListByCondition',{'typeId':user.typeId,'did':user.sid,'pid':user.did,'fid':user.fid,'yid':user.yid},success,faild);
+			}
+			function createDq(){ //创建did
+				var pid = '<option value="0">请选择</option>';
+				for(var i=0;i<frameWorkList.length;i++){
+					pid += '<option value="'+frameWorkList[i].pid+'">'+ frameWorkList[i].pname +'[' + frameWorkList[i].pid +']</option>';
+				}
+				document.getElementById('did').innerHTML = pid;
+			}
+			function queryFid(){//查分公司
+				var didList = $("#did").val();
+			     var success = function(data){
+			    	 frameWorkList = data;
+			    		createFgs();
+					};
+					var faild = function(error){
+				 		alert(error);
+				 	};
+			     ajaxPost('/getFgsListByCondition',{'P_ID':didList},success,faild);
+			}
+			function createFgs(){ //创建fid
+				var fid = '<option value="0">请选择</option>';
+				for(var i=0;i<frameWorkList.length;i++){
+					fid += '<option value="'+frameWorkList[i].fid+'">'+ frameWorkList[i].fname +'[' + frameWorkList[i].fid +']</option>';
+				}
+				document.getElementById('fid').innerHTML = fid;
+			}
+			function queryYid(){//查营业部
+				var fidList = $("#fid").val();
+			     var success = function(data){
+			    	 frameWorkList = data;
+			    	 createYyb();
+					};
+					var faild = function(error){
+				 		alert(error);
+				 	};
+			     ajaxPost('/getYybListByCondition',{'F_ID':fidList},success,faild);
+			}
+			function createYyb(){ //创建yid
+				var yid = '<option value="0">请选择</option>';
+				for(var i=0;i<frameWorkList.length;i++){
+					yid += '<option value="'+frameWorkList[i].yid+'">'+ frameWorkList[i].yname +'[' + frameWorkList[i].yid +']</option>';
+				}
+				document.getElementById('yid').innerHTML = yid;
+			}
 			queryData();
 			var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
 			function queryData(){ //查询
 				var user = JSON.parse(localStorage.user);
 				var userId = $_GET['userId'];
 				var success = function(data){
-					if(userId !=''){
+					if(data!= ''){
 						document.getElementById("userId").value = data[0].userId; 
 						document.getElementById("sid").value = data[0].sid;
-						document.getElementById('did').value = data[0].did; 
-						document.getElementById('fid').value = data[0].fid; 
-						document.getElementById('yid').value = data[0].yid;
-						document.getElementById('tid').value = data[0].tid;
+						document.getElementById("sname").value = data[0].sname;
+						document.getElementById("did").value = data[0].did;
+						document.getElementById('dname').value = data[0].dname; 
+						document.getElementById("fid").value = data[0].fid;
+						document.getElementById('fname').value = data[0].fname; 
+						document.getElementById("yid").value = data[0].yid;
+						document.getElementById('yname').value = data[0].yname;
+						document.getElementById("tid").value = data[0].tid;
+						document.getElementById('tname').value = data[0].tname;
 						document.getElementById("name").value = data[0].name;
 						document.getElementById("password").value = data[0].password;
 						document.getElementById('tel').value = data[0].tel; 
@@ -96,7 +228,7 @@
 				var faild = function(error){
 					alert(error);
 				};
-				if(userId == ""){
+				/* if(userId == ""){
 					$("#userId").attr("disabled",false);
 					$("#addBtn").css("display","block");
 					$("#editBtn").css("display","none");
@@ -105,25 +237,29 @@
 					$("#addBtn").css("display","none");
 					$("#editBtn").css("display","block");
 					$("#passBox").attr('class','form-group visibilityHidden');
-				}
+				} */
 				ajaxPost('/selectUserByCondition',{"userId":userId},success,faild);
 			}
 			function saveData(){ //保存
 				var userId = document.getElementById("userId").value; 
-				var sid = document.getElementById('sid').value; 
-				var did = document.getElementById('did').value;
+				if(document.getElementById("sid")) var sid = document.getElementById("sid").value;
+				var sname = document.getElementById("sname").value;
+				if(document.getElementById("did")) var did = document.getElementById("did").value;
+				var dname = document.getElementById("dname").value;
+				if(document.getElementById("fid")) var fid = document.getElementById("fid").value;
 				var fid = document.getElementById('fid').value;
+				var fname = document.getElementById("fname").value;
+				if(document.getElementById("yid")) var yid = document.getElementById("yid").value;
 				var yid = document.getElementById('yid').value;
+				var yname = document.getElementById("yname").value;
+				if(document.getElementById("tid")) var tid = document.getElementById("tid").value;
 				var tid = document.getElementById('tid').value;
+				var tname = document.getElementById('tname').value;
 				var name = document.getElementById("name").value;
 				var password = document.getElementById("password").value;
 				var tel = document.getElementById('tel').value; 
+				if(tel == "" || !phoneReg.test(tel)){alert("请输入正确电话");return false;}
 				var idCard = document.getElementById('idCard').value;
-				/* var insDate = document.getElementById('insDate').value;
-				var type = document.getElementById('type').value;
-				var insUser = document.getElementById('insUser').value;
-				var updDate = document.getElementById('updDate').value;
-				var updUser = document.getElementById('updUser').value; */
 				var success = function(data){
 					if(data.code == 1){
 						alert('添加成功！');
@@ -136,36 +272,8 @@
 					alert(error);
 				};
 				var user = JSON.parse(localStorage.user);
-				ajaxPost('/updateUserByPrimaryKey',{"userId":userId,"sid":sid,"did":did,"fid":fid,"yid":yid,"tid":tid,
+				ajaxPost('/updateUserByPrimaryKeySelective',{"userId":userId,"sid":sid,"sname":sname,"did":did,"dname":dname,"fid":fid,"fname":fname,"yid":yid,"yname":yname,"tid":tid,"tname":tname,
 													"name":name,"password":password,"tel":tel,"idCard":idCard},success,faild);
-			}
-			function addData(){ //新增
-				var userId = document.getElementById("userId").value; 
-				var sid = document.getElementById('sid').value; 
-				var did = document.getElementById('did').value;
-				var fid = document.getElementById('fid').value;
-				var yid = document.getElementById('yid').value;
-				var tid = document.getElementById('tid').value;
-				var name = document.getElementById("name").value;
-				var password = document.getElementById("password").value;
-				var typeName = document.getElementById("typeName").value;
-				var tel = document.getElementById('tel').value; 
-				if(tel == "" || !phoneReg.test(tel)){alert("请输入正确紧急联系电话");return false;}
-				var idCard = document.getElementById('idCard').value;	
-				var success = function(data){
-					if(data.code == 1){
-						alert('提交成功！');
-						window.location.href = "userList.html";
-					}else{
-						alert('请重新输入正确代码！');
-					}
-				};
-				var faild = function(error){
-					alert(error);
-				};
-				var user = JSON.parse(localStorage.user);
-				ajaxPost('/insertUserSelective',{"userId":userId,"sid":sid,"did":did,"fid":fid,"yid":yid,"tid":tid,
-												 "name":name,"password":password,"typeId":typeName,"tel":tel,"idCard":idCard},success,faild);
 			}
 		</script>
 	</body>

@@ -1,5 +1,5 @@
-queryData();
-var numReg = /^(0|[1-9][0-9]*)$/;
+//var numReg = /^(0|[1-9][0-9]*)$/;
+var numReg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
 var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
 var moneySum = 0;//计算值 
 function selectOnchange(){ //选择产品 自动生成
@@ -191,11 +191,10 @@ function saveData(){ //保存
 	var zbRatio = document.getElementById('zbRatio').value; //折标系数
 	if(zbRatio == ""){alert("折标系数不能为空");return false;}
 	var money = document.getElementById('money').value;//出借金额
-	if(money == "" || !numReg.test(money)){alert("请输入正确出借金额(不能输入空格,只能输入数字)");return false;}
+	if(money == ""){alert("请输入正确出借金额");return false;}
 	var jxAchievement = document.getElementById('jxAchievement').value;//绩效业绩 = 出借金额 * 折标系数
-	if(jxAchievement == ""){alert("请输入正确绩效业绩(不能输入空格,只能输入数字)");return false;}
 	var lcId = document.getElementById('lcId').value; //客户编号
-	if(lcId == "" || !numReg.test(lcId)){alert("请输入正确客户编号(不能输入空格,只能输入数字)");return false;}
+	if(lcId == ""){alert("请输入正确客户编号");return false;}
 	var lcManager = document.getElementById('lcManager').value; //客户经理
 	if(lcManager == ""){alert("请输入正确客户经理");return false;}
 	var tManager = document.getElementById('tManager').value; //团队经理
@@ -300,7 +299,8 @@ function saveData(){ //保存
 		alert(error);
 	};
 	var user = JSON.parse(localStorage.user);
-	var contract = $_GET['contract'];
+	//var contract = $_GET['contract'];,"contract":contract
+	//console.log(contract);
 	ajaxPost('/updateByPrimaryKey',{"name":user.name,"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
 									"lcId":lcId,"lcManager":lcManager,"tmanager":tManager,"yyb":yyb,"yybManager":yybManager,
 									"fgs":fgs,"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,
@@ -313,7 +313,7 @@ function saveData(){ //保存
 									 "branch":branch,"cardName":cardName,"cardNo":cardNo,"cardProvince":cardProvince,"cardCity":cardCity,
 									 "cardLine":cardLine,"inBank":inBank,"inBranch":inBranch,"inCardName":inCardName,"inCardNo":inCardNo,
 									 "inCardProvince":inCardProvince,"inCardCity":inCardCity,"insUser":insUser,"insDate":insDate,/*"managerStatus":managerStatus,"managerNo":managerNo,"remark":remark,*/
-									 "updUser":updUser,"updDate":updDate,"contract":contract},success,faild);
+									 "updUser":updUser,"updDate":updDate},success,faild);
 }
 function queryData(){ //查询
 	var user = JSON.parse(localStorage.user);
@@ -388,31 +388,31 @@ function queryData(){ //查询
 	var faild = function(error){
 		alert(error);
 	};
-	if(contract == ""){
+	/*if(contract == ""){
 		$("#contract").attr("disabled",false);
 		$("#addBtn").css("display","block");
 		$("#editBtn").css("display","none");
-		/*$(".addHidden").css("display","none");*/
+		$(".addHidden").css("display","none");
 	}else{
 		$("#addBtn").css("display","none");
 		$("#editBtn").css("display","block");
-		/*$(".addHidden").css("display","block");*/
-	}
+		$(".addHidden").css("display","block");
+	}*/
 	ajaxPost('/selectByCondition',{"typeId":user.typeId,"contract":contract},success,faild);
 }
 function addData(){ //新增
 	var contract = document.getElementById('contract').value;//合同编号 
-	if(contract == ""|| !numReg.test(contract)){alert("请输入正确合同编号(不能输入空格,只能输入数字)");return false;}
+	if(contract == ""){alert("请输入正确合同编号");return false;}
 	var type = document.getElementById("type").value; //产品名称
 	if(type == ""){alert("请选择正确产品名称");return false;}
 	var money = document.getElementById('money').value;//出借金额
-	if(money == "" || !numReg.test(money)){alert("请输入正确出借金额((不能输入空格,只能输入数字))");return false;}
+	if(money == "" || numReg.test(money)){alert("请输入正确出借金额");return false;}
 	var zbRatio = document.getElementById('zbRatio').value; //折标系数
 	if(zbRatio == ""){alert("请输入正确折标系数");return false;}
 	var jxAchievement = document.getElementById('jxAchievement').value;//绩效业绩 = 出借金额 * 折标系数
-	if(jxAchievement == ""){alert("请输入正确绩效业绩((不能输入空格,只能输入数字))");return false;}
+	if(jxAchievement == ""){alert("请输入正确绩效业绩");return false;}
 	var lcId = document.getElementById('lcId').value; //客户编号
-	if(lcId == "" || !numReg.test(lcId)){alert("请输入正确客户编号(不能输入空格,只能输入数字)");return false;}
+	if(lcId == ""){alert("请输入正确客户编号");return false;}
 	var lcManager = document.getElementById('lcManager').value; //客户经理
 	if(lcManager == ""){alert("请输入正确客户经理");return false;}
 	var tManager = document.getElementById('tManager').value; //团队经理

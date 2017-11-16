@@ -17,7 +17,7 @@
 				<form action="">
 					<div class="form-group"> 
 						<label for="contract">合同编号</label>
-			            <input type="text" id="contract" name="contract" value="" maxlength="7" placeholder="请输入合同编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  disabled />
+			            <input type="text" id="contract" name="contract" value="" maxlength="7" placeholder="请输入合同编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/>
 			            <label class="visibilityHidden"></label>
 			            <input type="text" required  class="visibilityHidden"/>
 			        </div>
@@ -66,34 +66,34 @@
 			            <input type="text" required  class="visibilityHidden"/>
 					</div>
 			        <div class="form-group">
-			        	<label for="lcManager">客户经理<!-- 原理财经理 --></label>
-			            <input type="text" id="lcManager" value="" name="lcManager" placeholder="请输入客户经理" required />
-			            <label for="tManager">团队经理</label>
-			            <input type="text" id="tManager" value="" name="tManager" placeholder="请输入团队经理" required />
+			            <label for="sid">事业部</label>
+			            <select id="sid" required><option value=''>请选择</option></select>
+			            <label for="sybManager">事业部经理</label>
+			            <input type="text" id="sybManager" value="" name="sybManager" placeholder="请输入事业部经理" disabled />
 			        </div>
 			        <div class="form-group">
-			            <label for="yyb">营业部</label>
-			            <input type="text" id="yyb" value="" name="yyb" placeholder="请输入营业部" required />
-			            <label for="yybManager">营业部经理</label>
-			            <input type="text" id="yybManager" value="" name="yybManager" placeholder="请输入营业部经理" required />
-			        </div>
-			        <div class="form-group">
-			            <label for="fgs">分公司</label>
-			            <input type="text" id="fgs" value="" name="fgs" placeholder="请输入分公司" required />
-			            <label for="fgsManager">分公司经理</label>
-			            <input type="text" id="fgsManager" value="" name="fgsManager" placeholder="请输入分公司经理" required />
-			        </div>
-			        <div class="form-group">
-			            <label for="dq">大区</label>
-			            <input type="text" id="dq" value=""  name="dq" placeholder="请输入大区" required />
+			            <label for="did">大区</label>
+			             <select id="did" required><option value=''>请选择</option></select>
 			            <label for="dqManager">大区经理</label>
 			            <input type="text" id="dqManager" value=""  name="dqManager" placeholder="请输入大区经理" required />
 			        </div>
 			        <div class="form-group">
-			            <label for="syb">事业部</label>
-			            <input type="text" id="syb" value="" name="syb" placeholder="请输入事业部" required />
-			            <label for="sybManager">事业部经理</label>
-			            <input type="text" id="sybManager" value="" name="sybManager" placeholder="请输入事业部经理" required />
+			            <label for="fid">分公司</label>
+			            <select id="fid" required><option value=''>请选择</option></select>
+			            <label for="fgsManager">分公司经理</label>
+			            <input type="text" id="fgsManager" value="" name="fgsManager" placeholder="请输入分公司经理" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="yid">营业部</label>
+			            <select id="yid" required><option value=''>请选择</option></select>
+			            <label for="yybManager">营业部经理</label>
+			            <input type="text" id="yybManager" value="" name="yybManager" placeholder="请输入营业部经理" required />
+			        </div>
+			        <div class="form-group">
+			        	<label for="lcManager">客户经理<!-- 原理财经理 --></label>
+			            <input type="text" id="lcManager" value="" name="lcManager" placeholder="请输入客户经理" required />
+			            <label for="tManager">团队经理</label>
+			            <input type="text" id="tManager" value="" name="tManager" placeholder="请输入团队经理" required />
 			        </div>
 			        <div class="marB"> </div>
 			        <div class="form-group">
@@ -237,14 +237,14 @@
 			            <label class="visibilityHidden"></label>
 			            <input type="text" required  class="visibilityHidden"/>
 			        </div>
-			        <div class="marB"></div>
-			        <div class="form-group">
+			        <div class="marB addHidden"></div>
+			        <div class="form-group addHidden">
 			            <label for="insUser">插入更新者</label>
 			            <input type="text" id="insUser" value="" name="insUser" placeholder="请输入插入更新者" required disabled/>	
 			            <label for="insDate">插入更新时间</label>
 			            <input type="text" id="insDate" value="" name="insDate" placeholder="请输入插入更新时间" required disabled/>
 			        </div>
-			        <div class="form-group">
+			        <div class="form-group addHidden">
 			            <label for="updUser">更新者</label>
 			            <input type="text" id="updUser" value="" name="updUser" placeholder="请输入更新者" required disabled/>	
 			            <label for="updDate">更新时间</label>
@@ -270,8 +270,8 @@
 				            <input type="text"  required  class="visibilityHidden"/>
 				        </div>
 			        </div>
-					<a href="javascript:;" id="editBtn" class="btn btn-box fl" onclick="saveData()">保存</a>
-					<!-- <a href="javascript:;" id="addBtn" class="btn btn-box btnBgCFF6666 fl" style="display: none;" onclick="addData();">新增</a> -->
+					<!-- <a href="javascript:;" id="editBtn" class="btn btn-box fl" style="display: none;" onclick="saveData()">保存</a> -->
+					<a href="javascript:;" id="addBtn" class="btn btn-box btnBgCFF6666 fl" onclick="addData();">新增</a>
 				</form>
 			</div>
 		</div>
@@ -280,6 +280,111 @@
 		<script src="/js/common.js"></script>
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/data.common.js"></script>
-		<script>queryData();console.log($("#dataSNav a"));$("#dataSNav a").addClass("currentA");</script>
+		<script>
+			var frameWorkList = [];
+			querySelect(); //事业部
+			$("#sid").change(function(){      
+				if($(this).val() == 0 || $(this).val() == '0001' || $(this).val() == '0002'){
+					document.getElementById('did').innerHTML = '<option value="">请选择</option>';
+					document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
+					document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
+				}else{
+					queryDq(); queryFid(); queryYid();
+				}
+			});
+			$("#did").change(function(){
+				if($(this).val() == 0){
+					document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
+					document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
+				}else{
+					queryFid(); queryYid();
+				}
+			});
+			$("#fid").change(function(){
+				if($(this).val() == 0){
+					document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
+				}else{
+					queryYid();
+				}
+			});
+			function querySelect(){ //查事业部
+				var success = function(data){
+					frameWorkList = data;
+					console.log(frameWorkList[0].dmanager);
+					createSelect();
+					document.getElementById('sybManager').value = frameWorkList[0].dmanager;
+				};
+				var faild = function(error){
+			 		alert(error);
+			 	};
+			 	var user = JSON.parse(localStorage.user);
+			 	if(user.typeId == '1' || user.typeId == 'system'){
+			 		
+			 	}
+			 	ajaxPost('/selectOrganizationByCondition',{'typeId':user.typeId,'sid':user.sid,'did':user.did,'fid':user.fid,'yid':user.yid},success,faild);
+			}
+			function createSelect(){ //创建sid
+				var sid = '<option value="0">请选择</option>';
+				for(var i=0;i<frameWorkList.length;i++){
+					sid += '<option value="'+frameWorkList[i].did+'">'+ frameWorkList[i].dname +'[' + frameWorkList[i].did +']</option>';
+				}
+				document.getElementById('sid').innerHTML = sid;
+				
+			}
+			function queryDq(){//查大区
+				var sidList = $("#sid").val();
+			     var success = function(data){
+			    	 frameWorkList = data;
+					 createDq();
+					};
+					var faild = function(error){
+				 		alert(error);
+				 	};
+			     ajaxPost('/getDqListByCondition',{'D_ID':sidList},success,faild);
+			}
+			function createDq(){ //创建did
+				var pid = '<option value="0">请选择</option>';
+				for(var i=0;i<frameWorkList.length;i++){
+					pid += '<option value="'+frameWorkList[i].pid+'">'+ frameWorkList[i].pname +'[' + frameWorkList[i].pid +']</option>';
+				}
+				document.getElementById('did').innerHTML = pid;
+			}
+			function queryFid(){//查分公司
+				var didList = $("#did").val();
+			     var success = function(data){
+			    	 frameWorkList = data;
+			    		createFgs();
+					};
+					var faild = function(error){
+				 		alert(error);
+				 	};
+			     ajaxPost('/getFgsListByCondition',{'P_ID':didList},success,faild);
+			}
+			function createFgs(){ //创建fid
+				var fid = '<option value="0">请选择</option>';
+				for(var i=0;i<frameWorkList.length;i++){
+					fid += '<option value="'+frameWorkList[i].fid+'">'+ frameWorkList[i].fname +'[' + frameWorkList[i].fid +']</option>';
+				}
+				document.getElementById('fid').innerHTML = fid;
+			}
+			function queryYid(){//查营业部
+				var fidList = $("#fid").val();
+			     var success = function(data){
+			    	 frameWorkList = data;
+			    	 createYyb();
+					};
+					var faild = function(error){
+				 		alert(error);
+				 	};
+			     ajaxPost('/getYybListByCondition',{'F_ID':fidList},success,faild);
+			}
+			function createYyb(){ //创建yid
+				var yid = '<option value="0">请选择</option>';
+				for(var i=0;i<frameWorkList.length;i++){
+					yid += '<option value="'+frameWorkList[i].yid+'">'+ frameWorkList[i].yname +'[' + frameWorkList[i].yid +']</option>';
+				}
+				document.getElementById('yid').innerHTML = yid;
+			}
+		</script>
 	</body>
 </html>

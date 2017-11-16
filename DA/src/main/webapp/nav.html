@@ -5,14 +5,14 @@
 		<li id="userNavLi"><a href="javascript:;"><i class="level"></i><span>用户管理</span></a>
 			<ul class="sidebar-dropdown" id="sidenav">
 				<li><a href="userList.html">用户总表</a></li>
-				<li><a href="userEdit.html?userId=">新增用户</a></li>
+				<li><a href="userAdd.html">新增用户</a></li>
 			</ul>
 		</li>
 		<li id="dataNavLi"><a href="javascript:;"><i class="levela"></i><span>数据管理</span></a>
 			<ul class="sidebar-dropdown" id="sidenav">
 				<li id="dataSNav"><a href="dataList.html">数据总表</a></li>
 				<li id="dataBudgetMarketSNav" style="display: none;"><a href="dataBudgetMarketList.html">数据总表</a></li>
-				<li id="addDataSNav"><a href="dataEdit.html?contract=">新增数据</a></li>
+				<li id="addDataSNav"><a href="dataAdd.html" onclick="addQuerySelect()">新增数据</a></li>
 				<li id="statusANav"><a href="statusListA.html">已 &nbsp;赎 &nbsp;回</a></li>
 				<li id="statusABudgetMarketSNav" style="display: none;"><a href="statusBudgetMarketListA.html">已 &nbsp;赎 &nbsp;回</a></li>
 				<li id="statusBNav"><a href="statusListB.html">提前赎回</a></li>
@@ -52,7 +52,7 @@
 	 });
 	var user = JSON.parse(localStorage.user);
 	document.getElementById('nameId').innerHTML = user.name; // 用户名
-	if(user.typeId == '1' || user.typeId == 'system'){ // 数据、超级管理
+	if(user.typeId == '1' || user.typeId == 'system' || user.typeId == '10' ||  user.typeId == '11' ||  user.typeId == '12' ||  user.typeId == '13'){ // 数据、超级管理
 		document.getElementById('addDataSNav').style.display = 'block';
 	}else{
 		document.getElementById('addDataSNav').style.display = 'none';
@@ -74,7 +74,7 @@
 		document.getElementById('userNavLi').style.display = 'none';
 		document.getElementById('personnelNavLi').style.display = 'none';
 		document.getElementById('financinglNavLi').style.display = 'none';
-	} else if(user.typeId == '9' ||  user.typeId == '10' ||  user.typeId == '11' ||  user.typeId == '12' ||  user.typeId == '13'){ //机构管理人员
+	} else if(user.typeId == '10' ||  user.typeId == '11' ||  user.typeId == '12' ||  user.typeId == '13'){ //机构管理人员    user.typeId == '9' ||  
 		document.getElementById('userNavLi').style.display = 'none';
 		document.getElementById('personnelNavLi').style.display = 'none';
 		document.getElementById('financinglNavLi').style.display = 'none';

@@ -1,0 +1,113 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>用户编辑区</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="/css/dataStyle.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div id="nav" class="sidebar"> </div>
+			<div class="content">
+				<h2>用户编辑区</h2>
+				<form action="">
+					<div class="form-group">
+						<label for="userId">用户编号</label>
+			            <input type="text" id="userId" name="userId" value="" maxlength="10" placeholder="请输入用户编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/>
+			            <label for="tid">团队编号</label>
+			            <input type="text" id="tid" name="tid" value="" maxlength="5" placeholder="请输入团队编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/>
+			        </div>
+			        <div class="form-group" >
+			        	<label for="sid">事业部编号</label>
+			            <select id="sid" required><option value=''>请选择</option></select>
+			            <!-- <input type="text" id="sid" name="sid" value="" maxlength="10" placeholder="请输入事业部编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			            <label for="did">大区编号</label>
+			            <select id="did" required><option value=''>请选择</option></select>
+			            <!-- <input type="text" id="did" name="did" value="" maxlength="10" placeholder="请输入大区编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			        </div>
+			        <div class="form-group" >
+			        	<label for="fid">分公司编号</label>
+			            <select id="fid"required><option value=''>请选择</option></select>
+			            <!-- <input type="text" id="fid" name="fid" value="" maxlength="10" placeholder="请输入分公司编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			            <label for="yid">营业部编号</label>
+			            <select id="yid" required><option value=''>请选择</option></select>
+	 		            <!-- <input type="text" id="yid" name="yid" value="" maxlength="10" placeholder="请输入营业部编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			        </div>
+			        <div id="passBox" class="form-group">
+			        	<label for="password">密码</label>
+			            <input type="text" id="password" name="password" maxlength="20" placeholder="请输入密码" required/>
+			            <label for="typeName">权限类型</label>
+			        	<select id="typeName" required>
+			            	<option value="">请选择权限类型</option>
+			            	<option value="1">数据专员</option>
+			            	<option value="2">预算、市场专员</option>
+			            	<option value="3">理财经理</option>
+			            	<option value="4">团队经理</option>
+			            	<option value="5">营业部经理</option>
+			            	<option value="6">分公司经理</option>
+			            	<option value="7">大区经理</option>
+			            	<option value="8">事业部经理</option>
+			            	<option value="9">机构管理人员</option>
+			            	<option value="system">超级管理员</option>
+			            </select>
+			        </div>
+					<div class="form-group" >
+						<label for="name">用户名</label>
+			            <input type="text" id="name" name="name" value="" maxlength="10" placeholder="请输入用户名" required/>
+			            <label for="tel">电 &nbsp; &nbsp; &nbsp;话</label>
+			            <input type="text" id="tel" name="tel" value="" maxlength="13" placeholder="请输入电话" required/>
+			        </div>
+			        <div class="form-group">
+			            <label for="idCard">身份证号</label>
+			            <input type="text" id="idCard" name="idCard" value="" maxlength="18" placeholder="请输入身份证号" required/>
+			            <label class="visibilityHidden"></label>
+			            <input type="text" required  class="visibilityHidden"/>
+			        </div>
+			       <!--  <a href="javascript:;" id="editBtn" class="btn btn-box fl" style="display: none;" onclick="saveData()">保存</a> -->
+					<a href="javascript:;" id="addBtn" class="btn btn-box btnBgCFF6666 fl" onclick="addData()">新增</a>
+			    </form>
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/common.js"></script>
+		<script src="/js/query.select.js"></script>
+		<script>
+			var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
+			function addData(){ //新增
+				var userId = document.getElementById("userId").value; 
+				var sid = document.getElementById('sid').value; 
+				var did = document.getElementById('did').value;
+				var fid = document.getElementById('fid').value;
+				var yid = document.getElementById('yid').value;
+				var tid = document.getElementById('tid').value;
+				var name = document.getElementById("name").value;
+				var password = document.getElementById("password").value;
+				var typeName = document.getElementById("typeName").value;
+				var tel = document.getElementById('tel').value; 
+				if(tel == "" || !phoneReg.test(tel)){alert("请输入正确电话");return false;}
+				var idCard = document.getElementById('idCard').value;	
+				var success = function(data){
+					if(data.code == 1){
+						alert('提交成功！');
+						window.location.href = "userList.html";
+					}else{
+						alert('请重新输入正确代码！');
+					}
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				var user = JSON.parse(localStorage.user);
+				ajaxPost('/insertUserSelective',{"userId":userId,"sid":sid,"did":did,"fid":fid,"yid":yid,"tid":tid,
+												 "name":name,"password":password,"typeId":typeName,"tel":tel,"idCard":idCard},success,faild);
+			}
+		</script>
+	</body>
+</html>
