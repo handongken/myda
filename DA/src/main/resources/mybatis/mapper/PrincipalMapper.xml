@@ -9,8 +9,15 @@
 		<result column="lc_manager" property="lcManager" jdbcType="CHAR" />
 		<result column="t_manager" property="tmanager" jdbcType="CHAR" />
 		<result column="yyb" property="yyb" jdbcType="CHAR" />
+		<!-- <result column="yybname" property="yybname" jdbcType="CHAR" /> -->
 		<result column="yyb_manager" property="yybManager" jdbcType="CHAR" />
 		<result column="fgs" property="fgs" jdbcType="CHAR" />
+		<!-- <result column="fgsname" property="fgsname" jdbcType="CHAR" /> -->
+		<result column="fgs_manager" property="fgsManager" jdbcType="CHAR" />
+		<result column="dq" property="dq" jdbcType="CHAR" />
+		<result column="dq_manager" property="dqManager" jdbcType="CHAR" />
+		<result column="syb" property="syb" jdbcType="CHAR" />
+		<result column="syb_manager" property="sybManager" jdbcType="CHAR" />
 		<result column="start_date" property="startDate" jdbcType="DATE" />
 		<result column="end_date" property="endDate" jdbcType="DATE" />
 		<result column="tender_name" property="tenderName" jdbcType="CHAR" />
@@ -18,7 +25,7 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		contract, money, type_name,lc_manager,t_manager,yyb,yyb_manager,fgs, start_date, end_date, tender_name,del_flg
+		contract, money, type_name,lc_manager,t_manager,yyb,yyb_manager,fgs, fgs_manager, dq, dq_manager, syb, syb_manager, start_date, end_date, tender_name,del_flg
 	</sql>
 
 	<select id="selectPrincipalByCondition" resultMap="BaseResultMap">
@@ -66,6 +73,21 @@
 			<if test="fgs != null and fgs != ''">
 				fgs,
 			</if>
+			<if test="fgsManager != null and fgsManager != ''">
+				fgs_manager,
+			</if>
+			<if test="dq != null and dq != ''">
+				dq,
+			</if>
+			<if test="dqManager != null and dqManager != ''">
+				dq_manager,
+			</if>
+			<if test="syb != null and syb != ''">
+				syb,
+			</if>
+			<if test="sybManager != null and sybManager != ''">
+				syb_manager,
+			</if>
 			<if test="startDate != null and startDate != ''">
 				start_date,
 			</if>
@@ -103,6 +125,21 @@
 			</if>
 			<if test="fgs != null and fgs != ''">
 				#{fgs,jdbcType=VARCHAR},
+			</if>
+			<if test="fgsManager != null and fgsManager != ''">
+				#{yybManager,jdbcType=VARCHAR},
+			</if>
+			<if test="dq != null and dq != ''">
+				#{dq,jdbcType=VARCHAR},
+			</if>
+			<if test="dqManager != null and dqManager != ''">
+				#{dqManager,jdbcType=VARCHAR},
+			</if>
+			<if test="syb != null and syb != ''">
+				#{syb,jdbcType=VARCHAR},
+			</if>
+			<if test="sybManager != null and sybManager != ''">
+				#{sybManager,jdbcType=VARCHAR},
 			</if>
 			<if test="startDate != null and startDate != ''">
 				#{startDate,jdbcType=DATE},

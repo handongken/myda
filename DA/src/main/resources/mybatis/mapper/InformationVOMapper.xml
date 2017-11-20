@@ -222,6 +222,27 @@
 		order by payment_date
 	</select>
 	
+	<!-- 实时业绩表 -->
+	<!-- 事业部、大区、分公司、营业部 -->
+	<select id="selectMechanism" parameterType="java.lang.String" resultMap="ResultTypeMap">
+		select
+		  sum(money) as moneySum,payment_date
+		from t_information
+		<where>
+			<if test="startTime != null and startTime != ''">
+				and payment_date &gt;=#{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and payment_date &lt;=#{endTime}
+			</if>
+			<if test="delFlg != null">
+				and del_flg = #{delFlg,jdbcType=CHAR}
+			</if>
+		</where>
+		group by payment_date
+		order by payment_date
+	</select>
+	
 	<select id="selectByPrimaryKey" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select

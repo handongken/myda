@@ -136,14 +136,20 @@
 		from t_user
 		<where>
 			<if test="userId != null and userId != ''">
-				user_id = #{userId,jdbcType=CHAR}
+				user_id = #{userId}
+			</if>
+			<if test="tel != null and tel != ''">
+				and tel = #{tel}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and del_flg = #{delFlg}
 			</if>
 		</where>
 	</select>
     
     <update id="updateUserByPrimaryKey" parameterType="com.bqhx.yyb.vo.UserConditionVO">
     	UPDATE t_user
-    	SET 
+    	set 
 		password = #{password,jdbcType=VARCHAR},
 		name = #{name,jdbcType=VARCHAR},
 		tel = #{tel,jdbcType=VARCHAR},

@@ -7,7 +7,7 @@
 		<result column="O_NAME" property="oname" jdbcType="VARCHAR" />
 		<result column="M_NAME" property="mname" jdbcType="VARCHAR" />
 		<result column="LEVEL_TYPE" property="levelType" jdbcType="INTEGER" />
-		<result column="DEL_FLG" property="delFlg" jdbcType="VARCHAR" />
+		<result column="DEL_FLG" property="delFlg" jdbcType="INTEGER" />
 	</resultMap>
 	<resultMap id="OrganizationMap" type="com.bqhx.yyb.vo.OrganizationVO">
 		<id column="OID_ORG_ID" property="oidOrgid" jdbcType="INTEGER" />
@@ -17,7 +17,7 @@
 		<result column="Y_ID" property="yid" jdbcType="VARCHAR" />
 		<result column="T_ID" property="tid" jdbcType="VARCHAR" />
 		<result column="LEVEL_TYPE" property="levelType" jdbcType="CHAR" />
-		<result column="DEL_FLG" property="delFlg" jdbcType="VARCHAR" />
+		<result column="DEL_FLG" property="delFlg" jdbcType="INTEGER" />
 	</resultMap>
 	<resultMap id="OrganizationResultMap" type="com.bqhx.yyb.vo.OrganizationResultVO">
 		<result column="D_ID" property="did" jdbcType="VARCHAR" />
@@ -42,25 +42,25 @@
 		<result column="P_ID" property="pid" jdbcType="VARCHAR" />
 		<result column="pname" property="pname" jdbcType="VARCHAR" />
 		<result column="pmanager" property="pmanager" jdbcType="VARCHAR" />
-		<result column="D_ID" property="did" jdbcType="VARCHAR" />
+		<result column="did" property="did" jdbcType="VARCHAR" />
 	</resultMap>
 	<resultMap id="FgsMap" type="com.bqhx.yyb.vo.FgsVO">
 		<result column="F_ID" property="fid" jdbcType="VARCHAR" />
 		<result column="fname" property="fname" jdbcType="VARCHAR" />
 		<result column="fmanager" property="fmanager" jdbcType="VARCHAR" />
-		<result column="P_ID" property="pid" jdbcType="VARCHAR" />
+		<result column="pid" property="pid" jdbcType="VARCHAR" />
 	</resultMap>
 	<resultMap id="YybMap" type="com.bqhx.yyb.vo.YybVO">
 		<result column="Y_ID" property="yid" jdbcType="VARCHAR" />
 		<result column="yname" property="yname" jdbcType="VARCHAR" />
 		<result column="ymanager" property="ymanager" jdbcType="VARCHAR" />
-		<result column="F_ID" property="fid" jdbcType="VARCHAR" />
+		<result column="fid" property="fid" jdbcType="VARCHAR" />
 	</resultMap>
 	<resultMap id="tdMap" type="com.bqhx.yyb.vo.TdVO">
 		<result column="T_ID" property="tid" jdbcType="VARCHAR" />
 		<result column="tname" property="tname" jdbcType="VARCHAR" />
 		<result column="tmanager" property="tmanager" jdbcType="VARCHAR" />
-		<result column="Y_ID" property="yid" jdbcType="VARCHAR" />
+		<result column="yid" property="yid" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<sql id="Organization_Code_Column_List">
@@ -77,10 +77,13 @@
 		FROM t_organization_code
 		<where>
 			<if test="oid != null and oid != ''">
-				O_ID =#{oid}
+				O_ID =#{oid,jdbcType=VARCHAR}
+			</if>
+			<if test="levelType != null and levelType != ''">
+				and LEVEL_TYPE =#{levelType,jdbcType=INTEGER}
 			</if>
 			<if test="delFlg != null and delFlg != ''">
-				and del_flg = #{delFlg}
+				and DEL_FLG = #{delFlg,jdbcType=INTEGER}
 			</if>
 		</where>
 	</select>
@@ -112,7 +115,7 @@
 				and LEVEL_TYPE =#{levelType}
 			</if>
 			<if test="delFlg != null and delFlg != ''">
-				and del_flg = #{delFlg}
+				and DEL_FLG = #{delFlg}
 			</if>
 		</where>
 	</select>
@@ -126,7 +129,7 @@
 				O_ID LIKE #{oid}"%"
 			</if>
 			<if test="delFlg != null and delFlg != ''">
-				and del_flg = #{delFlg}
+				and DEL_FLG = #{delFlg}
 			</if>
 		</where>
 	</select>
@@ -190,6 +193,9 @@
 			<if test="P_ID != null and P_ID != ''">
 				and o.P_ID = #{P_ID}
 			</if>
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
 			<if test="delFlg != null and delFlg != ''">
 				and o.del_flg = #{delFlg}
 			</if>
@@ -221,6 +227,12 @@
 		inner join t_organization_code c on c.O_ID=o.F_ID
 		<where>
 				o.LEVEL_TYPE ='2'
+			<if test="P_ID != null and P_ID != ''">
+				and o.P_ID = #{P_ID}
+			</if>
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
 			<if test="F_ID != null and F_ID != ''">
 				and o.F_ID = #{F_ID}
 			</if>
@@ -255,6 +267,15 @@
 		inner join t_organization_code c on c.O_ID=o.Y_ID
 		<where>
 				o.LEVEL_TYPE ='3'
+			<if test="P_ID != null and P_ID != ''">
+				and o.P_ID = #{P_ID}
+			</if>
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
+			<if test="F_ID != null and F_ID != ''">
+				and o.F_ID = #{F_ID}
+			</if>
 			<if test="Y_ID != null and Y_ID != ''">
 				and o.Y_ID = #{Y_ID}
 			</if>
@@ -289,6 +310,18 @@
 		inner join t_organization_code c on c.O_ID=o.T_ID
 		<where>
 				o.LEVEL_TYPE ='4'
+			<if test="P_ID != null and P_ID != ''">
+				and o.P_ID = #{P_ID}
+			</if>
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
+			<if test="F_ID != null and F_ID != ''">
+				and o.F_ID = #{F_ID}
+			</if>
+			<if test="Y_ID != null and Y_ID != ''">
+				and o.Y_ID = #{Y_ID}
+			</if>
 			<if test="T_ID != null and T_ID != ''">
 				and o.T_ID = #{T_ID}
 			</if>
@@ -298,8 +331,7 @@
 		</where>
 	</select>
 
-	<insert id="insertOrganizationCode" useGeneratedKeys="true"
-		keyProperty="oid" parameterType="java.lang.String">
+	<insert id="insertOrganizationCode" useGeneratedKeys="true" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
 		INSERT INTO t_organization_code
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="oid != null and oid != ''">
@@ -315,7 +347,7 @@
 				LEVEL_TYPE,
 			</if>
 			<if test="delFlg != null and delFlg != ''">
-				DEL_FLG,
+				DEL_FLG
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -332,9 +364,105 @@
 				#{levelType,jdbcType=VARCHAR},
 			</if>
 			<if test="delFlg != null and delFlg != ''">
-				#{delFlg,jdbcType=VARCHAR},
+				#{delFlg,jdbcType=VARCHAR}
 			</if>
 		</trim>
 	</insert>
 
+	<update id="updateOrganizationCode" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
+		update t_organization_code
+		<set>
+			<if test="oname != null">
+				O_NAME = #{oname,jdbcType=VARCHAR},
+			</if>
+			<if test="mname != null">
+				M_NAME = #{mname,jdbcType=VARCHAR},
+			</if>
+			<if test="levelType != null">
+				LEVEL_TYPE = #{levelType,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlg != null">
+				DEL_FLG = #{delFlg,jdbcType=VARCHAR}
+			</if>
+		</set> 
+		where O_ID = #{oid,jdbcType=VARCHAR}
+	</update>
+	
+	<insert id="insertOrganization" useGeneratedKeys="true" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
+		INSERT INTO t_organization
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="did != null and did != ''">
+				D_ID,
+			</if>
+			<if test="pid != null and pid != ''">
+				P_ID,
+			</if>
+			<if test="fid != null and fid != ''">
+				F_ID,
+			</if>
+			<if test="yid != null and yid != ''">
+				Y_ID,
+			</if>
+			<if test="tid != null and tid != ''">
+				T_ID,
+			</if>
+			<if test="levelType != null and levelType != ''">
+				LEVEL_TYPE,
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				DEL_FLG
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="did != null and did != ''">
+				#{did,jdbcType=VARCHAR},
+			</if>
+			<if test="pid != null and pid != ''">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="fid != null and fid != ''">
+				#{fid,jdbcType=VARCHAR},
+			</if>
+			<if test="yid != null and yid != ''">
+				#{yid,jdbcType=VARCHAR},
+			</if>
+			<if test="tid != null and tid != ''">
+				#{tid,jdbcType=VARCHAR},
+			</if>
+			<if test="levelType != null and levelType != ''">
+				#{levelType,jdbcType=CHAR},
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				#{delFlg,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateOrganizationByOid" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
+		update t_organization
+		<set>
+			<if test="did != null">
+				D_ID = #{did,jdbcType=VARCHAR},
+			</if>
+			<if test="pid != null">
+				P_ID = #{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="fid != null">
+				F_ID = #{fid,jdbcType=VARCHAR},
+			</if>
+			<if test="yid != null">
+				Y_ID = #{yid,jdbcType=VARCHAR},
+			</if>
+			<if test="tid != null">
+				T_ID = #{tid,jdbcType=VARCHAR},
+			</if>
+			<if test="levelType != null">
+				LEVEL_TYPE = #{levelType,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlg != null">
+				DEL_FLG = #{delFlg,jdbcType=VARCHAR}
+			</if>
+		</set> 
+		where OID_ORG_ID = #{oidOrgid,jdbcType=VARCHAR}
+	</update>
 </mapper>
