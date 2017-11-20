@@ -1,6 +1,9 @@
 var frameWorkList = [];
-querySelect();//事业部
+querySelect(); //事业部
 $("#sid").change(function(){      
+	document.getElementById('did').innerHTML = '<option value="">请选择</option>';
+	document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
+	document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
 	if($(this).val() == 0 || $(this).val() == '0001' || $(this).val() == '0002'){
 		document.getElementById('did').innerHTML = '<option value="">请选择</option>';
 		document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
@@ -10,6 +13,8 @@ $("#sid").change(function(){
 	}
 });
 $("#did").change(function(){
+	document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
+	document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
 	if($(this).val() == 0){
 		document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
 		document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
@@ -18,22 +23,23 @@ $("#did").change(function(){
 	}
 });
 $("#fid").change(function(){
+	document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
 	if($(this).val() == 0){
 		document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
 	}else{
 		queryYid();
 	}
 });
-function querySelect(){ //查事业部
+function querySelect(){ //查事业部	
 	var success = function(data){
-		frameWorkList = data;
+		frameWorkList = data;	
 		createSelect();
 	};
 	var faild = function(error){
  		alert(error);
  	};
  	var user = JSON.parse(localStorage.user);
- 	ajaxPost('/selectOrganizationByCondition',{'typeId':user.typeId,'did':user.sid,'pid':user.did,'fid':user.fid,'yid':user.yid},success,faild);
+ 	ajaxPost('/selectOrganizationByCondition',{'typeId':user.typeId,'sid':user.sid,'did':user.did,'fid':user.fid,'yid':user.yid},false,success,faild);
 }
 function createSelect(){ //创建sid
 	var sid = '<option value="0">请选择</option>';
@@ -42,18 +48,17 @@ function createSelect(){ //创建sid
 	}
 	document.getElementById('sid').innerHTML = sid;
 }
+//queryDq();
 function queryDq(){//查大区
 	var sidList = $("#sid").val();
      var success = function(data){
     	 frameWorkList = data;
-    	 //console.log(frameWorkList);
 		 createDq();
 		};
 		var faild = function(error){
 	 		alert(error);
 	 	};
-	 	var user = JSON.parse(localStorage.user);
-     ajaxPost('/getDqListByCondition',{'typeId':user.typeId,'did':user.sid,'pid':user.did,'fid':user.fid,'yid':user.yid},success,faild);
+     ajaxPost('/getDqListByCondition',{'D_ID':sidList},false,success,faild);
 }
 function createDq(){ //创建did
 	var pid = '<option value="0">请选择</option>';
@@ -62,16 +67,17 @@ function createDq(){ //创建did
 	}
 	document.getElementById('did').innerHTML = pid;
 }
+//queryFid();
 function queryFid(){//查分公司
 	var didList = $("#did").val();
      var success = function(data){
     	 frameWorkList = data;
-    		createFgs();
+    	 createFgs();
 		};
 		var faild = function(error){
 	 		alert(error);
 	 	};
-     ajaxPost('/getFgsListByCondition',{'P_ID':didList},success,faild);
+     ajaxPost('/getFgsListByCondition',{'P_ID':didList},false,success,faild);
 }
 function createFgs(){ //创建fid
 	var fid = '<option value="0">请选择</option>';
@@ -80,6 +86,7 @@ function createFgs(){ //创建fid
 	}
 	document.getElementById('fid').innerHTML = fid;
 }
+//queryYid();
 function queryYid(){//查营业部
 	var fidList = $("#fid").val();
      var success = function(data){
@@ -89,7 +96,7 @@ function queryYid(){//查营业部
 		var faild = function(error){
 	 		alert(error);
 	 	};
-     ajaxPost('/getYybListByCondition',{'F_ID':fidList},success,faild);
+     ajaxPost('/getYybListByCondition',{'F_ID':fidList},false,success,faild);
 }
 function createYyb(){ //创建yid
 	var yid = '<option value="0">请选择</option>';

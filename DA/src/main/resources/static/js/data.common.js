@@ -199,20 +199,20 @@ function saveData(){ //保存
 	if(lcManager == ""){alert("请输入正确客户经理");return false;}
 	var tManager = document.getElementById('tManager').value; //团队经理
 	if(tManager == ""){alert("请输入正确团队经理");return false;}
-	var yyb = document.getElementById('yyb').value;//营业部名称
-	if(yyb == ""){alert("请输入正确营业部名称");return false;}
+	var yid = document.getElementById('yid').value;//营业部名称
+	if(yid == ""){alert("请输入正确营业部名称");return false;}
 	var yybManager = document.getElementById('yybManager').value;//营业部经理
 	if(yybManager == ""){alert("请输入正确营业部经理");return false;}
-	var fgs = document.getElementById('fgs').value;//分公司名称
-	if(fgs == ""){alert("请输入正确分公司名称");return false;}
+	var fid = document.getElementById('fid').value;//分公司名称
+	if(fid == ""){alert("请输入正确分公司名称");return false;}
 	var fgsManager = document.getElementById('fgsManager').value;//分公司经理
 	if(fgsManager == ""){alert("请输入正确分公司经理");return false;}
-	var dq = document.getElementById('dq').value;//大区名称
-	if(dq == ""){alert("请输入正确大区名称");return false;}
+	var did = document.getElementById('did').value;//大区名称
+	if(did == ""){alert("请输入正确大区名称");return false;}
 	var dqManager = document.getElementById('dqManager').value;//大区经理
 	if(dqManager == ""){alert("请输入正确大区经理");return false;}
-	var syb = document.getElementById('syb').value;//事业部名称
-	if(syb == ""){alert("请输入正确事业部名称");return false;}
+	var sid = document.getElementById('sid').value;//事业部名称
+	if(sid == ""){alert("请输入正确事业部名称");return false;}
 	var sybManager = document.getElementById('sybManager').value;//事业部经理
 	if(sybManager == ""){alert("请输入正确事业部经理");return false;}
 	var periods = document.getElementById('periods').value;//期数
@@ -302,9 +302,9 @@ function saveData(){ //保存
 	//var contract = $_GET['contract'];,"contract":contract
 	//console.log(contract);
 	ajaxPost('/updateByPrimaryKey',{"name":user.name,"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
-									"lcId":lcId,"lcManager":lcManager,"tmanager":tManager,"yyb":yyb,"yybManager":yybManager,
-									"fgs":fgs,"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,
-									"syb":syb,"sybManager":sybManager,"periods":periods,"rate":rate,
+									"lcId":lcId,"lcManager":lcManager,"tmanager":tManager,"yyb":yid,"yybManager":yybManager,
+									"fgs":fid,"fgsManager":fgsManager,"dq":did,"dqManager":dqManager,
+									"syb":sid,"sybManager":sybManager,"periods":periods,"rate":rate,
 									 "interestAll":interestAll,"interestMonth":interestMonth,"paymentDate":paymentDate,
 									 "endDate":endDate,"statementDate":statementDate,"startDate":startDate,
 									 "surplusDate":surplusDate,"status":status,"posNo":posNo,"tenderName":tenderName,"tel":tel,"idType":idType,"idNo":idNo,
@@ -313,13 +313,14 @@ function saveData(){ //保存
 									 "branch":branch,"cardName":cardName,"cardNo":cardNo,"cardProvince":cardProvince,"cardCity":cardCity,
 									 "cardLine":cardLine,"inBank":inBank,"inBranch":inBranch,"inCardName":inCardName,"inCardNo":inCardNo,
 									 "inCardProvince":inCardProvince,"inCardCity":inCardCity,"insUser":insUser,"insDate":insDate,/*"managerStatus":managerStatus,"managerNo":managerNo,"remark":remark,*/
-									 "updUser":updUser,"updDate":updDate},success,faild);
+									 "updUser":updUser,"updDate":updDate},false,success,faild);
 }
 function queryData(){ //查询
 	var user = JSON.parse(localStorage.user);
 	var contract = $_GET['contract'];
 	var success = function(data){
 		if(contract !=''){
+			console.log(data);
 			document.getElementById("contract").value = data[0].contract; //合同编号
 			document.getElementById("type").value = data[0].type;
 			document.getElementById('money').value = data[0].money; //出借金额
@@ -328,14 +329,17 @@ function queryData(){ //查询
 			document.getElementById('lcId').value = data[0].lcId; //客户编号
 			document.getElementById('lcManager').value = data[0].lcManager; //客户经理
 			document.getElementById('tManager').value = data[0].tmanager; //团队经理
-			document.getElementById('yyb').value = data[0].yyb;//营业部名称
-			document.getElementById('yybManager').value = data[0].yybManager;//营业部经理
-			document.getElementById('fgs').value = data[0].fgs;//分公司名称
-			document.getElementById('fgsManager').value = data[0].fgsManager;//分公司经理
-			document.getElementById('dq').value = data[0].dq;//大区名称
-			document.getElementById('dqManager').value = data[0].dqManager;//大区经理
-			document.getElementById('syb').value = data[0].syb;//事业部名称
+			document.getElementById('sid').value = data[0].syb;//事业部名称
 			document.getElementById('sybManager').value = data[0].sybManager;//事业部经理
+			queryDq();
+			document.getElementById('did').value = data[0].dq;//大区名称
+			document.getElementById('dqManager').value = data[0].dqManager;//大区经理
+			queryFid();
+			document.getElementById('fid').value = data[0].fgs;//分公司名称
+			document.getElementById('fgsManager').value = data[0].fgsManager;//分公司经理
+			queryYid();
+			document.getElementById('yid').value = data[0].yyb;//营业部名称
+			document.getElementById('yybManager').value = data[0].yybManager;//营业部经理
 			document.getElementById('periods').value = data[0].periods;//期数
 			document.getElementById('rate').value = data[0].rate;//年化收益
 			document.getElementById('interestAll').value = data[0].interestAll;//利息总额
@@ -398,7 +402,7 @@ function queryData(){ //查询
 		$("#editBtn").css("display","block");
 		$(".addHidden").css("display","block");
 	}*/
-	ajaxPost('/selectByCondition',{"typeId":user.typeId,"contract":contract},success,faild);
+	ajaxPost('/selectByCondition',{"typeId":user.typeId,"contract":contract},false,success,faild);
 }
 function addData(){ //新增
 	var contract = document.getElementById('contract').value;//合同编号 
@@ -406,7 +410,7 @@ function addData(){ //新增
 	var type = document.getElementById("type").value; //产品名称
 	if(type == ""){alert("请选择正确产品名称");return false;}
 	var money = document.getElementById('money').value;//出借金额
-	if(money == "" || numReg.test(money)){alert("请输入正确出借金额");return false;}
+	if(money == ""){alert("请输入正确出借金额");return false;}
 	var zbRatio = document.getElementById('zbRatio').value; //折标系数
 	if(zbRatio == ""){alert("请输入正确折标系数");return false;}
 	var jxAchievement = document.getElementById('jxAchievement').value;//绩效业绩 = 出借金额 * 折标系数
@@ -417,20 +421,20 @@ function addData(){ //新增
 	if(lcManager == ""){alert("请输入正确客户经理");return false;}
 	var tManager = document.getElementById('tManager').value; //团队经理
 	if(tManager == ""){alert("请输入正确团队经理");return false;}
-	var yyb = document.getElementById('yyb').value;//营业部名称
-	if(yyb == ""){alert("请输入正确营业部名称");return false;}
+	var yid = document.getElementById('yid').value;//营业部名称
+	if(yid == ""){alert("请输入正确营业部名称");return false;}
 	var yybManager = document.getElementById('yybManager').value;//营业部经理
 	if(yybManager == ""){alert("请输入正确营业部经理");return false;}
-	var fgs = document.getElementById('fgs').value;//分公司名称
-	if(fgs == ""){alert("请输入正确分公司名称");return false;}
+	var fid = document.getElementById('fid').value;//分公司名称
+	if(fid == ""){alert("请输入正确分公司名称");return false;}
 	var fgsManager = document.getElementById('fgsManager').value;//分公司经理
 	if(fgsManager == ""){alert("请输入正确分公司经理");return false;}
-	var dq = document.getElementById('dq').value;//大区名称
-	if(dq == ""){alert("请输入正确大区名称");return false;}
+	var did = document.getElementById('did').value;//大区名称
+	if(did == ""){alert("请输入正确大区名称");return false;}
 	var dqManager = document.getElementById('dqManager').value;//大区经理
 	if(dqManager == ""){alert("请输入正确大区经理");return false;}
-	var syb = document.getElementById('syb').value;//事业部名称
-	if(syb == ""){alert("请输入正确事业部名称");return false;}
+	var sid = document.getElementById('sid').value;//事业部名称
+	if(sid == ""){alert("请输入正确事业部名称");return false;}
 	var sybManager = document.getElementById('sybManager').value;//事业部经理
 	if(sybManager == ""){alert("请输入正确事业部经理");return false;}
 	var periods = document.getElementById('periods').value;//期数
@@ -515,8 +519,8 @@ function addData(){ //新增
 	var user = JSON.parse(localStorage.user);
 	ajaxPost('/insertSelective',{"contract":contract,"name": user.name,"type":type,"money":money,"zbRatio":zbRatio,"jxAchievement":jxAchievement,
 								 "lcId":lcId,"lcManager":lcManager,
-								 "tmanager":tManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,"fgsManager":fgsManager,"dq":dq,
-								 "dqManager":dqManager,"syb":syb,"sybManager":sybManager,"periods":periods,"rate":rate,
+								 "tmanager":tManager,"yyb":yid,"yybManager":yybManager,"fgs":fid,"fgsManager":fgsManager,"dq":did,
+								 "dqManager":dqManager,"syb":sid,"sybManager":sybManager,"periods":periods,"rate":rate,
 								 "interestAll":interestAll,"interestMonth":interestMonth,"paymentDate":paymentDate,"endDate":endDate,
 								 "statementDate":statementDate,"startDate":startDate,"surplusDate":surplusDate,"status":status,
 								 "posNo":posNo,"tenderName":tenderName,"tel":tel,"idType":idType,"idNo":idNo,
@@ -524,7 +528,7 @@ function addData(){ //新增
 								 "contactRelationship":contactRelationship,"continueFlg":continueFlg,"spreadType":spreadType,"bank":bank,
 								 "branch":branch,"cardName":cardName,"cardNo":cardNo,"cardProvince":cardProvince,"cardCity":cardCity,
 								 "cardLine":cardLine,"inBank":inBank,"inBranch":inBranch,"inCardName":inCardName,"inCardNo":inCardNo,
-								 "inCardProvince":inCardProvince,"inCardCity":inCardCity},success,faild);
+								 "inCardProvince":inCardProvince,"inCardCity":inCardCity},true,success,faild);
 }
 function VerifierData(){//审批提交
 	var managerNo = document.getElementById('managerNo').value;//审批者
@@ -545,5 +549,5 @@ function VerifierData(){//审批提交
 	};
 	var user = JSON.parse(localStorage.user);
 	var contract = $_GET['contract'];
-	ajaxPost('/approve',{"contract":contract,"managerNo":user.name,"managerStatus":managerStatus,"remark":remark},success,faild);
+	ajaxPost('/approve',{"contract":contract,"managerNo":user.name,"managerStatus":managerStatus,"remark":remark},false,success,faild);
 } 

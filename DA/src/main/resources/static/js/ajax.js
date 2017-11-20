@@ -1,9 +1,11 @@
 var csUrl = ''; //http://127.0.0.1:8080/login?userId=1&password=1   http://192.168.1.129:8080
-var ajaxPost = function(url,data,success,faild){
+var ajaxPost = function(url,data,async,success,faild){
 	$.ajax({
 		url:url,
 		type:"POST", //POST
 		data:data,
+		async: async,
+		cache: false,
 		success:function(res){
 			if(res.name != ""){
 				success(res);
