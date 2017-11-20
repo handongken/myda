@@ -124,7 +124,7 @@
 				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"contract":contract,"status":status,
 												"lcManager":lcManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,
 												"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,"syb":syb,
-												"sybManager":sybManager,"startTime":spaymentDate,"endTime":epaymentDate},success,faild); 
+												"sybManager":sybManager,"startTime":spaymentDate,"endTime":epaymentDate},false,success,faild); 
 			}
 			function createTh(data){//读表格字段
 				var tableTh = [//创建th内容

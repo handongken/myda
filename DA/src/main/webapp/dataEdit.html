@@ -72,28 +72,33 @@
 			            <input type="text" id="tManager" value="" name="tManager" placeholder="请输入团队经理" required />
 			        </div>
 			        <div class="form-group">
-			            <label for="yyb">营业部</label>
-			            <input type="text" id="yyb" value="" name="yyb" placeholder="请输入营业部" required />
-			            <label for="yybManager">营业部经理</label>
-			            <input type="text" id="yybManager" value="" name="yybManager" placeholder="请输入营业部经理" required />
+			            <label for="sid">事业部</label>
+			           	<!-- <input id="sid">  -->
+			            <select id="sid" required></select>
+			            <!-- <input type="text" id="syb" value="" name="syb" placeholder="请输入事业部" required /> -->
+			            <label for="sybManager">事业部经理</label>
+			            <input type="text" id="sybManager" value="" name="sybManager" placeholder="请输入事业部经理" required />
 			        </div>
 			        <div class="form-group">
-			            <label for="fgs">分公司</label>
-			            <input type="text" id="fgs" value="" name="fgs" placeholder="请输入分公司" required />
-			            <label for="fgsManager">分公司经理</label>
-			            <input type="text" id="fgsManager" value="" name="fgsManager" placeholder="请输入分公司经理" required />
-			        </div>
-			        <div class="form-group">
-			            <label for="dq">大区</label>
-			            <input type="text" id="dq" value=""  name="dq" placeholder="请输入大区" required />
+			            <label for="did">大区</label>
+			            <select id="did" required></select>
+			            <!-- <input type="text" id="dq" value=""  name="dq" placeholder="请输入大区" required /> -->
 			            <label for="dqManager">大区经理</label>
 			            <input type="text" id="dqManager" value=""  name="dqManager" placeholder="请输入大区经理" required />
 			        </div>
 			        <div class="form-group">
-			            <label for="syb">事业部</label>
-			            <input type="text" id="syb" value="" name="syb" placeholder="请输入事业部" required />
-			            <label for="sybManager">事业部经理</label>
-			            <input type="text" id="sybManager" value="" name="sybManager" placeholder="请输入事业部经理" required />
+			            <label for="fid">分公司</label>
+			            <select id="fid" required></select>
+			            <!-- <input type="text" id="fgs" value="" name="fgs" placeholder="请输入分公司" required /> -->
+			            <label for="fgsManager">分公司经理</label>
+			            <input type="text" id="fgsManager" value="" name="fgsManager" placeholder="请输入分公司经理" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="yid">营业部</label>
+			            <select id="yid" required></select>
+			            <!-- <input type="text" id="yyb" value="" name="yyb" placeholder="请输入营业部" required /> -->
+			            <label for="yybManager">营业部经理</label>
+			            <input type="text" id="yybManager" value="" name="yybManager" placeholder="请输入营业部经理" required />
 			        </div>
 			        <div class="marB"> </div>
 			        <div class="form-group">
@@ -280,6 +285,7 @@
 		<script src="/js/common.js"></script>
 		<script src="/js/WdatePicker.js"></script>
 		<script src="/js/data.common.js"></script>
-		<script>queryData();console.log($("#dataSNav a"));$("#dataSNav a").addClass("currentA");</script>
+		<script src="/js/query.select.js"></script>
+		<script>queryData();$("#dataSNav a").attr('class','currentA');</script>
 	</body>
 </html>

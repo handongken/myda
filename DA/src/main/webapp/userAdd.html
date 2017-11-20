@@ -106,7 +106,7 @@
 				};
 				var user = JSON.parse(localStorage.user);
 				ajaxPost('/insertUserSelective',{"userId":userId,"sid":sid,"did":did,"fid":fid,"yid":yid,"tid":tid,
-												 "name":name,"password":password,"typeId":typeName,"tel":tel,"idCard":idCard},success,faild);
+												 "name":name,"password":password,"typeId":typeName,"tel":tel,"idCard":idCard},true,success,faild);
 			}
 		</script>
 	</body>

@@ -41,7 +41,7 @@
 				//取user
 				var user = JSON.parse(localStorage.user);
 				var continueFlg = 0;
-				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"continueFlg":continueFlg},success,faild); 
+				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"continueFlg":continueFlg},false,success,faild); 
 			}
 			function createTh(data){//读表格
 				var tableTh = [

@@ -49,7 +49,7 @@
 					alert(error);
 				};
 				var user = JSON.parse(localStorage.user);//取user
-				ajaxPost('/selectSMSCapitalByCondition',{"startTime":statementDateS,"endTime":statementDateE},success,faild); 
+				ajaxPost('/selectSMSCapitalByCondition',{"startTime":statementDateS,"endTime":statementDateE},false,success,faild); 
 			}
 			function createTh(data){//读表格字段
 				var tableTh = [//创建th内容

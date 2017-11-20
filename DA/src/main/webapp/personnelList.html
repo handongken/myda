@@ -58,15 +58,17 @@
 		<script src="/js/WdatePicker.js"></script>
 		<!-- <script src="/js/jquery.dataTables.min.js"></script> -->
 		<script>
+			delLoading();
 			var downURl = '/downloadHumanAndPerformance';
 			function downPersonnelExcel(downURl){//数据导出表格
 				var dateS = document.getElementById("dateS").value;
 				if(dateS == ""){alert("开始时间不能为空！");return false;}
 				var dateE = document.getElementById("dateE").value;
 				if(dateE == ""){alert("结束时间不能为空！");return false;}
-				loading(); 
+				loading();
 				var success = function(data){
 					alert(data);
+					delLoading();
 				};
 				var faild = function(error){
 					alert(error);
@@ -105,6 +107,6 @@
 				};
 				ajaxPost('/selectHumanAndPerformanceByCondition',{'startTime':dateS,'endTime':dateE},success,faild); 
 			} */
-		</script>
+		</script> 
 	</body>
 </html>
