@@ -9,6 +9,7 @@ import com.bqhx.yyb.vo.PrincipalVO;
 
 @Mapper
 public interface PrincipalMapper {
+
 	void insertPrincipal(PrincipalVO record);
 
 	List<PrincipalVO> selectPrincipalByCondition(ConditionVO condition);

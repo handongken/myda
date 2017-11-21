@@ -8,6 +8,7 @@ import com.bqhx.yyb.vo.TypeVO;
 
 @Mapper
 public interface TypeMapper {
+
 	TypeVO selectTypeByPrimaryKey(@Param("type")String type);
 
 }

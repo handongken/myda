@@ -18,13 +18,15 @@ import com.bqhx.yyb.vo.YybVO;
 @Mapper
 public interface OrganizationMapper {
 
-	void insertOrganizationCode(OrganizationCodeVO record);
-
-	OrganizationCodeVO selectOrganizationCodeByOid(@Param(value = "oid") String oid,@Param(value = "delFlg") String delFlg);
+	OrganizationCodeVO selectOrganizationCodeByOid(OrganizationConditionVO organizationConditionVO);
 	
-	List<OrganizationCodeVO> fuzzySelectOrganizationCode(@Param(value = "oid") String oid,@Param(value = "delFlg") String delFlg);
+	List<OrganizationCodeVO> fuzzySelectOrganizationCode(OrganizationConditionVO organizationConditionVO);
 
-	List<OrganizationVO> selectOrganizationByCondition(OrganizationVO organizationVO);
+	List<OrganizationVO> selectOrganizationByCondition(OrganizationConditionVO organizationConditionVO);
+	
+	void insertOrganization(OrganizationConditionVO organizationConditionVO);
+	
+	void updateOrganizationByOid(OrganizationConditionVO organizationConditionVO);
 	/** 查询所有事业部 */
 	List<OrganizationResultVO> selectAllsybOrganization(OrganizationConditionVO organizationConditionVO);
 	/** 查询某个事业部 */
@@ -45,4 +47,8 @@ public interface OrganizationMapper {
 	List<TdVO> selectAlltdOrganization(OrganizationConditionVO organizationConditionVO);
 	/** 查询某个团队及所在营业部 */
 	TdVO selectTdByCondition(OrganizationConditionVO organizationConditionVO);
+	/** 更新oc */
+	void updateOrganizationCode(OrganizationConditionVO organizationConditionVO);
+	/** 插入oc */
+	void insertOrganizationCode(OrganizationConditionVO organizationConditionVO);
 }
