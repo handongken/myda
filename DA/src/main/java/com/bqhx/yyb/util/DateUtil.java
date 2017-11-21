@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.bqhx.yyb.constant.Constant;
+
 public class DateUtil {
 
 	/**
@@ -196,7 +197,7 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 根据开始时间和结束时间返回时间段内的时间集合 
+	 * 根据开始时间和结束时间返回时间段内的day集合 
 	 */
 	public static List<String> getDatesBetweenTwoDate(String startTime, String endTime) { 
 		List<String> dateList = new ArrayList<String>();
@@ -209,6 +210,32 @@ public class DateUtil {
         while (bContinue) {  
         	// 根据日历的规则，为给定的日历字段添加或减去指定的时间量  
     		calendar.add(Calendar.DAY_OF_MONTH, 1);  
+            // 测试此日期是否在指定日期之后  
+    		if(endDate.after(calendar.getTime())){
+    			String st = dateToString(calendar.getTime(),Constant.PATTERN);
+    			dateList.add(st);
+    		} else {  
+                break;  
+            }
+        }
+        dateList.add(endTime); 
+		return dateList;
+	}
+	
+	/**
+	 * 根据开始时间和结束时间返回时间段内的month集合 
+	 */
+	public static List<String> getMonthBetweenTwoDate(String startTime, String endTime) { 
+		List<String> dateList = new ArrayList<String>();
+		dateList.add(startTime);
+		Calendar calendar = Calendar.getInstance();
+		Date startDate = stringToDate(startTime,Constant.PATTERN);
+		Date endDate = stringToDate(endTime,Constant.PATTERN);
+		calendar.setTime(startDate);
+		boolean bContinue = true;  
+        while (bContinue) {  
+        	// 根据日历的规则，为给定的日历字段添加或减去指定的时间量  
+    		calendar.add(Calendar.MONTH, 1);  
             // 测试此日期是否在指定日期之后  
     		if(endDate.after(calendar.getTime())){
     			String st = dateToString(calendar.getTime(),Constant.PATTERN);

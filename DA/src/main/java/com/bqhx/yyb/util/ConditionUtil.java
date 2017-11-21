@@ -3,6 +3,7 @@ package com.bqhx.yyb.util;
 import com.bqhx.yyb.constant.Constant;
 import com.bqhx.yyb.vo.ConditionVO;
 import com.bqhx.yyb.vo.UserVO;
+
 public class ConditionUtil {
 	/**
 	 * 根据用户角色处理查询条件

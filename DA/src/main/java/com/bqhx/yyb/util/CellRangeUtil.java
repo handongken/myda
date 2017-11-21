@@ -2,6 +2,7 @@ package com.bqhx.yyb.util;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+
 public class CellRangeUtil {
 	/**
 	 * 大区合并
@@ -13,7 +14,7 @@ public class CellRangeUtil {
 			et.setRegionStyle(sheetModel, crangea_dq);
 		}
 	}
-
+	
 	/**
 	 * 大区小计合并
 	 */
@@ -133,7 +134,6 @@ public class CellRangeUtil {
 			String eSum = "SUMIF(A4:A@," + "\"\u002A合计\"" + ",E4:E@)";//SUMIF(A4:A@,"*合计",E4:E@)
 			String fSum = "SUMIF(A4:A@," + "\"\u002A合计\"" + ",F4:F@)";//SUMIF(A4:A@,"*合计",F4:F@)
 			String gSum = "SUMIF(A4:A@," + "\"\u002A合计\"" + ",G4:G@)";//SUMIF(A4:A@,"*合计",G4:G@)
-//			et.createCellByCol(index+1,"COUNTA(D4:D@)");
 			et.createCellByCol(index+1, dSum);
 			et.createCellByCol(index+2,eSum);
 			et.createCellByCol(index+3,fSum);
