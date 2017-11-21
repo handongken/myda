@@ -301,7 +301,7 @@ function saveData(){ //保存
 	var user = JSON.parse(localStorage.user);
 	var contract = $_GET['contract'];
 	//console.log(contract);
-	ajaxPost('/updateByPrimaryKeySelective',{"name":user.name,"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
+	ajaxPost('/updateByPrimaryKeySelective',{"userId":user.userId,"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
 									"lcId":lcId,"lcManager":lcManager,"tmanager":tManager,"yyb":yid,"yybManager":yybManager,
 									"fgs":fid,"fgsManager":fgsManager,"dq":did,"dqManager":dqManager,
 									"syb":sid,"sybManager":sybManager,"periods":periods,"rate":rate,
