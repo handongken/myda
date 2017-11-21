@@ -299,9 +299,9 @@ function saveData(){ //保存
 		alert(error);
 	};
 	var user = JSON.parse(localStorage.user);
-	//var contract = $_GET['contract'];,"contract":contract
+	var contract = $_GET['contract'];
 	//console.log(contract);
-	ajaxPost('/updateByPrimaryKey',{"name":user.name,"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
+	ajaxPost('/updateByPrimaryKeySelective',{"name":user.name,"type":type,"zbRatio":zbRatio,"money":money,"jxAchievement":jxAchievement,
 									"lcId":lcId,"lcManager":lcManager,"tmanager":tManager,"yyb":yid,"yybManager":yybManager,
 									"fgs":fid,"fgsManager":fgsManager,"dq":did,"dqManager":dqManager,
 									"syb":sid,"sybManager":sybManager,"periods":periods,"rate":rate,
@@ -313,7 +313,7 @@ function saveData(){ //保存
 									 "branch":branch,"cardName":cardName,"cardNo":cardNo,"cardProvince":cardProvince,"cardCity":cardCity,
 									 "cardLine":cardLine,"inBank":inBank,"inBranch":inBranch,"inCardName":inCardName,"inCardNo":inCardNo,
 									 "inCardProvince":inCardProvince,"inCardCity":inCardCity,"insUser":insUser,"insDate":insDate,/*"managerStatus":managerStatus,"managerNo":managerNo,"remark":remark,*/
-									 "updUser":updUser,"updDate":updDate},false,success,faild);
+									 "updUser":updUser,"updDate":updDate,"contract":contract},false,success,faild);
 }
 function queryData(){ //查询
 	var user = JSON.parse(localStorage.user);
@@ -517,7 +517,7 @@ function addData(){ //新增
 		alert(error);
 	};
 	var user = JSON.parse(localStorage.user);
-	ajaxPost('/insertSelective',{"contract":contract,"name": user.name,"type":type,"money":money,"zbRatio":zbRatio,"jxAchievement":jxAchievement,
+	ajaxPost('/insertSelective',{"contract":contract,"userId": user.userId,"type":type,"money":money,"zbRatio":zbRatio,"jxAchievement":jxAchievement,
 								 "lcId":lcId,"lcManager":lcManager,
 								 "tmanager":tManager,"yyb":yid,"yybManager":yybManager,"fgs":fid,"fgsManager":fgsManager,"dq":did,
 								 "dqManager":dqManager,"syb":sid,"sybManager":sybManager,"periods":periods,"rate":rate,

@@ -53,7 +53,9 @@ function bindListener(obj,contract){ //删除单行table
 	var faild = function(error){
 		alert(error);
 	};
-	ajaxPost('/deleteByPrimaryKey',{"contract":contract},success,faild); 
+	//取user
+	var user = JSON.parse(localStorage.user);
+	ajaxPost('/deleteByPrimaryKey',{"contract":contract,"userId":user.userId},success,faild); 
 }
 function exit(){ //退出
 	/*var success = function(data){ // data 是服务器返回的
