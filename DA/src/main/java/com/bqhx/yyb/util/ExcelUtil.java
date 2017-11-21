@@ -164,7 +164,7 @@ public class ExcelUtil {
 				// System.out.println("表格最后一行：" + et.getLastRowIndex());
 				for (int i = 0; i < datas.length; i++) {
 					// dqindex
-					int index = getDataIndex(datas, "#{dq}");
+					int index = getDataIndex(datas, "#{dqname}");
 					// 创建带公式单元格
 					if (datas[i].contains("@")) {
 						et.createCell(Cell.CELL_TYPE_FORMULA, createCurColFormula(datas[i], readLine + j + 1));
@@ -224,7 +224,7 @@ public class ExcelUtil {
 							String methodReturnType = m.getReturnType().getName();
 							if (methodReturnType.contains("String")) {
 								//// 记录每个大区首行dqRowNum
-								if (datas[i].equals("#{dq}")) {
+								if (datas[i].equals("#{dqname}")) {
 									et.createCell(rel);
 									// 当前dq
 									String curDq = getDataValue(obj, datas[i], clz);
@@ -251,7 +251,7 @@ public class ExcelUtil {
 										et.createCell(rel);
 									}
 								} // 记录每个事业部首行sybRowNum
-								else if (datas[i].equals("#{syb}")) {
+								else if (datas[i].equals("#{sybname}")) {
 									et.createCell(rel);
 									// 当前syb
 									String curSyb = getDataValue(obj, datas[i], clz);

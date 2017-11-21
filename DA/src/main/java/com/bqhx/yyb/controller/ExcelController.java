@@ -579,6 +579,7 @@ public class ExcelController {
 	 */
 	@RequestMapping(value = "/downloadMovableCheck", method = RequestMethod.POST)
 	protected void downloadMovableCheck(ConditionVO condition,HttpServletResponse res) throws Exception {
+		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.MOVABLECHECKNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		List<MovableCheckVO> movableCheckList = movableCheckMapper.selectMovableCheckByCondition(condition);
@@ -594,13 +595,18 @@ public class ExcelController {
 	 */
 	@RequestMapping(value = "/downloadSMSInterest", method = RequestMethod.POST)
 	protected void downloadSMSInterest(ConditionVO condition,HttpServletResponse res) throws Exception {
+		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.SMSINTERESTNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		List<CertificateVO> certificateList = certificateMapper.selectCertificateByCondition(condition);
 		for(CertificateVO certificate : certificateList){
 			String str = certificate.getInCardNo();
-			String inCardNo = str.substring(str.length() - 4);//银行卡后四位
-			certificate.setInCardNo(inCardNo);
+			if(str.length() > 4){
+				String inCardNo = str.substring(str.length() - 4);//银行卡后四位
+				certificate.setInCardNo(inCardNo);
+			}else{
+				certificate.setInCardNo(str);
+			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${date}", getDate());
@@ -614,13 +620,18 @@ public class ExcelController {
 	 */
 	@RequestMapping(value = "/downloadSMSCapital", method = RequestMethod.POST)
 	protected void downloadSMSCapital(ConditionVO condition,HttpServletResponse res) throws Exception {
+		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.SMSCAPITALNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		List<CertificateVO> certificateList = certificateMapper.selectCertificateByCondition(condition);
 		for(CertificateVO certificate : certificateList){
 			String str = certificate.getInCardNo();
-			String inCardNo = str.substring(str.length() - 4);//银行卡后四位
-			certificate.setInCardNo(inCardNo);
+			if(str.length() > 4){
+				String inCardNo = str.substring(str.length() - 4);//银行卡后四位
+				certificate.setInCardNo(inCardNo);
+			}else{
+				certificate.setInCardNo(str);
+			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${date}", getDate());
@@ -661,21 +672,49 @@ public class ExcelController {
 		List<ResultTypeVO> list = informationVOMapper.selectHumanAndPerformanceByCondition(condition);
 		//syb,dq,fgs
 		for(ResultTypeVO result : list){
-			String syb = result.getSyb();
-			String dq = result.getDq();
-			String fgs = result.getFgs();
-			/*if(syb != null && dq != null && fgs != null){
-				OrganizationCodeVO sybCode = organizationMapper.selectOrganizationCodeByOid(syb,Constant.FLAG_ZERO);
-				OrganizationCodeVO dqCode = organizationMapper.selectOrganizationCodeByOid(dq,Constant.FLAG_ZERO);
-				OrganizationCodeVO fgsCode = organizationMapper.selectOrganizationCodeByOid(fgs,Constant.FLAG_ZERO);
-				if(sybCode != null){
-					result.setSyb(sybCode.getOname());
-				}if(dqCode != null){
-					result.setDq(dqCode.getOname());
-				}if(fgsCode != null){
-					result.setFgs(fgsCode.getOname());
+			//架构信息显示name
+			OrganizationConditionVO orcon = new OrganizationConditionVO();
+			orcon.setDelFlg(Constant.FLAG_ZERO);
+			//syb
+			if(result.getSyb() != null && !"".equals(result.getSyb()) && !"A001".equals(result.getSyb())){
+				orcon.setD_ID(result.getSyb());
+				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
+				if(syb != null){
+					result.setSybname(syb.getDname());
+//					informationVO.setSybManager(syb.getDmanager());
+				}else{
+					result.setSybname("无");
 				}
-			}*/
+			}else{
+				orcon.setD_ID("A001");
+				result.setSybname("无");
+			}
+			//dq
+			if(result.getDq() != null && !"".equals(result.getDq()) && !"B001".equals(result.getDq())){
+				orcon.setP_ID(result.getDq());
+				DqVO dq = organizationMapper.selectDqByCondition(orcon);
+				if(dq != null){
+					result.setDqname(dq.getPname());
+				}else{
+					result.setDqname("无");
+				}
+			}else{
+				orcon.setP_ID("B001");
+				result.setDqname("无");
+			}
+			//fgs
+			if(result.getFgs() != null && !"".equals(result.getFgs()) && !"C001".equals(result.getFgs())){
+				orcon.setF_ID(result.getFgs());
+				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
+				if(fgs != null){
+					result.setFgsname(fgs.getFname());
+				}else{
+					result.setFgsname("无");
+				}
+			}else{
+				orcon.setF_ID("C001");
+				result.setFgsname("无");
+			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.HUMANANDPERFORMANCETITLE);

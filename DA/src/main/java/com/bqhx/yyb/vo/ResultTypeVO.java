@@ -5,10 +5,16 @@ import java.math.BigDecimal;
 public class ResultTypeVO {
 	/**事业部  */ 
 	private String syb;
+	/**事业部name */ 
+	private String sybname;
 	/**大区  */ 
 	private String dq;
+	/**大区  */ 
+	private String dqname;
 	/**分公司  */ 
 	private String fgs;
+	/**分公司  */ 
+	private String fgsname;
 	/**出借金额 */ 
 	private Integer money;
 	/**绩效业绩  */ 
@@ -31,6 +37,24 @@ public class ResultTypeVO {
 	private String updDate;
 	private String updUser;	
 	
+	public String getSybname() {
+		return sybname;
+	}
+	public void setSybname(String sybname) {
+		this.sybname = sybname;
+	}
+	public String getDqname() {
+		return dqname;
+	}
+	public void setDqname(String dqname) {
+		this.dqname = dqname;
+	}
+	public String getFgsname() {
+		return fgsname;
+	}
+	public void setFgsname(String fgsname) {
+		this.fgsname = fgsname;
+	}
 	public String getPaymentDate() {
 		return paymentDate;
 	}
