@@ -2,7 +2,7 @@ package com.bqhx.yyb.vo;
 
 public class OrganizationVO {
 	/**主键ID*/
-	private Integer oidOrgid;
+	private String oidOrgid;
 	/**事业部ID*/
 	private String did;
 	/**大区ID*/
@@ -56,10 +56,10 @@ public class OrganizationVO {
 	public void setDelFlg(String delFlg) {
 		this.delFlg = delFlg;
 	}
-	public Integer getOidOrgid() {
+	public String getOidOrgid() {
 		return oidOrgid;
 	}
-	public void setOidOrgid(Integer oidOrgid) {
+	public void setOidOrgid(String oidOrgid) {
 		this.oidOrgid = oidOrgid;
 	}
 	public String getLevelType() {

@@ -1,17 +1,20 @@
 package com.bqhx.yyb.vo;
+
 import java.io.Serializable;
 
 public class BaseVO implements Serializable{
+
 	/**
-	 *  */
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	
 	private String insDate;
 	private String insUser;
 	private String updDate;
-	private String updUser;  
-	
+	private String updUser;	
 	private String message;
+	
 	public String getMessage() {
 		return message;
 	}

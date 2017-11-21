@@ -1,8 +1,8 @@
 package com.bqhx.yyb.vo;
+
 import java.io.Serializable;
 
 public class TypeVO  implements Serializable{
-	
 	private static final long serialVersionUID = 1L;
 	/**产品  */ 
 	private String type;

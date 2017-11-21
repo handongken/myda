@@ -7,6 +7,7 @@ import com.bqhx.yyb.util.ExcelResources;
 
 
 public class InformationVO extends BaseVO implements Serializable{
+
 	private static final long serialVersionUID = 1L;
 	/**合同编号  */ 
 	private String contract;
@@ -24,22 +25,32 @@ public class InformationVO extends BaseVO implements Serializable{
 	private String lcId;
 	/**团队经理  */ 
 	private String tmanager;
-	/**营业部名称  */ 
+	/**团队name  */ 
+	private String tname;
+	/**营业部id  */ 
 	private String yyb;
 	/**营业部经理  */ 
 	private String yybManager;
-	/**分公司名称  */ 
+	/**营业部name  */ 
+	private String yybname;
+	/**分公司id  */ 
 	private String fgs;
 	/**分公司经理  */ 
 	private String fgsManager;
-	/**大区名称  */ 
+	/**分公司name  */ 
+	private String fgsname;
+	/**大区id */ 
 	private String dq;
 	/**大区经理  */ 
 	private String dqManager;
-	/**事业部名称  */ 
+	/**大区name  */ 
+	private String dqname;
+	/**事业部id  */ 
 	private String syb;
 	/**事业部经理  */ 
 	private String sybManager;
+	/**事业部name  */ 
+	private String sybname;
 	/**期数  */ 
 	private Integer periods;
 	/**年化收益（预期年化收益率）  */ 
@@ -116,6 +127,50 @@ public class InformationVO extends BaseVO implements Serializable{
 	private String managerStatus;
 	/**删除flg  */ 
 	private String delFlg;
+
+	public String getTname() {
+		return tname;
+	}
+
+	public void setTname(String tname) {
+		this.tname = tname;
+	}
+
+	public String getYybname() {
+		return yybname;
+	}
+
+	public void setYybname(String yybname) {
+		this.yybname = yybname;
+	}
+
+	public String getFgsname() {
+		return fgsname;
+	}
+
+	public void setFgsname(String fgsname) {
+		this.fgsname = fgsname;
+	}
+
+	public String getDqname() {
+		return dqname;
+	}
+
+	public void setDqname(String dqname) {
+		this.dqname = dqname;
+	}
+
+	public String getSybname() {
+		return sybname;
+	}
+
+	public void setSybname(String sybname) {
+		this.sybname = sybname;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	@ExcelResources(title="合同编号",order=1)
 	public String getContract() {

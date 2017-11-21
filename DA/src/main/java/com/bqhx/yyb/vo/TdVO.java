@@ -7,7 +7,15 @@ public class TdVO {
 	private String tname;
 	/**团队经理*/
 	private String tmanager;
+	/**所在营业部ID*/
+	private String yid;
 	
+	public String getYid() {
+		return yid;
+	}
+	public void setYid(String yid) {
+		this.yid = yid;
+	}
 	public String getTid() {
 		return tid;
 	}

@@ -3,7 +3,6 @@ package com.bqhx.yyb.vo;
 import java.math.BigDecimal;
 
 public class ResultTypeVO {
-	
 	/**事业部  */ 
 	private String syb;
 	/**大区  */ 

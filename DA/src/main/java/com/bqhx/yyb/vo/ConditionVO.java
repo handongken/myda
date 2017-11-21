@@ -7,6 +7,7 @@ import com.bqhx.yyb.util.ExcelResources;
 
 
 public class ConditionVO extends BaseVO implements Serializable{
+
 	private static final long serialVersionUID = 1L;
 	/**合同编号  */ 
 	private String contract;
@@ -154,6 +155,46 @@ public class ConditionVO extends BaseVO implements Serializable{
 	private String inTel;
 	/**付息or还本,1or0  */ 
 	private String payFlg;
+	/**开单人数  */ 
+	private Long lcNum;
+	/**规模业绩  */ 
+	private Long moneyNum;
+	/**绩效业绩  */ 
+	private BigDecimal jxNum;
+	/**oid */ 
+	private String oid;
+	
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+
+	public Long getLcNum() {
+		return lcNum;
+	}
+
+	public void setLcNum(Long lcNum) {
+		this.lcNum = lcNum;
+	}
+
+	public Long getMoneyNum() {
+		return moneyNum;
+	}
+
+	public void setMoneyNum(Long moneyNum) {
+		this.moneyNum = moneyNum;
+	}
+
+	public BigDecimal getJxNum() {
+		return jxNum;
+	}
+
+	public void setJxNum(BigDecimal jxNum) {
+		this.jxNum = jxNum;
+	}
 
 	public BigDecimal getAmountLimit() {
 		return amountLimit;

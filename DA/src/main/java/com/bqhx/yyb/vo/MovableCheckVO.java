@@ -2,6 +2,7 @@ package com.bqhx.yyb.vo;
 
 import java.math.BigDecimal;
 /**
+ * 
  * @author Administrator
  * 移动支票VO000
  */

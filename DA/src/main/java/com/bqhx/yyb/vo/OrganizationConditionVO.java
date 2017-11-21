@@ -1,6 +1,7 @@
 package com.bqhx.yyb.vo;
 
 public class OrganizationConditionVO {
+	private String oidOrgid;
 	/**事业部ID*/
 	private String did;
 	private String D_ID;
@@ -23,8 +24,21 @@ public class OrganizationConditionVO {
 	private String oid;
 	private String oname;
 	private String mname;
+	private String levelType;
 	private String con;
 	
+	public String getOidOrgid() {
+		return oidOrgid;
+	}
+	public void setOidOrgid(String oidOrgid) {
+		this.oidOrgid = oidOrgid;
+	}
+	public String getLevelType() {
+		return levelType;
+	}
+	public void setLevelType(String levelType) {
+		this.levelType = levelType;
+	}
 	public String getCon() {
 		return con;
 	}

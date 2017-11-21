@@ -1,7 +1,9 @@
 package com.bqhx.yyb.vo;
+
 import java.io.Serializable;
 
 public class MessageVO implements Serializable{
+
 	private static final long serialVersionUID = 1L;
 	private String code;
 	private String message;
@@ -12,7 +14,7 @@ public class MessageVO implements Serializable{
 		this.code = code;
 	}
 	public String getMessage() {
-		return message;  
+		return message;
 	}
 	public void setMessage(String message) {
 		this.message = message;
