@@ -61,17 +61,9 @@ public class InformationController {
 	 * @return messageVO delete
 	 */
 	@RequestMapping(value = "/deleteByPrimaryKey", method = RequestMethod.POST)
-	MessageVO deleteByPrimaryKey(InformationVO record) {
+	MessageVO deleteByPrimaryKey(InformationVO record,UserVO user) {
 		record.setDelFlg(Constant.FLAG_ONE);
-		String code = updateByPrimaryKeySelective(record);
-		MessageVO messageVO = new MessageVO();
-		if (code.equals("1")) {
-			messageVO.setCode(code);
-			messageVO.setMessage(Constant.SUCCESS);
-		} else {
-			messageVO.setCode(Constant.FLAG_ZERO);
-			messageVO.setMessage(Constant.FAILED);
-		}
+		MessageVO messageVO = updateByPrimaryKeySelective(record,user);
 		return messageVO;
 	}
 
@@ -104,7 +96,7 @@ public class InformationController {
 			if (insDate != null && insDate != "") {
 				condition.setInsDate(insDate);
 			}
-			condition.setInsUser(user.getName());
+			condition.setInsUser(user.getUserId());
 			informationVOMapper.insertSelective(condition);
 			//插入付息表
 			insertCertificate(condition);
@@ -233,9 +225,23 @@ public class InformationController {
 	}
 	
 	@RequestMapping(value = "/updateByPrimaryKeySelective", method = RequestMethod.POST)
-	String updateByPrimaryKeySelective(InformationVO record) {
-		informationVOMapper.updateByPrimaryKeySelective(record);
-		return Constant.FLAG_ONE;
+	MessageVO updateByPrimaryKeySelective(InformationVO record, UserVO user) {
+		String updDate = DateUtil.formatDate(new Date(), Constant.PATTERN_HMS);
+		if (updDate != null && updDate != "") {
+			record.setUpdDate(updDate);
+		}
+		record.setUpdUser(user.getUserId());
+		MessageVO messageVO = new MessageVO();
+		int code = informationVOMapper.updateByPrimaryKeySelective(record);
+		code = 1;
+		if (code == 1) {
+			messageVO.setCode(Constant.FLAG_ONE);
+			messageVO.setMessage(Constant.SUCCESS);
+		} else {
+			messageVO.setCode(Constant.FLAG_ZERO);
+			messageVO.setMessage(Constant.FAILED);
+		}
+		return messageVO;
 	}
 
 	/**
@@ -249,7 +255,7 @@ public class InformationController {
 		if (updDate != null && updDate != "") {
 			record.setUpdDate(updDate);
 		}
-		record.setUpdUser(user.getName());
+		record.setUpdUser(user.getUserId());
 		int code = informationVOMapper.updateByPrimaryKey(record);
 		code = 1;
 		MessageVO messageVO = new MessageVO();
@@ -271,12 +277,7 @@ public class InformationController {
 	@RequestMapping(value = "/approve", method = RequestMethod.POST)
 	MessageVO approve(InformationVO record) {
 		MessageVO messageVO = new MessageVO();
-		String managerStatus = record.getManagerStatus();
-		if (managerStatus.equals("1")) {
-			informationVOMapper.updateByPrimaryKeySelective(record);
-		} else {
-			informationVOMapper.updateByPrimaryKeySelective(record);
-		}
+		informationVOMapper.updateByPrimaryKeySelective(record);
 		messageVO.setCode(Constant.FLAG_ONE);
 		messageVO.setMessage(Constant.SUCCESS);
 		return messageVO;
