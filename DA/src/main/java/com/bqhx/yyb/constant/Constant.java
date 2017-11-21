@@ -1,6 +1,7 @@
 package com.bqhx.yyb.constant;
 
 import java.math.BigDecimal;
+
 /**
  * 常量类
  *
@@ -19,9 +20,17 @@ public final class Constant {
 	 */
 	public static final int ONE = 1; 
 	/**
+	 * 4
+	 */
+	public static final String FLAG_FOUR = "4";
+	/**
 	 * 3
 	 */
 	public static final String FLAG_THREE = "3";
+	/**
+	 * 2
+	 */
+	public static final String FLAG_TWO = "2";
 	/**
 	 * 1
 	 */
@@ -30,6 +39,30 @@ public final class Constant {
 	 * 0
 	 */
 	public static final String FLAG_ZERO = "0";
+	/**
+	 * A
+	 */
+	public static final String FLAG_A = "A";
+	/**
+	 * B
+	 */
+	public static final String FLAG_B = "B";
+	/**
+	 * C
+	 */
+	public static final String FLAG_C = "C";
+	/**
+	 * D
+	 */
+	public static final String FLAG_D = "D";
+	/**
+	 * E
+	 */
+	public static final String FLAG_E = "E";
+	/**
+	 * F
+	 */
+	public static final String FLAG_F = "F";
 	/**
 	 * success
 	 */
@@ -82,6 +115,10 @@ public final class Constant {
 	 * performancePDtemplate
 	 */
 	public static final String PERFORMANCEPDTEMPLATE = "performancePD-template.xlsx";
+	/**
+	 * codingtemplate
+	 */
+	public static final String CODINGTEMPLATE = "coding-template.xlsx";
 	/**
 	 * 业绩日报总表标题
 	 */
@@ -190,6 +227,10 @@ public final class Constant {
 	 * 每日业绩分表标题
 	 */
 	public static final String PERFORMANCEPDTITLE = "规模业绩表";
+	/**
+	 * 日报编码汇总_
+	 */
+	public static final String CODINGTEMPLATENAME = "日报编码汇总_";
 	/** 
 	 * 付方账号
 	 */ 
