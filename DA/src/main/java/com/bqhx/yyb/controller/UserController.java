@@ -130,8 +130,9 @@ public class UserController {
 				userVO.setInsDate(insDate);
 			}
 			OrganizationConditionVO organizationConditionVO = new OrganizationConditionVO();
+			organizationConditionVO.setDelFlg(Constant.FLAG_ZERO);
 			//syb
-			if(userVO.getSid() != null && !"".equals(userVO.getSid())){
+			if(userVO.getSid() != null && !"".equals(userVO.getSid()) && !"A001".equals(userVO.getSid())){
 				organizationConditionVO.setD_ID(userVO.getSid());
 				OrganizationResultVO syb = organizationMapper.selectSybByCondition(organizationConditionVO);
 				if(syb != null){
@@ -140,10 +141,11 @@ public class UserController {
 					userVO.setSname("");
 				}
 			}else{
+				organizationConditionVO.setD_ID("A001");
 				userVO.setSname("");
 			}
 			//dq
-			if(userVO.getDid() != null && !"".equals(userVO.getDid())){
+			if(userVO.getDid() != null && !"".equals(userVO.getDid()) && !"B001".equals(userVO.getDid())){
 				organizationConditionVO.setP_ID(userVO.getDid());
 				DqVO dq = organizationMapper.selectDqByCondition(organizationConditionVO);
 				if(dq != null){
@@ -152,10 +154,11 @@ public class UserController {
 					userVO.setDname("");
 				}
 			}else{
+				organizationConditionVO.setP_ID("B001");
 				userVO.setDname("");
 			}
 			//fgs
-			if(userVO.getFid() != null && !"".equals(userVO.getFid())){
+			if(userVO.getFid() != null && !"".equals(userVO.getFid()) && !"C001".equals(userVO.getFid())){
 				organizationConditionVO.setF_ID(userVO.getFid());
 				FgsVO fgs = organizationMapper.selectFgsByCondition(organizationConditionVO);
 				if(fgs != null){
@@ -164,10 +167,11 @@ public class UserController {
 					userVO.setFname("");
 				}
 			}else{
+				organizationConditionVO.setF_ID("C001");
 				userVO.setFname("");
 			}
 			//yyb
-			if(userVO.getYid() != null && !"".equals(userVO.getYid())){
+			if(userVO.getYid() != null && !"".equals(userVO.getYid()) && !"D001".equals(userVO.getYid())){
 				organizationConditionVO.setY_ID(userVO.getYid());
 				YybVO yyb = organizationMapper.selectYybByCondition(organizationConditionVO);	
 				if(yyb != null){
@@ -176,6 +180,7 @@ public class UserController {
 					userVO.setYname("");
 				}
 			}else{
+				organizationConditionVO.setY_ID("D001");
 				userVO.setYname("");
 			}
 			//td

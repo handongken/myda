@@ -18,7 +18,6 @@ import com.bqhx.yyb.vo.PrincipalVO;
 public class PrincipalController {
 	@Autowired
 	private PrincipalMapper principalVOMapper;
-	
 	/**
 	 * 根据条件查询还本信息
 	 * @param conditionVO

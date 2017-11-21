@@ -15,6 +15,7 @@ import com.bqhx.yyb.vo.ConditionVO;
 public class CertificateController {
 	@Autowired
 	private CertificateMapper certificateMapper;
+	
 	@RequestMapping(value = "/selectCertificateByCondition", method = RequestMethod.POST)
 	List<CertificateVO> selectCertificateByCondition(ConditionVO conditionVO){
 		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);
@@ -30,8 +31,12 @@ public class CertificateController {
 		for(int i = 0;i < certificateVOList.size();i++){
 			CertificateVO certificateVO = certificateVOList.get(i);
 			String str = certificateVO.getInCardNo();
-			String inCardNo = str.substring(str.length() - 4);//银行卡后四位
-			certificateVO.setInCardNo(inCardNo);
+			if(str.length() > 4){
+				String inCardNo = str.substring(str.length() - 4);//银行卡后四位
+				certificateVO.setInCardNo(inCardNo);
+			}else{
+				certificateVO.setInCardNo(str);
+			}
 		}
 		return certificateVOList;
 	}

@@ -20,25 +20,32 @@ import com.bqhx.yyb.constant.Constant;
 import com.bqhx.yyb.dao.CertificateMapper;
 import com.bqhx.yyb.dao.InformationVOMapper;
 import com.bqhx.yyb.dao.MovableCheckMapper;
-import com.bqhx.yyb.dao.OrganizationCodeMapper;
+import com.bqhx.yyb.dao.OrganizationMapper;
+//import com.bqhx.yyb.dao.OrganizationMapper;
 import com.bqhx.yyb.dao.PrincipalMapper;
 import com.bqhx.yyb.dao.TypeMapper;
 import com.bqhx.yyb.util.ConditionUtil;
 import com.bqhx.yyb.util.ExcelUtil;
 import com.bqhx.yyb.vo.CertificateVO;
 import com.bqhx.yyb.vo.ConditionVO;
+import com.bqhx.yyb.vo.DqVO;
+import com.bqhx.yyb.vo.FgsVO;
 import com.bqhx.yyb.vo.InformationVO;
 import com.bqhx.yyb.vo.MovableCheckVO;
 import com.bqhx.yyb.vo.OrganizationCodeVO;
+import com.bqhx.yyb.vo.OrganizationConditionVO;
+import com.bqhx.yyb.vo.OrganizationResultVO;
 import com.bqhx.yyb.vo.PrincipalVO;
 import com.bqhx.yyb.vo.ResultTypeVO;
 import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.vo.UserVO;
+import com.bqhx.yyb.vo.YybVO;
 import com.bqhx.yyb.constant.*;
 
 @RestController
 @RequestMapping("/")
 public class ExcelController {
+	
 	@Autowired
 	private InformationVOMapper informationVOMapper;
 	@Autowired
@@ -50,7 +57,7 @@ public class ExcelController {
 	@Autowired
 	private MovableCheckMapper movableCheckMapper;
 	@Autowired
-	private OrganizationCodeMapper organizationCodeMapper;
+	private OrganizationMapper organizationMapper;
 	/**
 	 * 下载总表
 	 *
@@ -86,6 +93,62 @@ public class ExcelController {
 				if(continueFlgValue != null && continueFlgValue != ""){
 					info.setContinueFlg(continueFlgValue);
 				}
+			}
+			//架构信息显示name
+			OrganizationConditionVO orcon = new OrganizationConditionVO();
+			orcon.setDelFlg(Constant.FLAG_ZERO);
+			//syb
+			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
+				orcon.setD_ID(info.getSyb());
+				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
+				if(syb != null){
+					info.setSybname(syb.getDname());
+//					informationVO.setSybManager(syb.getDmanager());
+				}else{
+					info.setSybname("无");
+				}
+			}else{
+				orcon.setD_ID("A001");
+				info.setSybname("无");
+			}
+			//dq
+			if(info.getDq() != null && !"".equals(info.getDq()) && !"B001".equals(info.getDq())){
+				orcon.setP_ID(info.getDq());
+				DqVO dq = organizationMapper.selectDqByCondition(orcon);
+				if(dq != null){
+					info.setDqname(dq.getPname());
+				}else{
+					info.setDqname("无");
+				}
+			}else{
+				orcon.setP_ID("B001");
+				info.setDqname("无");
+			}
+			//fgs
+			if(info.getFgs() != null && !"".equals(info.getFgs()) && !"C001".equals(info.getFgs())){
+				orcon.setF_ID(info.getFgs());
+				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
+				if(fgs != null){
+					info.setFgsname(fgs.getFname());
+				}else{
+					info.setFgsname("无");
+				}
+			}else{
+				orcon.setF_ID("C001");
+				info.setFgsname("无");
+			}
+			//yyb
+			if(info.getYyb() != null && !"".equals(info.getYyb()) && !"D001".equals(info.getYyb())){
+				orcon.setY_ID(info.getYyb());
+				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
+				if(yyb != null){
+					info.setYybname(yyb.getYname());
+				}else{
+					info.setYybname("无");
+				}
+			}else{
+				orcon.setY_ID("D001");
+				info.setYybname("无");
 			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
@@ -135,6 +198,62 @@ public class ExcelController {
 			if(continueFlgValue != null && continueFlgValue != ""){
 				info.setContinueFlg(continueFlgValue);
 			}
+			//架构信息显示name
+			OrganizationConditionVO orcon = new OrganizationConditionVO();
+			orcon.setDelFlg(Constant.FLAG_ZERO);
+			//syb
+			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
+				orcon.setD_ID(info.getSyb());
+				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
+				if(syb != null){
+					info.setSybname(syb.getDname());
+//					informationVO.setSybManager(syb.getDmanager());
+				}else{
+					info.setSybname("无");
+				}
+			}else{
+				orcon.setD_ID("A001");
+				info.setSybname("无");
+			}
+			//dq
+			if(info.getDq() != null && !"".equals(info.getDq()) && !"B001".equals(info.getDq())){
+				orcon.setP_ID(info.getDq());
+				DqVO dq = organizationMapper.selectDqByCondition(orcon);
+				if(dq != null){
+					info.setDqname(dq.getPname());
+				}else{
+					info.setDqname("无");
+				}
+			}else{
+				orcon.setP_ID("B001");
+				info.setDqname("无");
+			}
+			//fgs
+			if(info.getFgs() != null && !"".equals(info.getFgs()) && !"C001".equals(info.getFgs())){
+				orcon.setF_ID(info.getFgs());
+				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
+				if(fgs != null){
+					info.setFgsname(fgs.getFname());
+				}else{
+					info.setFgsname("无");
+				}
+			}else{
+				orcon.setF_ID("C001");
+				info.setFgsname("无");
+			}
+			//yyb
+			if(info.getYyb() != null && !"".equals(info.getYyb()) && !"D001".equals(info.getYyb())){
+				orcon.setY_ID(info.getYyb());
+				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
+				if(yyb != null){
+					info.setYybname(yyb.getYname());
+				}else{
+					info.setYybname("无");
+				}
+			}else{
+				orcon.setY_ID("D001");
+				info.setYybname("无");
+			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.REDEEMEDTABLETITLE);
@@ -177,6 +296,62 @@ public class ExcelController {
 			if(continueFlgValue != null && continueFlgValue != ""){
 				info.setContinueFlg(continueFlgValue);
 			}
+			//架构信息显示name
+			OrganizationConditionVO orcon = new OrganizationConditionVO();
+			orcon.setDelFlg(Constant.FLAG_ZERO);
+			//syb
+			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
+				orcon.setD_ID(info.getSyb());
+				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
+				if(syb != null){
+					info.setSybname(syb.getDname());
+//					informationVO.setSybManager(syb.getDmanager());
+				}else{
+					info.setSybname("无");
+				}
+			}else{
+				orcon.setD_ID("A001");
+				info.setSybname("无");
+			}
+			//dq
+			if(info.getDq() != null && !"".equals(info.getDq()) && !"B001".equals(info.getDq())){
+				orcon.setP_ID(info.getDq());
+				DqVO dq = organizationMapper.selectDqByCondition(orcon);
+				if(dq != null){
+					info.setDqname(dq.getPname());
+				}else{
+					info.setDqname("无");
+				}
+			}else{
+				orcon.setP_ID("B001");
+				info.setDqname("无");
+			}
+			//fgs
+			if(info.getFgs() != null && !"".equals(info.getFgs()) && !"C001".equals(info.getFgs())){
+				orcon.setF_ID(info.getFgs());
+				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
+				if(fgs != null){
+					info.setFgsname(fgs.getFname());
+				}else{
+					info.setFgsname("无");
+				}
+			}else{
+				orcon.setF_ID("C001");
+				info.setFgsname("无");
+			}
+			//yyb
+			if(info.getYyb() != null && !"".equals(info.getYyb()) && !"D001".equals(info.getYyb())){
+				orcon.setY_ID(info.getYyb());
+				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
+				if(yyb != null){
+					info.setYybname(yyb.getYname());
+				}else{
+					info.setYybname("无");
+				}
+			}else{
+				orcon.setY_ID("D001");
+				info.setYybname("无");
+			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.REDEEMABLETABLETITLE);
@@ -218,6 +393,62 @@ public class ExcelController {
 			String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
 			if(continueFlgValue != null && continueFlgValue != ""){
 				info.setContinueFlg(continueFlgValue);
+			}
+			//架构信息显示name
+			OrganizationConditionVO orcon = new OrganizationConditionVO();
+			orcon.setDelFlg(Constant.FLAG_ZERO);
+			//syb
+			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
+				orcon.setD_ID(info.getSyb());
+				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
+				if(syb != null){
+					info.setSybname(syb.getDname());
+//					informationVO.setSybManager(syb.getDmanager());
+				}else{
+					info.setSybname("无");
+				}
+			}else{
+				orcon.setD_ID("A001");
+				info.setSybname("无");
+			}
+			//dq
+			if(info.getDq() != null && !"".equals(info.getDq()) && !"B001".equals(info.getDq())){
+				orcon.setP_ID(info.getDq());
+				DqVO dq = organizationMapper.selectDqByCondition(orcon);
+				if(dq != null){
+					info.setDqname(dq.getPname());
+				}else{
+					info.setDqname("无");
+				}
+			}else{
+				orcon.setP_ID("B001");
+				info.setDqname("无");
+			}
+			//fgs
+			if(info.getFgs() != null && !"".equals(info.getFgs()) && !"C001".equals(info.getFgs())){
+				orcon.setF_ID(info.getFgs());
+				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
+				if(fgs != null){
+					info.setFgsname(fgs.getFname());
+				}else{
+					info.setFgsname("无");
+				}
+			}else{
+				orcon.setF_ID("C001");
+				info.setFgsname("无");
+			}
+			//yyb
+			if(info.getYyb() != null && !"".equals(info.getYyb()) && !"D001".equals(info.getYyb())){
+				orcon.setY_ID(info.getYyb());
+				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
+				if(yyb != null){
+					info.setYybname(yyb.getYname());
+				}else{
+					info.setYybname("无");
+				}
+			}else{
+				orcon.setY_ID("D001");
+				info.setYybname("无");
 			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
@@ -278,6 +509,62 @@ public class ExcelController {
 		for(PrincipalVO principal:principalList){
 			String endDate = principal.getEndDate().replaceAll("-", "/");
 			principal.setEndDate(endDate);
+			//架构信息显示name
+			OrganizationConditionVO orcon = new OrganizationConditionVO();
+			orcon.setDelFlg(Constant.FLAG_ZERO);
+			//syb
+			if(principal.getSyb() != null && !"".equals(principal.getSyb()) && !"A001".equals(principal.getSyb())){
+				orcon.setD_ID(principal.getSyb());
+				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
+				if(syb != null){
+					principal.setSybname(syb.getDname());
+//					informationVO.setSybManager(syb.getDmanager());
+				}else{
+					principal.setSybname("无");
+				}
+			}else{
+				orcon.setD_ID("A001");
+				principal.setSybname("无");
+			}
+			//dq
+			if(principal.getDq() != null && !"".equals(principal.getDq()) && !"B001".equals(principal.getDq())){
+				orcon.setP_ID(principal.getDq());
+				DqVO dq = organizationMapper.selectDqByCondition(orcon);
+				if(dq != null){
+					principal.setDqname(dq.getPname());
+				}else{
+					principal.setDqname("无");
+				}
+			}else{
+				orcon.setP_ID("B001");
+				principal.setDqname("无");
+			}
+			//fgs
+			if(principal.getFgs() != null && !"".equals(principal.getFgs()) && !"C001".equals(principal.getFgs())){
+				orcon.setF_ID(principal.getFgs());
+				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
+				if(fgs != null){
+					principal.setFgsname(fgs.getFname());
+				}else{
+					principal.setFgsname("无");
+				}
+			}else{
+				orcon.setF_ID("C001");
+				principal.setFgsname("无");
+			}
+			//yyb
+			if(principal.getYyb() != null && !"".equals(principal.getYyb()) && !"D001".equals(principal.getYyb())){
+				orcon.setY_ID(principal.getYyb());
+				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
+				if(yyb != null){
+					principal.setYybname(yyb.getYname());
+				}else{
+					principal.setYybname("无");
+				}
+			}else{
+				orcon.setY_ID("D001");
+				principal.setYybname("无");
+			}
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.PRINCIPALTITLE);
@@ -377,10 +664,10 @@ public class ExcelController {
 			String syb = result.getSyb();
 			String dq = result.getDq();
 			String fgs = result.getFgs();
-			if(syb != null && dq != null && fgs != null){
-				OrganizationCodeVO sybCode = organizationCodeMapper.selectOrganizationCodeByOid(syb,Constant.FLAG_ZERO);
-				OrganizationCodeVO dqCode = organizationCodeMapper.selectOrganizationCodeByOid(dq,Constant.FLAG_ZERO);
-				OrganizationCodeVO fgsCode = organizationCodeMapper.selectOrganizationCodeByOid(fgs,Constant.FLAG_ZERO);
+			/*if(syb != null && dq != null && fgs != null){
+				OrganizationCodeVO sybCode = organizationMapper.selectOrganizationCodeByOid(syb,Constant.FLAG_ZERO);
+				OrganizationCodeVO dqCode = organizationMapper.selectOrganizationCodeByOid(dq,Constant.FLAG_ZERO);
+				OrganizationCodeVO fgsCode = organizationMapper.selectOrganizationCodeByOid(fgs,Constant.FLAG_ZERO);
 				if(sybCode != null){
 					result.setSyb(sybCode.getOname());
 				}if(dqCode != null){
@@ -388,7 +675,7 @@ public class ExcelController {
 				}if(fgsCode != null){
 					result.setFgs(fgsCode.getOname());
 				}
-			}
+			}*/
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.HUMANANDPERFORMANCETITLE);
@@ -411,7 +698,7 @@ public class ExcelController {
 	 *
 	 */
 	@RequestMapping(value="/downloadPerformancePD", method = RequestMethod.POST)
-	protected void downloadPerformancePD(HttpServletResponse res,ConditionVO condition, UserVO user) throws Exception {
+	protected void downloadPerformancePD(HttpServletResponse res,ConditionVO condition) throws Exception {
 		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.PERFORMANCEPDNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
@@ -426,6 +713,18 @@ public class ExcelController {
 		map.put("${startTime}-${endTime}", strTime);
 		ExcelUtil.getInstance().exportObj2ExcelByTemplatePD(map, Constant.PERFORMANCEPDTEMPLATE,
 				getOutputStreamByCondition(excelName,res), list, ResultTypeVO.class, true,startTime,endTime);
+	}
+	
+	/**
+	 * 下载模板
+	 *
+	 */
+	@RequestMapping(value="/downloadCodingTemplate", method = RequestMethod.POST)
+	protected void downloadCodingTemplate(HttpServletResponse res) throws Exception {
+		String fileName = Constant.CODINGTEMPLATENAME + getDate() + ".xlsx";
+		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
+		ExcelUtil.getInstance().downloadCodingTemplate(Constant.CODINGTEMPLATE,
+				getOutputStreamByCondition(excelName,res), true);
 	}
 	
 	protected OutputStream getOutputStreamByCondition(String fileName,HttpServletResponse res){

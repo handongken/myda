@@ -14,20 +14,26 @@ import com.bqhx.yyb.constant.Constant;
 import com.bqhx.yyb.dao.CertificateMapper;
 import com.bqhx.yyb.dao.InformationVOMapper;
 import com.bqhx.yyb.dao.MovableCheckMapper;
-import com.bqhx.yyb.dao.OrganizationCodeMapper;
+import com.bqhx.yyb.dao.OrganizationMapper;
 import com.bqhx.yyb.dao.PrincipalMapper;
 import com.bqhx.yyb.dao.TypeMapper;
 import com.bqhx.yyb.util.ConditionUtil;
 import com.bqhx.yyb.util.DateUtil;
 import com.bqhx.yyb.vo.CertificateVO;
 import com.bqhx.yyb.vo.ConditionVO;
+import com.bqhx.yyb.vo.DqVO;
+import com.bqhx.yyb.vo.FgsVO;
 import com.bqhx.yyb.vo.InformationVO;
 import com.bqhx.yyb.vo.MessageVO;
 import com.bqhx.yyb.vo.MovableCheckVO;
+import com.bqhx.yyb.vo.OrganizationConditionVO;
+import com.bqhx.yyb.vo.OrganizationResultVO;
 import com.bqhx.yyb.vo.PrincipalVO;
 import com.bqhx.yyb.vo.ResultTypeVO;
 import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.vo.UserVO;
+import com.bqhx.yyb.vo.YybVO;
+
 
 /**
  * @author Administrator InformationController
@@ -48,7 +54,7 @@ public class InformationController {
 	@Autowired
 	private PrincipalMapper principalMapper;
 	@Autowired
-	private OrganizationCodeMapper organizationCodeMapper;
+	private OrganizationMapper organizationMapper;
 	/**
 	 * 
 	 * @param record
@@ -130,16 +136,71 @@ public class InformationController {
 		List<InformationVO> informationVOList = informationVOMapper.selectByCondition(condition);
 		if (informationVOList != null) {
 			for (int i = 0; i < informationVOList.size(); i++) {
-
 				InformationVO informationVO = informationVOList.get(i);
+				//插入和更新时间
 				String insDate = DateUtil.convertDate(informationVO.getInsDate(), Constant.PATTERN_HMS);
 				String updDate = DateUtil.convertDate(informationVO.getUpdDate(), Constant.PATTERN_HMS);
-
 				if (insDate != null && insDate != "") {
 					informationVO.setInsDate(insDate);
 				}
 				if (updDate != null && updDate != "") {
 					informationVO.setUpdDate(updDate);
+				}
+				//架构信息显示name
+				OrganizationConditionVO orcon = new OrganizationConditionVO();
+				orcon.setDelFlg(Constant.FLAG_ZERO);
+				//syb
+				if(informationVO.getSyb() != null && !"".equals(informationVO.getSyb()) && !"A001".equals(informationVO.getSyb())){
+					orcon.setD_ID(informationVO.getSyb());
+					OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
+					if(syb != null){
+						informationVO.setSybname(syb.getDname());
+//						informationVO.setSybManager(syb.getDmanager());
+					}else{
+						informationVO.setSybname("");
+					}
+				}else{
+					orcon.setD_ID("A001");
+					informationVO.setSybname("");
+				}
+				//dq
+				if(informationVO.getDq() != null && !"".equals(informationVO.getDq()) && !"B001".equals(informationVO.getDq())){
+					orcon.setP_ID(informationVO.getDq());
+					DqVO dq = organizationMapper.selectDqByCondition(orcon);
+					if(dq != null){
+						informationVO.setDqname(dq.getPname());
+					}else{
+						informationVO.setDqname("");
+					}
+				}else{
+					orcon.setP_ID("B001");
+					informationVO.setDqname("");
+				}
+				//fgs
+				if(informationVO.getFgs() != null && !"".equals(informationVO.getFgs()) && !"C001".equals(informationVO.getFgs())){
+					orcon.setF_ID(informationVO.getFgs());
+					FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
+					if(fgs != null){
+						informationVO.setFgsname(fgs.getFname());
+					}else{
+						informationVO.setFgsname("");
+					}
+				}else{
+					orcon.setF_ID("C001");
+					informationVO.setFgsname("");
+				}
+				//yyb
+				if(informationVO.getYyb() != null && !"".equals(informationVO.getYyb()) && !"D001".equals(informationVO.getYyb())){
+					orcon.setY_ID(informationVO.getYyb());
+					YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
+					if(yyb != null){
+						informationVO.setYybname(yyb.getYname());
+					}else{
+						informationVO.setYybname("");
+					}
+				}else{
+					orcon.setY_ID("D001");
+					informationVO.setYybname("");
 				}
 			}
 		}
@@ -273,6 +334,11 @@ public class InformationController {
 		principalVO.setYyb(condition.getYyb());
 		principalVO.setYybManager(condition.getYybManager());
 		principalVO.setFgs(condition.getFgs());
+		principalVO.setFgsManager(condition.getFgsManager());
+		principalVO.setDq(condition.getDq());
+		principalVO.setDqManager(condition.getDqManager());
+		principalVO.setSyb(condition.getSyb());
+		principalVO.setSybManager(condition.getSybManager());
 		principalVO.setStartDate(condition.getStartDate());
 		principalVO.setEndDate(condition.getEndDate());
 		principalVO.setTenderName(condition.getTenderName());

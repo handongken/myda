@@ -12,10 +12,9 @@ import com.bqhx.yyb.constant.Constant;
 import com.bqhx.yyb.dao.OrganizationMapper;
 import com.bqhx.yyb.vo.DqVO;
 import com.bqhx.yyb.vo.FgsVO;
-import com.bqhx.yyb.vo.OrganizationCodeVO;
 import com.bqhx.yyb.vo.OrganizationConditionVO;
 import com.bqhx.yyb.vo.OrganizationResultVO;
-import com.bqhx.yyb.vo.OrganizationVO;
+import com.bqhx.yyb.vo.TdVO;
 import com.bqhx.yyb.vo.UserConditionVO;
 import com.bqhx.yyb.vo.YybVO;
 
@@ -27,6 +26,7 @@ public class OrganizationController {
 	
 	/**
 	 * 根据条件查询organization关系
+	 * 参数：当前用户'typeId':user.typeId,'sid':user.sid,'did':user.did,s'fid':user.fid,'yid':user.yid
 	 */
 	@RequestMapping(value = "/selectOrganizationByCondition", method = RequestMethod.POST)
 	List<OrganizationResultVO> selectOrganizationByCondition(UserConditionVO userCondition){
@@ -62,6 +62,7 @@ public class OrganizationController {
 		//大区内勤
 		else if("11".equals(typeId)){
 			String pid = userCondition.getDid();
+			orcondition.setD_ID(userCondition.getSid());
 			orcondition.setP_ID(pid);
 			//大区
 			DqVO dq = organizationMapper.selectDqByCondition(orcondition);
@@ -81,10 +82,11 @@ public class OrganizationController {
 					orList.add(newsyb);
 				}
 			}
-//			organizationCondition.setPid(userCondition.getDid());
 		}//分公司内勤
 		else if("12".equals(typeId)){
 			String fid = userCondition.getFid();
+			orcondition.setD_ID(userCondition.getSid());
+			orcondition.setP_ID(userCondition.getDid());
 			orcondition.setF_ID(fid);
 			//分公司
 			FgsVO fgs = organizationMapper.selectFgsByCondition(orcondition);
@@ -122,10 +124,12 @@ public class OrganizationController {
 					orList.add(newsyb);
 				}
 			}
-//			organizationCondition.setFid(userCondition.getFid());
 		}//营业部内勤
 		else if("13".equals(typeId)){
 			String yid = userCondition.getYid();
+			orcondition.setD_ID(userCondition.getSid());
+			orcondition.setP_ID(userCondition.getDid());
+			orcondition.setF_ID(userCondition.getFid());
 			orcondition.setY_ID(yid);
 			//营业部
 			YybVO yyb = organizationMapper.selectYybByCondition(orcondition);
@@ -183,173 +187,99 @@ public class OrganizationController {
 					orList.add(newsyb);
 				}
 			}
-//			organizationCondition.setYid(userCondition.getYid());
 		}//团队
 		else if("4".equals(typeId)){
-			
-//			organizationCondition.setTid(userCondition.getTid());
+			String tid = userCondition.getTid();
+			orcondition.setD_ID(userCondition.getSid());
+			orcondition.setP_ID(userCondition.getDid());
+			orcondition.setF_ID(userCondition.getFid());
+			orcondition.setY_ID(userCondition.getYid());
+			orcondition.setT_ID(tid);
+			//团队
+			TdVO td = organizationMapper.selectTdByCondition(orcondition);
+			if(td != null){
+				List<TdVO> tdList = new ArrayList<TdVO>();
+				tdList.add(td);
+				//所在营业部
+				orcondition.setY_ID(td.getYid());
+				YybVO yyb = organizationMapper.selectYybByCondition(orcondition);
+				if(yyb != null){
+					List<YybVO> yybList = new ArrayList<YybVO>();
+					yyb.setTlist(tdList);
+					yybList.add(yyb);
+					//所在分公司
+					orcondition.setF_ID(yyb.getFid());
+					FgsVO fgs = organizationMapper.selectFgsByCondition(orcondition);
+					if(fgs != null){
+						List<FgsVO> fgsList = new ArrayList<FgsVO>();
+						fgs.setYybList(yybList);
+						fgsList.add(fgs);
+						//所在大区
+						orcondition.setP_ID(fgs.getPid());
+						DqVO dq = organizationMapper.selectDqByCondition(orcondition);
+						if(dq != null){
+							List<DqVO> dqList = new ArrayList<DqVO>();
+							dq.setFgsList(fgsList);
+							dqList.add(dq);
+							//所在事业部
+							orcondition.setD_ID(dq.getDid());
+							OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcondition);
+							if(syb != null){
+								syb.setDqList(dqList);
+								orList.add(syb);
+							}//事业部为空
+							else{
+								OrganizationResultVO newsyb = new OrganizationResultVO();
+								newsyb.setDqList(dqList);
+								orList.add(newsyb);
+							}
+						}//大区为空
+						else{
+							OrganizationResultVO newsyb = new OrganizationResultVO();
+							List<DqVO> newdqList = new ArrayList<DqVO>();
+							DqVO newdq = new DqVO();
+							newdq.setFgsList(fgsList);
+							newdqList.add(newdq);
+							newsyb.setDqList(newdqList);
+							orList.add(newsyb);
+						}
+					}//分公司为空
+					else{
+						OrganizationResultVO newsyb = new OrganizationResultVO();
+						List<DqVO> newdqList = new ArrayList<DqVO>();
+						DqVO newdq = new DqVO();
+						FgsVO newfgs = new FgsVO();
+						List<FgsVO> newfgsList = new ArrayList<FgsVO>();
+						newfgs.setYybList(yybList);
+						newfgsList.add(newfgs);
+						newdq.setFgsList(newfgsList);
+						newdqList.add(newdq);
+						newsyb.setDqList(newdqList);
+						orList.add(newsyb);
+					}
+				}//营业部为空
+				else{
+					OrganizationResultVO newsyb = new OrganizationResultVO();
+					List<DqVO> newdqList = new ArrayList<DqVO>();
+					DqVO newdq = new DqVO();
+					FgsVO newfgs = new FgsVO();
+					List<FgsVO> newfgsList = new ArrayList<FgsVO>();
+					YybVO newyyb = new YybVO();
+					List<YybVO> newyybList = new ArrayList<YybVO>();
+					newyyb.setTlist(tdList);
+					newyybList.add(newyyb);
+					newfgs.setYybList(newyybList);
+					newfgsList.add(newfgs);
+					newdq.setFgsList(newfgsList);
+					newdqList.add(newdq);
+					newsyb.setDqList(newdqList);
+					orList.add(newsyb);
+				}
+			}
 		}
-		/*organizationCondition.setDelFlg(Constant.FLAG_ZERO);
-		List<OrganizationVO> organizationList = organizationMapper.selectOrganizationByCondition(organizationCondition);
-		//事业部
-		if(organizationCondition.getDid() != null && !"".equals(organizationCondition.getDid())){
-			//获取名及经理
-			OrganizationCodeVO organizationCode = organizationMapper.selectOrganizationCodeByOid(organizationCondition.getDid(), Constant.FLAG_ZERO);
-			//返回id,name,manager
-			organizationResult.setDid(organizationCode.getOid());
-			organizationResult.setDname(organizationCode.getOname());
-			organizationResult.setDmanager(organizationCode.getMname());
-			//大区
-			organizationResult.setPid("");
-			organizationResult.setPname("");
-			organizationResult.setPmanager("");
-			//分公司
-			organizationResult.setFid("");
-			organizationResult.setFname("");
-			organizationResult.setFmanager("");
-			//营业部
-			organizationResult.setYid("");
-			organizationResult.setYname("");
-			organizationResult.setYmanager("");
-			//团队经理
-			organizationResult.setTid("");
-			organizationResult.setTname("");
-			organizationResult.setTmanager("");
-		}//大区
-		else if(organizationCondition.getPid() != null && !"".equals(organizationCondition.getPid())){
-			for(OrganizationVO organization : organizationList){
-				if(organizationCondition.getPid().equals(organization.getPid())){
-					//事业部
-					OrganizationCodeVO sybOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getDid(), Constant.FLAG_ZERO);
-					organizationResult.setDid(sybOrganizationCode.getOid());
-					organizationResult.setDname(sybOrganizationCode.getOname());
-					organizationResult.setDmanager(sybOrganizationCode.getMname());
-					//大区
-					OrganizationCodeVO dqOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getPid(), Constant.FLAG_ZERO);
-					organizationResult.setPid(dqOrganizationCode.getOid());
-					organizationResult.setPname(dqOrganizationCode.getOname());
-					organizationResult.setPmanager(dqOrganizationCode.getMname());
-					//分公司
-					organizationResult.setFid("");
-					organizationResult.setFname("");
-					organizationResult.setFmanager("");
-					//营业部
-					organizationResult.setYid("");
-					organizationResult.setYname("");
-					organizationResult.setYmanager("");
-					//团队经理
-					organizationResult.setTid("");
-					organizationResult.setTname("");
-					organizationResult.setTmanager("");
-					break;
-				}
-			}
-		}//分公司
-		else if(organizationCondition.getFid() != null && !"".equals(organizationCondition.getFid())){
-			for(OrganizationVO organization : organizationList){
-				if(organizationCondition.getFid().equals(organization.getFid())){
-					//事业部
-					OrganizationCodeVO sybOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getDid(), Constant.FLAG_ZERO);
-					organizationResult.setDid(sybOrganizationCode.getOid());
-					organizationResult.setDname(sybOrganizationCode.getOname());
-					organizationResult.setDmanager(sybOrganizationCode.getMname());
-					//大区
-					OrganizationCodeVO dqOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getPid(), Constant.FLAG_ZERO);
-					organizationResult.setPid(dqOrganizationCode.getOid());
-					organizationResult.setPname(dqOrganizationCode.getOname());
-					organizationResult.setPmanager(dqOrganizationCode.getMname());
-					//分公司
-					OrganizationCodeVO fgsOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getFid(), Constant.FLAG_ZERO);
-					organizationResult.setFid(fgsOrganizationCode.getOid());
-					organizationResult.setFname(fgsOrganizationCode.getOname());
-					organizationResult.setFmanager(fgsOrganizationCode.getMname());
-					//营业部
-					organizationResult.setYid("");
-					organizationResult.setYname("");
-					organizationResult.setYmanager("");
-					//团队经理
-					organizationResult.setTid("");
-					organizationResult.setTname("");
-					organizationResult.setTmanager("");
-					break;
-				}
-			}
-		}//营业部
-		else if(organizationCondition.getYid() != null && !"".equals(organizationCondition.getYid())){
-			for(OrganizationVO organization : organizationList){
-				if(organizationCondition.getYid().equals(organization.getYid())){
-					//事业部
-					OrganizationCodeVO sybOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getDid(), Constant.FLAG_ZERO);
-					organizationResult.setDid(sybOrganizationCode.getOid());
-					organizationResult.setDname(sybOrganizationCode.getOname());
-					organizationResult.setDmanager(sybOrganizationCode.getMname());
-					//大区
-					OrganizationCodeVO dqOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getPid(), Constant.FLAG_ZERO);
-					organizationResult.setPid(dqOrganizationCode.getOid());
-					organizationResult.setPname(dqOrganizationCode.getOname());
-					organizationResult.setPmanager(dqOrganizationCode.getMname());
-					//分公司
-					OrganizationCodeVO fgsOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getFid(), Constant.FLAG_ZERO);
-					organizationResult.setFid(fgsOrganizationCode.getOid());
-					organizationResult.setFname(fgsOrganizationCode.getOname());
-					organizationResult.setFmanager(fgsOrganizationCode.getMname());
-					//营业部
-					OrganizationCodeVO yybOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getYid(), Constant.FLAG_ZERO);
-					organizationResult.setYid(yybOrganizationCode.getOid());
-					organizationResult.setYname(yybOrganizationCode.getOname());
-					organizationResult.setYmanager(yybOrganizationCode.getMname());
-					//团队经理
-					organizationResult.setTid("");
-					organizationResult.setTname("");
-					organizationResult.setTmanager("");
-					break;
-				}
-			}
-		}//团队
-		else if(organizationCondition.getTid() != null && !"".equals(organizationCondition.getTid())){
-			for(OrganizationVO organization : organizationList){
-				if(organizationCondition.getTid().equals(organization.getTid())){
-					//事业部
-					OrganizationCodeVO sybOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getDid(), Constant.FLAG_ZERO);
-					organizationResult.setDid(sybOrganizationCode.getOid());
-					organizationResult.setDname(sybOrganizationCode.getOname());
-					organizationResult.setDmanager(sybOrganizationCode.getMname());
-					//大区
-					OrganizationCodeVO dqOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getPid(), Constant.FLAG_ZERO);
-					organizationResult.setPid(dqOrganizationCode.getOid());
-					organizationResult.setPname(dqOrganizationCode.getOname());
-					organizationResult.setPmanager(dqOrganizationCode.getMname());
-					//分公司
-					OrganizationCodeVO fgsOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getFid(), Constant.FLAG_ZERO);
-					organizationResult.setFid(fgsOrganizationCode.getOid());
-					organizationResult.setFname(fgsOrganizationCode.getOname());
-					organizationResult.setFmanager(fgsOrganizationCode.getMname());
-					//营业部
-					OrganizationCodeVO yybOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getYid(), Constant.FLAG_ZERO);
-					organizationResult.setYid(yybOrganizationCode.getOid());
-					organizationResult.setYname(yybOrganizationCode.getOname());
-					organizationResult.setYmanager(yybOrganizationCode.getMname());
-					//团队经理
-					OrganizationCodeVO tOrganizationCode = organizationMapper.selectOrganizationCodeByOid(organization.getTid(), Constant.FLAG_ZERO);
-					organizationResult.setTid(tOrganizationCode.getOid());
-					organizationResult.setTname(tOrganizationCode.getOname());
-					organizationResult.setTmanager(tOrganizationCode.getMname());
-					break;
-				}
-			}
-		}*/
-//		organizationResultList.add(organizationResult);
 		return orList;
 	}
 	
-	public OrganizationMapper getOrganizationMapper() {
-		return organizationMapper;
-	}
-
-	public void setOrganizationMapper(OrganizationMapper organizationMapper) {
-		this.organizationMapper = organizationMapper;
-	}
-
 	/***
 	 * 获取某事业部下所有大区
 	 */
