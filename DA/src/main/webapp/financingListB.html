@@ -55,7 +55,7 @@
 				var faild = function(error){
 					alert(error);
 				};
-				var user = JSON.parse(localStorage.user);//取user
+				var user = JSON.parse(sessionStorage.user);//取user
 				ajaxPost('/selectPrincipalByCondition',{"startTime":statementDateS,"endTime":statementDateE},false,success,faild); 
 			}
 			function createTh(data){//读表格字段

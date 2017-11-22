@@ -50,7 +50,7 @@
 	      $this.addClass("currentA"); 
 	    } 
 	 });
-	var user = JSON.parse(localStorage.user);
+	var user = JSON.parse(sessionStorage.user);
 	document.getElementById('nameId').innerHTML = user.name; // 用户名
 	if(user.typeId == '1' || user.typeId == 'system' || user.typeId == '10' ||  user.typeId == '11' ||  user.typeId == '12' ||  user.typeId == '13'){ // 数据、超级管理
 		document.getElementById('addDataSNav').style.display = 'block';

@@ -78,7 +78,7 @@
 				var faild = function(error){
 					alert(error);
 				};
-				user = JSON.parse(localStorage.user);
+				user = JSON.parse(sessionStorage.user);
 				ajaxDownExcel('/downloadSummaryTable',{"typeId":user.typeId,"userId":user.userId},success,faild); 
 			}
 			function emptySeach(){ //清空搜索框
@@ -120,7 +120,7 @@
 				var faild = function(error){
 					alert(error);
 				};
-				user = JSON.parse(localStorage.user);
+				user = JSON.parse(sessionStorage.user);
 				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"contract":contract,"status":status,
 												"lcManager":lcManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,
 												"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,"syb":syb,

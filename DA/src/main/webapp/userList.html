@@ -30,13 +30,6 @@
 					    <input id="file" type="file" multiple="multiple"/>
 					    <p class="downExcelBtn"><button id="upload" type="button" value="导入数据">upload</button></p>
 					</div> -->
-					<!-- <form id="uploadForm" enctype="multipart/form-data">
-					    <input id="file" type="file" name="file"/>
-					    <p class="downExcelBtn"><button id="upload" type="button" onclick="upFile()">导入数据</button></p>
-					</form> 
-					<form id="uploadForm">  
-					      <p  class="downExcelBtn"><input type="file" name="file1"/> </p><input type="button" value="上传文件" onclick="doUpload()" />   
-					</form>-->
 					<form id="uploadForm">
 					  <p class="downExcelBtn">
 					  	<input type="file" id="file1" name="file1">
@@ -55,13 +48,13 @@
 		<script>
 			loading();loaddataList();
 			var downloadCodingTemplate = '/downloadCodingTemplate';
-			var user = JSON.parse(localStorage.user);
+			var user = JSON.parse(sessionStorage.user);
 			$('#upLoad').click(function(){
 			  var files = $('#file1').prop('files');
 			  var data = new FormData();
 			  data.append('file1', files[0]);
 			  $.ajax({
-			      url: '/uploadExcelFile',
+			      url: '/uploadOrgExcelFile',
 			      type: 'POST',
 			      data: data,
 			      cache: false,
@@ -77,25 +70,6 @@
 	              }  
 			  });
 			});
-		   /*  function doUpload() {  
-		         var formData = new FormData($( "#uploadForm" )[0]);  
-		         $.ajax({  
-		              url: '/uploadExcelFile' ,  
-		              type: 'POST',  
-		              data: {formData},  
-		              async: false,  
-		              cache: false,  
-		              contentType: false,  
-		              processData: false,  
-		              success: function (returndata) {  
-		                  alert(returndata);  
-		              },  
-		              error: function (returndata) {  
-		                  alert(returndata);  
-		              }  
-		         });  
-		    } */  
-			
 			function emptySeach(){
 				document.getElementById('userId').value = '';
 				document.getElementById('name').value = '';
