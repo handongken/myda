@@ -97,6 +97,7 @@ public class ExcelController {
 			//架构信息显示name
 			OrganizationConditionVO orcon = new OrganizationConditionVO();
 			orcon.setDelFlg(Constant.FLAG_ZERO);
+			orcon.setVlevel(Constant.FLAG_ZERO);
 			//syb
 			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
 				orcon.setD_ID(info.getSyb());
@@ -201,6 +202,7 @@ public class ExcelController {
 			//架构信息显示name
 			OrganizationConditionVO orcon = new OrganizationConditionVO();
 			orcon.setDelFlg(Constant.FLAG_ZERO);
+			orcon.setVlevel(Constant.FLAG_ZERO);
 			//syb
 			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
 				orcon.setD_ID(info.getSyb());
@@ -299,6 +301,7 @@ public class ExcelController {
 			//架构信息显示name
 			OrganizationConditionVO orcon = new OrganizationConditionVO();
 			orcon.setDelFlg(Constant.FLAG_ZERO);
+			orcon.setVlevel(Constant.FLAG_ZERO);
 			//syb
 			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
 				orcon.setD_ID(info.getSyb());
@@ -397,6 +400,7 @@ public class ExcelController {
 			//架构信息显示name
 			OrganizationConditionVO orcon = new OrganizationConditionVO();
 			orcon.setDelFlg(Constant.FLAG_ZERO);
+			orcon.setVlevel(Constant.FLAG_ZERO);
 			//syb
 			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
 				orcon.setD_ID(info.getSyb());
@@ -512,6 +516,7 @@ public class ExcelController {
 			//架构信息显示name
 			OrganizationConditionVO orcon = new OrganizationConditionVO();
 			orcon.setDelFlg(Constant.FLAG_ZERO);
+			orcon.setVlevel(Constant.FLAG_ZERO);
 			//syb
 			if(principal.getSyb() != null && !"".equals(principal.getSyb()) && !"A001".equals(principal.getSyb())){
 				orcon.setD_ID(principal.getSyb());
@@ -675,6 +680,7 @@ public class ExcelController {
 			//架构信息显示name
 			OrganizationConditionVO orcon = new OrganizationConditionVO();
 			orcon.setDelFlg(Constant.FLAG_ZERO);
+			orcon.setVlevel(Constant.FLAG_ZERO);
 			//syb
 			if(result.getSyb() != null && !"".equals(result.getSyb()) && !"A001".equals(result.getSyb())){
 				orcon.setD_ID(result.getSyb());
@@ -755,7 +761,7 @@ public class ExcelController {
 	}
 	
 	/**
-	 * 下载模板
+	 * 下载编码模板
 	 *
 	 */
 	@RequestMapping(value="/downloadCodingTemplate", method = RequestMethod.POST)
@@ -763,6 +769,18 @@ public class ExcelController {
 		String fileName = Constant.CODINGTEMPLATENAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		ExcelUtil.getInstance().downloadCodingTemplate(Constant.CODINGTEMPLATE,
+				getOutputStreamByCondition(excelName,res), true);
+	}
+	
+	/**
+	 * 下载数据总表模板
+	 *
+	 */
+	@RequestMapping(value="/downloadDataTemplate", method = RequestMethod.POST)
+	protected void downloadDataTemplate(HttpServletResponse res) throws Exception {
+		String fileName = Constant.SUMMARYNAME + getDate() + ".xlsx";
+		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
+		ExcelUtil.getInstance().downloadCodingTemplate(Constant.INFOUPLOADTEMPLATE,
 				getOutputStreamByCondition(excelName,res), true);
 	}
 	
