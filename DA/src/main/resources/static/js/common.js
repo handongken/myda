@@ -24,7 +24,7 @@ function downExcelExcel(downUrl){//财务导出表格
 		alert(error);
 	};
 	//取user
-	var user = JSON.parse(localStorage.user);
+	var user = JSON.parse(sessionStorage.user);
 	ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"startTime":statementDateS},success,faild); 
 } 
 function downDataExcel(downUrl){//数据导出表格 续投 赎回 提前赎回
@@ -36,7 +36,7 @@ function downDataExcel(downUrl){//数据导出表格 续投 赎回 提前赎回
 		alert(error);
 	};
 	//取user
-	var user = JSON.parse(localStorage.user);
+	var user = JSON.parse(sessionStorage.user);
 	ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId},success,faild); 
 } 
 function bindListener(obj,contract){ //删除单行table
@@ -54,19 +54,19 @@ function bindListener(obj,contract){ //删除单行table
 		alert(error);
 	};
 	//取user
-	var user = JSON.parse(localStorage.user);
+	var user = JSON.parse(sessionStorage.user);
 	ajaxPost('/deleteByPrimaryKey',{"contract":contract,"userId":user.userId},success,faild); 
 }
+
 function exit(){ //退出
 	/*var success = function(data){ // data 是服务器返回的
-		
 	};
 	var faild = function(error){ // error 是服务器返回的
 		alert(error);
 	};
 	var user = JSON.parse(localStorage.user);
 	ajaxPost('/login',{},success,faild); //像服务器发送	*/
-	localStorage.clear(); //直接清空
+	sessionStorage.clear(); //直接清空
 	location.href = "loginPage.html";
 }
 $(function(){//侧边栏

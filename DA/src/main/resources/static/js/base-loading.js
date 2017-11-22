@@ -1,4 +1,4 @@
-﻿if(!localStorage.user){
+﻿if(!sessionStorage.user){
 	location.href = "loginPage.html";
 }else{
 	loading();
