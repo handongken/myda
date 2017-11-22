@@ -26,7 +26,14 @@ public class OrganizationConditionVO {
 	private String mname;
 	private String levelType;
 	private String con;
+	private String vlevel;
 	
+	public String getVlevel() {
+		return vlevel;
+	}
+	public void setVlevel(String vlevel) {
+		this.vlevel = vlevel;
+	}
 	public String getOidOrgid() {
 		return oidOrgid;
 	}
