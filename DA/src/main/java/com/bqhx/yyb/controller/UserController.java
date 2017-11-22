@@ -131,6 +131,7 @@ public class UserController {
 			}
 			OrganizationConditionVO organizationConditionVO = new OrganizationConditionVO();
 			organizationConditionVO.setDelFlg(Constant.FLAG_ZERO);
+			organizationConditionVO.setVlevel(Constant.FLAG_ZERO);
 			//syb
 			if(userVO.getSid() != null && !"".equals(userVO.getSid()) && !"A001".equals(userVO.getSid())){
 				organizationConditionVO.setD_ID(userVO.getSid());

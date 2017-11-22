@@ -6,6 +6,7 @@
 		<id column="O_ID" property="oid" jdbcType="VARCHAR" />
 		<result column="O_NAME" property="oname" jdbcType="VARCHAR" />
 		<result column="M_NAME" property="mname" jdbcType="VARCHAR" />
+		<result column="V_LEVEL" property="vlevel" jdbcType="VARCHAR" />
 		<result column="LEVEL_TYPE" property="levelType" jdbcType="INTEGER" />
 		<result column="DEL_FLG" property="delFlg" jdbcType="INTEGER" />
 	</resultMap>
@@ -64,7 +65,7 @@
 	</resultMap>
 	
 	<sql id="Organization_Code_Column_List">
-		O_ID, O_NAME, M_NAME, LEVEL_TYPE, DEL_FLG
+		O_ID, O_NAME, M_NAME, LEVEL_TYPE, DEL_FLG, V_LEVEL
 	</sql>
 
     <sql id="Organization_Column_List">
@@ -162,6 +163,9 @@
 			<if test="delFlg != null and delFlg != ''">
 				and o.del_flg = #{delFlg}
 			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
+			</if>
 		</where>
 	</select>
 	
@@ -198,6 +202,9 @@
 			</if>
 			<if test="delFlg != null and delFlg != ''">
 				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
 			</if>
 		</where>
 	</select>
@@ -238,6 +245,9 @@
 			</if>
 			<if test="delFlg != null and delFlg != ''">
 				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
 			</if>
 		</where>
 	</select>
@@ -281,6 +291,9 @@
 			</if>
 			<if test="delFlg != null and delFlg != ''">
 				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
 			</if>
 		</where>
 	</select>
@@ -327,6 +340,9 @@
 			</if>
 			<if test="delFlg != null and delFlg != ''">
 				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
 			</if>
 		</where>
 	</select>

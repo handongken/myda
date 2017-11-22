@@ -36,7 +36,7 @@ public class OrganizationController {
 		//条件
 		OrganizationConditionVO orcondition = new OrganizationConditionVO();
 		orcondition.setDelFlg(Constant.FLAG_ZERO);
-		
+		orcondition.setVlevel(Constant.FLAG_ZERO);
 		//用户属于总部(数据和管理员)
 		if("1".equals(typeId) || "system".equals(typeId)){
 			//所有事业部

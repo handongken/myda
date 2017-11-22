@@ -141,6 +141,7 @@ public class InformationController {
 				//架构信息显示name
 				OrganizationConditionVO orcon = new OrganizationConditionVO();
 				orcon.setDelFlg(Constant.FLAG_ZERO);
+				orcon.setVlevel(Constant.FLAG_ZERO);
 				//syb
 				if(informationVO.getSyb() != null && !"".equals(informationVO.getSyb()) && !"A001".equals(informationVO.getSyb())){
 					orcon.setD_ID(informationVO.getSyb());
@@ -229,7 +230,7 @@ public class InformationController {
 		String updDate = DateUtil.formatDate(new Date(), Constant.PATTERN_HMS);
 		if (updDate != null && updDate != "") {
 			record.setUpdDate(updDate);
-		}
+		}//
 		record.setUpdUser(user.getUserId());
 		MessageVO messageVO = new MessageVO();
 		int code = informationVOMapper.updateByPrimaryKeySelective(record);
