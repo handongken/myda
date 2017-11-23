@@ -75,7 +75,7 @@ public class ExcelController {
 			InformationVO info = list.get(i);
 			//type
 			String type = info.getType();
-			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type);
+			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type,Constant.FLAG_ZERO);
 			String typeName = typeVO.getTypeName();
 			if(typeName != null && typeName != ""){
 				info.setType(typeName);
@@ -182,7 +182,7 @@ public class ExcelController {
 			InformationVO info = list.get(i);
 			//type
 			String type = info.getType();
-			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type);
+			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type,Constant.FLAG_ZERO);
 			String typeName = typeVO.getTypeName();
 			if(typeName != null && typeName != ""){
 				info.setType(typeName);
@@ -281,7 +281,7 @@ public class ExcelController {
 			InformationVO info = list.get(i);
 			//type
 			String type = info.getType();
-			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type);
+			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type,Constant.FLAG_ZERO);
 			String typeName = typeVO.getTypeName();
 			if(typeName != null && typeName != ""){
 				info.setType(typeName);
@@ -380,7 +380,7 @@ public class ExcelController {
 			InformationVO info = list.get(i);
 			//type
 			String type = info.getType();
-			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type);
+			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type,Constant.FLAG_ZERO);
 			String typeName = typeVO.getTypeName();
 			if(typeName != null && typeName != ""){
 				info.setType(typeName);

@@ -292,7 +292,7 @@ public class InformationController {
 	void insertCertificate(ConditionVO condition){
 		CertificateVO certificateVO = new CertificateVO();
 		String startDate = condition.getStartDate();
-		TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(condition.getType());
+		TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(condition.getType(),Constant.FLAG_ZERO);
 		String typeName = typeVO.getTypeName();
 		int returnInterval = typeVO.getReturnInterval();
 		String terminateDate = DateUtil.convertDay(startDate,-Constant.ONE);
@@ -329,7 +329,7 @@ public class InformationController {
 		PrincipalVO principalVO = new PrincipalVO();
 		principalVO.setContract(condition.getContract());
 		principalVO.setMoney(condition.getMoney());
-		TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(condition.getType());
+		TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(condition.getType(),Constant.FLAG_ZERO);
 		principalVO.setTypeName(typeVO.getTypeName());
 		principalVO.setLcManager(condition.getLcManager());
 		principalVO.setTmanager(condition.getTmanager());
