@@ -120,9 +120,9 @@ public final class Constant {
 	 */
 	public static final String CODINGTEMPLATE = "coding-template.xlsx";
 	/**
-	 * infouploadtemplate
+	 * uploadinfotemplate
 	 */
-	public static final String INFOUPLOADTEMPLATE = "coding-template.xlsx";
+	public static final String UPLOADINFOTEMPLATE = "uploadinfo-template.xlsx";
 	/**
 	 * 业绩日报总表标题
 	 */

@@ -83,7 +83,7 @@ public class ExcelController {
 			//status
 			String status = info.getStatus();
 			String statusValue = StatusEnum.getValue(status);
-			if(statusValue != null && statusValue != ""){
+			if(statusValue != ""){
 				info.setStatus(statusValue);
 			}
 			if(typeId != null && !typeId.equals("") && !typeId.equals(Constant.MB)){
@@ -190,7 +190,7 @@ public class ExcelController {
 			//status
 			String status = info.getStatus();
 			String statusValue = StatusEnum.getValue(status);
-			if(statusValue != null && statusValue != ""){
+			if(statusValue != ""){
 				info.setStatus(statusValue);
 			}
 			//continueFlg
@@ -289,7 +289,7 @@ public class ExcelController {
 			//status
 			String status = info.getStatus();
 			String statusValue = StatusEnum.getValue(status);
-			if(statusValue != null && statusValue != ""){
+			if(statusValue != ""){
 				info.setStatus(statusValue);
 			}
 			//continueFlg
@@ -388,7 +388,7 @@ public class ExcelController {
 			//status
 			String status = info.getStatus();
 			String statusValue = StatusEnum.getValue(status);
-			if(statusValue != null && statusValue != ""){
+			if(statusValue != ""){
 				info.setStatus(statusValue);
 			}
 			//continueFlg
@@ -780,7 +780,7 @@ public class ExcelController {
 	protected void downloadDataTemplate(HttpServletResponse res) throws Exception {
 		String fileName = Constant.SUMMARYNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		ExcelUtil.getInstance().downloadCodingTemplate(Constant.INFOUPLOADTEMPLATE,
+		ExcelUtil.getInstance().downloadCodingTemplate(Constant.UPLOADINFOTEMPLATE,
 				getOutputStreamByCondition(excelName,res), true);
 	}
 	
