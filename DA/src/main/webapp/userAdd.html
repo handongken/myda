@@ -20,8 +20,22 @@
 					<div class="form-group">
 						<label for="userId">用户编号</label>
 			            <input type="text" id="userId" name="userId" value="" maxlength="10" placeholder="请输入用户编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/>
-			            <label for="tid">团队编号</label>
-			            <input type="text" id="tid" name="tid" value="" maxlength="5" placeholder="请输入团队编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/>
+			            <label for="typeName">权限类型</label>
+			        	<select id="typeName" required>
+			            	<option value="">请选择权限类型</option>
+			            	<option value="1">数据专员</option>
+			            	<option value="2">预算、市场专员</option>
+			            	<option value="3">理财经理</option>
+			            	<option value="4">团队经理</option>
+			            	<option value="5">营业部经理</option>
+			            	<option value="6">分公司经理</option>
+			            	<option value="7">大区经理</option>
+			            	<option value="8">事业部经理</option>
+			            	<option value="9">机构管理人员</option>
+			            	<option value="system">超级管理员</option>
+			            </select>
+			            <!-- <label for="tid">团队编号</label>
+			            <input type="text" id="tid" name="tid" value="" maxlength="5" placeholder="请输入团队编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
 			        </div>
 			        <div class="form-group" >
 			        	<label for="sid">事业部编号</label>
@@ -40,34 +54,17 @@
 	 		            <!-- <input type="text" id="yid" name="yid" value="" maxlength="10" placeholder="请输入营业部编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
 			        </div>
 			        <div id="passBox" class="form-group">
+			       		<label for="name">用户名</label>
+			            <input type="text" id="name" name="name" value="" maxlength="10" placeholder="请输入用户名" required/>
 			        	<label for="password">密码</label>
 			            <input type="text" id="password" name="password" maxlength="20" placeholder="请输入密码" required/>
-			            <label for="typeName">权限类型</label>
-			        	<select id="typeName" required>
-			            	<option value="">请选择权限类型</option>
-			            	<option value="1">数据专员</option>
-			            	<option value="2">预算、市场专员</option>
-			            	<option value="3">理财经理</option>
-			            	<option value="4">团队经理</option>
-			            	<option value="5">营业部经理</option>
-			            	<option value="6">分公司经理</option>
-			            	<option value="7">大区经理</option>
-			            	<option value="8">事业部经理</option>
-			            	<option value="9">机构管理人员</option>
-			            	<option value="system">超级管理员</option>
-			            </select>
+			            
 			        </div>
 					<div class="form-group" >
-						<label for="name">用户名</label>
-			            <input type="text" id="name" name="name" value="" maxlength="10" placeholder="请输入用户名" required/>
+						<label for="idCard">身份证号</label>
+			            <input type="text" id="idCard" name="idCard" value="" maxlength="18" placeholder="请输入身份证号" required/>
 			            <label for="tel">电 &nbsp; &nbsp; &nbsp;话</label>
 			            <input type="text" id="tel" name="tel" value="" maxlength="13" placeholder="请输入电话" required/>
-			        </div>
-			        <div class="form-group">
-			            <label for="idCard">身份证号</label>
-			            <input type="text" id="idCard" name="idCard" value="" maxlength="18" placeholder="请输入身份证号" required/>
-			            <label class="visibilityHidden"></label>
-			            <input type="text" required  class="visibilityHidden"/>
 			        </div>
 			       <!--  <a href="javascript:;" id="editBtn" class="btn btn-box fl" style="display: none;" onclick="saveData()">保存</a> -->
 					<a href="javascript:;" id="addBtn" class="btn btn-box btnBgCFF6666 fl" onclick="addData()">新增</a>
@@ -82,17 +79,27 @@
 			var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
 			function addData(){ //新增
 				var userId = document.getElementById("userId").value; 
+				if(userId == ''){alert('用户编号不能为空,请填写正确用户编号!');return false;}
 				var sid = document.getElementById('sid').value; 
+				if(sid == '' || sid == '0'){alert('事业部编号不能为空,请填写正确事业部编号!');return false;}
 				var did = document.getElementById('did').value;
+				if(did == '' || did == '0'){alert('大区编号不能为空,请填写正确大区编号!');return false;}
 				var fid = document.getElementById('fid').value;
+				if(fid == '' || fid == '0'){alert('分公司编号不能为空,请填写正确分公司编号!');return false;}
 				var yid = document.getElementById('yid').value;
-				var tid = document.getElementById('tid').value;
+				if(yid == '' || yid == '0'){alert('营业部编号不能为空,请填写正确营业部编号!');return false;}
+				/* var tid = document.getElementById('tid').value;
+				if(tid == ''){alert('团队编号不能为空,请填写正确团队编号!');return false;} */
 				var name = document.getElementById("name").value;
+				if(name == ''){alert('用户名不能为空,请填写正确用户名!');return false;}
 				var password = document.getElementById("password").value;
+				if(password == ''){alert('密码不能为空,请填写正确密码!');return false;}
 				var typeName = document.getElementById("typeName").value;
+				if(typeName == '' || typeName == '0'){alert('请选择正确权限类型!');return false;}
 				var tel = document.getElementById('tel').value; 
 				if(tel == "" || !phoneReg.test(tel)){alert("请输入正确电话");return false;}
 				var idCard = document.getElementById('idCard').value;	
+				if(idCard == ''){alert('身份证号不能为空,请填写正确身份证号!');return false;}
 				var success = function(data){
 					if(data.code == 1){
 						alert('提交成功！');

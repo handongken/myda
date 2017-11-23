@@ -9,6 +9,7 @@ import com.bqhx.yyb.vo.TypeVO;
 @Mapper
 public interface TypeMapper {
 
-	TypeVO selectTypeByPrimaryKey(@Param("type")String type);
+	TypeVO selectTypeByPrimaryKey(@Param("type")String type,@Param("delFlg")String delFlg);
 
+	TypeVO selectTypeByCondition(TypeVO type);
 }

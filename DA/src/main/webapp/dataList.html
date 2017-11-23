@@ -169,7 +169,7 @@
 				var faild = function(error){
 					alert(error);
 				};
-				user = JSON.parse(sessionStorage.user);
+				user = JSON.parse(sessionStorage.user);	
 				ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"contract":contract,"tel":tel,"status":status,"tenderName":tenderName,
 												"lcManager":lcManager,"yyb":yyb,"yybManager":yybManager,"fgs":fgs,
 												"fgsManager":fgsManager,"dq":dq,"dqManager":dqManager,"syb":syb,

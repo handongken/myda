@@ -20,8 +20,8 @@
 					<div class="form-group">
 						<label for="userId">用户编号</label>
 			            <input type="text" id="userId" name="userId" value="" maxlength="10" placeholder="请输入用户编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" disabled/>
-			        	<label class="visibilityHidden"></label>
-			            <input type="text" required  class="visibilityHidden"/>
+			       	 	<label for="name">用户名</label>
+			            <input type="text" id="name" name="name" value="" maxlength="10" placeholder="请输入用户名" required/>
 			        </div>
 			        <div class="form-group" >
 			        	<label for="sid">事业部编号</label>
@@ -36,9 +36,7 @@
 			            <select id="yid" required></select>
 			        </div> 
 			        <div id="passBox" class="form-group visibilityHidden">
-			        	<label for="password">密码</label>
-			            <input type="text" id="password" name="password" maxlength="20" placeholder="请输入密码" required/>
-			            <label for="typeName">权限类型</label>
+			        	<label for="typeName">权限类型</label>
 			        	<select id="typeName" required>
 			            	<option value="">请选择权限类型</option>
 			            	<option value="1">数据专员</option>
@@ -52,18 +50,14 @@
 			            	<option value="9">机构管理人员</option>
 			            	<option value="system">超级管理员</option>
 			            </select>
+			        	<label for="password">密码</label>
+			            <input type="text" id="password" name="password" maxlength="20" placeholder="请输入密码" required/>
 			        </div>
 					<div class="form-group" >
-						<label for="name">用户名</label>
-			            <input type="text" id="name" name="name" value="" maxlength="10" placeholder="请输入用户名" required/>
+					 	<label for="idCard">身份证号</label>
+			            <input type="text" id="idCard" name="idCard" value="" maxlength="19" placeholder="请输入身份证号" required/>
 			            <label for="tel">电 &nbsp; &nbsp; &nbsp;话</label>
 			            <input type="text" id="tel" name="tel" value="" maxlength="13" placeholder="请输入电话" required/>
-			        </div>
-			        <div class="form-group">
-			            <label for="idCard">身份证号</label>
-			            <input type="text" id="idCard" name="idCard" value="" maxlength="19" placeholder="请输入身份证号" required/>
-			            <label class="visibilityHidden"></label>
-			            <input type="text" required  class="visibilityHidden"/>
 			        </div>
 			        <a href="javascript:;" id="editBtn" class="btn btn-box fl" onclick="saveData()">保存</a>
 					<!-- <a href="javascript:;" id="addBtn" class="btn btn-box btnBgCFF6666 fl" style="display: none;" onclick="addData()">新增</a> -->
@@ -84,12 +78,16 @@
 					if(data!= ''){
 						document.getElementById("userId").value = data[0].userId; 
 						document.getElementById("sid").value = data[0].sid;
+						if(document.getElementById("sid").value == ''){document.getElementById("sid").value = 0;}
 						queryDq();
 						document.getElementById("did").value = data[0].did;
+						if(document.getElementById("did").value == ''){document.getElementById("did").value = 0;}
 						queryFid(); 
 						document.getElementById("fid").value = data[0].fid;
+						if(document.getElementById("fid").value == ''){document.getElementById("fid").value = 0;}
 						queryYid();
 					    document.getElementById("yid").value = data[0].yid;
+					    if(document.getElementById("yid").value == ''){document.getElementById("yid").value = 0;}
 						//document.getElementById("tid").value = data[0].tid;
 						document.getElementById("name").value = data[0].name;
 						document.getElementById("password").value = data[0].password;
@@ -104,20 +102,21 @@
 			}
 			function saveData(){ //保存
 				var userId = document.getElementById("userId").value; 
-				if(document.getElementById("sid")) var sid = document.getElementById("sid").value; 
-				if(document.getElementById("did")) var did = document.getElementById("did").value;
-				if(document.getElementById("fid")) var fid = document.getElementById("fid").value;
-				var fid = document.getElementById('fid').value;
-				if(document.getElementById("yid")) var yid = document.getElementById("yid").value;
-				var yid = document.getElementById('yid').value;
-				if(document.getElementById("tid")) var tid = document.getElementById("tid").value;
+				if(userId == ''){alert('用户编号不能为空,请填写正确用户编号!');return false;}
+				var name = document.getElementById("name").value;
+				if(name == ''){alert('用户名不能为空,请填写正确用户名!');return false;}
+				var sid = document.getElementById("sid").value;
+				var did = document.getElementById("did").value;
+				var fid = document.getElementById("fid").value;
+				var yid = document.getElementById("yid").value;
+				//if(document.getElementById("tid")) var tid = document.getElementById("tid").value;
 				//var tid = document.getElementById('tid').value;
 				//var tname = document.getElementById('tname').value;
-				var name = document.getElementById("name").value;
 				var password = document.getElementById("password").value;
 				var tel = document.getElementById('tel').value; 
 				if(tel == "" || !phoneReg.test(tel)){alert("请输入正确电话");return false;}
 				var idCard = document.getElementById('idCard').value;
+				if(idCard == ''){alert('身份证号不能为空,请填写正确身份证号!');return false;}
 				var success = function(data){
 					if(data.code == 1){
 						alert('添加成功！');

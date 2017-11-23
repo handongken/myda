@@ -23,6 +23,17 @@ public class TypeVO  implements Serializable{
 	/**返次  */ 
 	private Integer returnNo;
 	
+	private String delFlg;
+	
+	public String getDelFlg() {
+		return delFlg;
+	}
+	public void setDelFlg(String delFlg) {
+		this.delFlg = delFlg;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public String getType() {
 		return type;
 	}
