@@ -15,7 +15,7 @@
 		<div class="container">
 			<div id="nav" class="sidebar"> </div>
 			<div class="content">
-				<h2>用户编辑区</h2>
+				<h2>用户编辑区<i></i></h2>
 				<form action="">
 					<div class="form-group">
 						<label for="userId">用户编号</label>
@@ -77,6 +77,7 @@
 		<script src="/js/query.select.js"></script>
 		<script>
 			var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
+			var idCardReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
 			function addData(){ //新增
 				var userId = document.getElementById("userId").value; 
 				if(userId == ''){alert('用户编号不能为空,请填写正确用户编号!');return false;}
@@ -99,7 +100,7 @@
 				var tel = document.getElementById('tel').value; 
 				if(tel == "" || !phoneReg.test(tel)){alert("请输入正确电话");return false;}
 				var idCard = document.getElementById('idCard').value;	
-				if(idCard == ''){alert('身份证号不能为空,请填写正确身份证号!');return false;}
+				if(idCard == '' || !idCardReg.test(idCard)){alert('身份证号不能为空,请填写正确身份证号!');return false;}
 				var success = function(data){
 					if(data.code == 1){
 						alert('提交成功！');
