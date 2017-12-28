@@ -127,6 +127,47 @@ public class InformationVO extends BaseVO implements Serializable{
 	private String managerStatus;
 	/**删除flg  */ 
 	private String delFlg;
+	/**汇入银行开卡地址:汇入银行开卡省份+汇入银行开卡城市*/
+	private String cardAddr;
+	/**回款银行开卡地址:回款银行开卡省份+回款银行开卡城市*/
+	private String inCardAddr;
+	/**大区副经理*/
+	private String dqAssistantManager;
+	/**事业部副经理*/
+	private String sybAssistantManager;
+	
+
+	public String getDqAssistantManager() {
+		return dqAssistantManager;
+	}
+
+	public void setDqAssistantManager(String dqAssistantManager) {
+		this.dqAssistantManager = dqAssistantManager;
+	}
+
+	public String getSybAssistantManager() {
+		return sybAssistantManager;
+	}
+
+	public void setSybAssistantManager(String sybAssistantManager) {
+		this.sybAssistantManager = sybAssistantManager;
+	}
+
+	public String getCardAddr() {
+		return cardAddr;
+	}
+
+	public void setCardAddr(String cardAddr) {
+		this.cardAddr = cardAddr;
+	}
+
+	public String getInCardAddr() {
+		return inCardAddr;
+	}
+
+	public void setInCardAddr(String inCardAddr) {
+		this.inCardAddr = inCardAddr;
+	}
 
 	public String getTname() {
 		return tname;

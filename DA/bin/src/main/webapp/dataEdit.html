@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+	<head> 
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>数据编辑页面</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/dataStyle.css" />
+	</head>
+		<div class="container">
+			<div id="nav" class="sidebar"> </div>
+			<div class="content">
+				<h2>数据管理编辑区<i></i></h2>
+				<form action="">
+					<div class="form-group"> 
+						<label for="contract">合同编号</label>
+			            <input type="text" id="contract" name="contract" value="" maxlength="7" placeholder="请输入合同编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"  disabled />
+			            <label class="visibilityHidden"></label>
+			            <input type="text" required  class="visibilityHidden"/>
+			        </div>
+					<div class="form-group" >
+						<label for="type">产品名称</label>
+			            <select id="type" name="type" onchange = "selectOnchange()">
+			            	<!--聚惠丰、聚惠盈、聚惠享、聚惠丰（50）、聚惠盈（50）、聚惠享（50）、聚惠丰（100）、聚惠盈（100）、聚惠享（100）、聚惠福、聚惠鑫、聚惠福（50）、聚惠福（100）、聚惠鑫（50）、聚惠鑫（100）、惠添利、惠添金、惠添利（50）、惠添利（100）、惠添金（50）、惠添金（100）-->
+			            	<option value="" selected>请选择产品名称</option>
+			            	<option value="0">聚惠丰</option>
+			            	<option value="1">聚惠盈</option>
+			            	<option value="2">聚惠享</option>
+			            	<option value="3">聚惠丰（50）</option>
+			            	<option value="4">聚惠盈（50）</option>
+			            	<option value="5">聚惠享（50）</option>
+			            	<option value="6">聚惠丰（100）</option>
+			            	<option value="7">聚惠盈（100）</option>
+			            	<option value="8">聚惠享（100）</option>
+			            	<option value="9">聚惠福</option>
+			            	<option value="10">聚惠鑫</option>
+			            	<option value="11">聚惠福（50）</option>
+			            	<option value="12">聚惠福（100）</option>
+			            	<option value="13">聚惠鑫（50）</option>
+			            	<option value="14">聚惠鑫（100）</option>
+			            	<option value="15">惠添利</option>
+			            	<option value="16">惠添金</option>
+			            	<option value="17">惠添利（50）</option>
+			            	<option value="18">惠添利（100）</option>
+			            	<option value="19">惠添金（50）</option>
+			            	<option value="20">惠添金（100）</option>
+			            </select>
+			            <label for="money">出借金额</label> 
+			            <input type="number" id="money" value="" maxlength="7" name="money" placeholder="请输入出借金额" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="zbRatio">折标系数</label>
+			            <input type="text" id="zbRatio" value="" name="zbRatio" placeholder="请选择产品名称计算折标系数" readonly />
+			            <label for="jxAchievement">绩效业绩</label>
+			            <!--出借金额*折标系数-->
+			            <input type="text" id="jxAchievement" value="" name="jxAchievement" placeholder="请输入绩效业绩" required readonly/>
+			        </div>
+					<div class="marB"> </div>
+			        <div class="form-group" >
+			            <label for="lcId">客户编号</label>
+			            <input type="text" id="lcId" name="lcId" maxlength="15" placeholder="请输入客户编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required />
+			            <label class="visibilityHidden"></label>
+			            <input type="text" required  class="visibilityHidden"/>
+					</div>
+			        <div class="form-group">
+			        	<label for="lcManager">客户经理<!-- 原理财经理 --></label>
+			            <input type="text" id="lcManager" value="" name="lcManager" placeholder="请输入客户经理" required />
+			            <label for="tManager">团队经理</label>
+			            <input type="text" id="tManager" value="" name="tManager" placeholder="请输入团队经理" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="sid">事业部</label>
+			           	<!-- <input id="sid">  -->
+			            <select id="sid" required></select>
+			            <!-- <input type="text" id="syb" value="" name="syb" placeholder="请输入事业部" required /> -->
+			            <label for="sybManager">事业部经理</label>
+			            <input type="text" id="sybManager" value="" name="sybManager" placeholder="请输入事业部经理" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="did">大区</label>
+			            <select id="did" required></select>
+			            <!-- <input type="text" id="dq" value=""  name="dq" placeholder="请输入大区" required /> -->
+			            <label for="dqManager">大区经理</label>
+			            <input type="text" id="dqManager" value=""  name="dqManager" placeholder="请输入大区经理" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="fid">分公司</label>
+			            <select id="fid" required></select>
+			            <!-- <input type="text" id="fgs" value="" name="fgs" placeholder="请输入分公司" required /> -->
+			            <label for="fgsManager">分公司经理</label>
+			            <input type="text" id="fgsManager" value="" name="fgsManager" placeholder="请输入分公司经理" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="yid">营业部</label>
+			            <select id="yid" required></select>
+			            <!-- <input type="text" id="yyb" value="" name="yyb" placeholder="请输入营业部" required /> -->
+			            <label for="yybManager">营业部经理</label>
+			            <input type="text" id="yybManager" value="" name="yybManager" placeholder="请输入营业部经理" required />
+			        </div>
+			        <div class="marB"> </div>
+			        <div class="form-group">
+			        	<label for="periods">期数</label>
+			            <input type="text" id="periods" value="" name="periods" placeholder="请选择产品名称计算期数" readonly />
+			            <label for="rate">年化收益</label>
+			            <input type="text" id="rate" value="" name="rate" placeholder="请选择产品名称计算年化收益" readonly />
+			            <i class="symbol">%</i>
+			        </div>
+			        <div class="form-group">
+			            <label for="interestAll">利息总额</label>
+			            <!--出借金额*年化收益-->
+			            <input type="text" id="interestAll" value="" name="interestAll" placeholder="请输入利息总额" required readonly/>
+			            <label for="interestMonth">月付利息</label>
+			            <!--利息总额/期数--> 
+			            <input type="text" id="interestMonth" value="" name="interestMonth" placeholder="请输入月付利息" required readonly/>
+			        </div>
+			        <div class="form-group">
+			            <label for="paymentDate">划扣日期</label>
+			            <input type="text" class="Wdate"  id="paymentDate" name="paymentDate" value="" placeholder="请选择划扣日期" onClick="WdatePicker()" required>
+			            <label for="hksj" class="visibilityHidden">划扣时间</label>
+			            <input type="text" class="visibilityHidden" value="" name="hksj" placeholder="请输入划扣时间" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="startDate">初始出借日期</label>
+			            <input type="text" class="Wdate"  id="startDate" name="startDate" value="" placeholder="请选择初始出借日期" onClick="WdatePicker()" required>
+			            <label for="statementDate">账单日</label>
+			             <input type="text" id="statementDate" value="" name="statementDate" placeholder="请输入账单日" readonly required />
+			        </div>
+			        <div class="form-group">
+			            <label for="endDate">到期日</label>
+			            <input type="text" id="endDate" value="" name="endDate" placeholder="请输入到期日（格式：yyyy-mm-dd）" readonly required/>
+			            <label for="surplusDate">即将到期天数</label>
+			            <!--到期日-TODAY()&"天到期"或"0"-->
+			            <input type="text" id="surplusDate" value="" name="surplusDate" placeholder="请输入即将到期天数" readonly required />
+			        </div>
+			        <div class="form-group">
+			            <label for="status">状态</label>
+			            <select id="status" disabled>
+			            	<option value="">请选择状态</option>
+			            	<option value="0" selected>正常</option>
+			            	<option value="1">已赎回</option>
+			            	<option value="2">申请提前赎回</option>
+			            	<!--正常/已赎回/即将到期/申请提前赎回-->
+			            </select>
+			            <label for="posNo">pos机终端号</label>
+			            <input type="text" id="posNo" value="" name="posNo" maxlength="15" placeholder="请输入pos机终端号" required/>
+			        </div>
+			        <div class="marB"> </div>
+			        <div class="form-group">
+				        <label for="tenderName">出借人</label>
+				        <input type="text" id="tenderName" value="" name="tenderName" maxlength="8" placeholder="请输入出借人" required />
+			            <label for="tel">联系方式</label>
+			            <input type="text" id="tel" name="tel" value=""  maxlength="13" placeholder="请输入联系方式" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="idType">证件类型</label>
+			            <select id="idType">
+			            	<option value="">请选择证件类型</option>
+			            	<option value="0">身份证</option>
+			            	<option value="1">军官证</option>
+			            	<option value="2">户口簿</option>
+			            	<option value="3">护照</option>
+			            	<option value="4">港澳台居民往来大陆通行证</option>
+			            	<!--身份证/军官证/港澳台居民往来大陆通行证/户口簿/护照-->
+			            </select>
+			            <label for="idNo">身份证号</label>
+			            <input type="text" id="idNo" value=""  name="idNo" maxlength="18" placeholder="请输入身份证号" required />
+			        </div>
+			        <div class="form-group">
+			        	<label for="borrowAddress">出借人地址</label>
+			            <input type="text" id="borrowAddress" value=""  name="borrowAddress" placeholder="请输入出借人地址" required />
+			            <label for="contactName">紧急联系人</label>
+			            <input type="text" id="contactName" value=""  name="contactName" maxlength="8" placeholder="请输入紧急联系人" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="contactTel">紧急联系人电话</label>
+			            <input type="text" id="contactTel" value=""  name="contactTel" maxlength="13" placeholder="请输入紧急联系人电话" required />
+			            <label for="contactRelationship">与出借人关系</label>
+			            <input type="text" id="contactRelationship" value=""  name="contactRelationship" maxlength="6" placeholder="请输入与出借人关系" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="continueFlg">非续投/续投</label>
+			            <select id="continueFlg">
+			            	<!--续投/非续投-->
+			            	<option value="">请选择是否续投</option>
+			            	<option value="0">首次投资</option>
+			            	<option value="1">非首次</option>
+			            </select>
+			            <label for="spreadType">推广渠道</label>
+			            <input type="text" id="spreadType" value=""  name="spreadType" maxlength="10" placeholder="请输入推广渠道" required />
+			        </div>
+			        <div class="marB"> </div>
+			        <div class="form-group">
+			        	<label for="bank">汇入银行</label>
+			            <input type="text" id="bank" value="" name="bank" placeholder="请输入汇入银行" required />
+			            <label for="branch">银行支行名称</label>
+			            <input type="text" id="branch" value="" name="branch" maxlength="20" placeholder="请输入银行支行名称" required />
+			        </div>
+			        <div class="form-group">
+			        	<label for="cardName">开户人姓名</label>
+			            <input type="text" id="cardName" value="" name="cardName" maxlength="8" placeholder="请输入开户人姓名" required />
+			            <label for="cardNo">账号</label>
+			            <input type="text" id="cardNo" value="" name="cardNo" maxlength="23" placeholder="请输入账号" required />
+			        </div>
+			        <div class="form-group" id="bankProvinceCity">
+			           <!--  <label for="cardProvince">开卡省份</label>
+			            <select name="" id="cardProvince">
+			            	<option value="">请选择开卡省份</option>
+			            </select>
+			            <label for="cardCity">开卡城市</label>
+			            <select name="" id="cardCity">
+			            	<option value="">请选择开卡城市</option>
+			            </select> -->
+			            <label for="cardProvince">开卡省份</label>
+			           <input type="text" id="cardProvince" value="" name="cardProvince" placeholder="请输入开卡省份" required />
+			            <label for="cardCity">开卡城市</label>
+			            <input type="text" id="cardCity" value="" name="cardCity" placeholder="请输入开卡城市" required />
+			        </div>
+			         <div class="form-group">
+			        	<label for="inBank">回款银行</label>
+			            <input type="text" id="inBank" value="" name="inBank" placeholder="请输入回款银行" required />
+			            <label for="inBranch">银行支行名称</label>
+			            <input type="text" id="inBranch" value="" name="inBranch" maxlength="20" placeholder="请输入银行支行名称" required />
+			        </div>
+			        <div class="form-group">
+			        	<label for="inCardName">开户人姓名</label>
+			            <input type="text" id="inCardName" value="" name="inCardName" maxlength="8" placeholder="请输入开户人姓名" required />
+			            <label for="inCardNo">账号</label>
+			            <input type="text" id="inCardNo" value="" name="inCardNo" maxlength="23" placeholder="请输入账号" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="inCardProvince">开卡省份</label>
+			            <input type="text" id="inCardProvince" value="" name="inCardProvince" placeholder="请输入开卡省份" required />	
+			            <label for="inCardCity">开卡城市</label>
+			            <input type="text" id="inCardCity" value="" name="inCardCity" placeholder="请输入开卡城市" required />
+			        </div>
+			        <div class="form-group">
+			            <label for="cardLine">银行行号</label>
+			            <input type="text" id="cardLine" value="" name="cardLine" maxlength="12" placeholder="请输入银行行号" required />
+			            <label class="visibilityHidden"></label>
+			            <input type="text" required  class="visibilityHidden"/>
+			        </div>
+			        <div class="marB"></div>
+			        <div class="form-group">
+			            <label for="insUser">插入更新者</label>
+			            <input type="text" id="insUser" value="" name="insUser" placeholder="请输入插入更新者" required disabled/>	
+			            <label for="insDate">插入更新时间</label>
+			            <input type="text" id="insDate" value="" name="insDate" placeholder="请输入插入更新时间" required disabled/>
+			        </div>
+			        <div class="form-group">
+			            <label for="updUser">更新者</label>
+			            <input type="text" id="updUser" value="" name="updUser" placeholder="请输入更新者" required disabled/>	
+			            <label for="updDate">更新时间</label>
+			            <input type="text" id="updDate" value="" name="updDate" placeholder="请输入更新时间" required disabled/>
+			        </div>
+			        <div class="addHidden">
+				        <div class="marB"> </div>
+				        <div class="form-group">
+				        	<label for="managerNo">审批者</label>
+				            <input type="text" id="managerNo" value="" name="managerNo" maxlength="8" placeholder="请输入审批者" disabled />
+				            <label for="managerStatus">审批状态</label>
+				            <select id="managerStatus" disabled>
+				            	<option value="">请选择审批状态</option>
+				            	<option value="0">未审批</option>
+				            	<option value="1">审批通过</option>
+				            	<option value="2">审批失败</option>
+				            </select>
+				        </div>
+				        <div class="form-group">
+				        	<label for="remark">备注</label>
+				            <textarea id="remark" name="remark" rows="" cols="" placeholder="请输入备注" disabled></textarea>
+				            <label class="visibilityHidden"></label>
+				            <input type="text"  required  class="visibilityHidden"/>
+				        </div>
+			        </div>
+					<a href="javascript:;" id="editBtn" class="btn btn-box fl" onclick="saveData()">保存</a>
+					<!-- <a href="javascript:;" id="addBtn" class="btn btn-box btnBgCFF6666 fl" style="display: none;" onclick="addData();">新增</a> -->
+				</form>
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/common.js"></script>
+		<script src="/js/WdatePicker.js"></script>
+		<script src="/js/data.common.js"></script>
+		<script src="/js/query.select.js"></script>
+		<script>queryData();$("#dataSNav a").attr('class','currentA');</script>
+	</body>
+</html>

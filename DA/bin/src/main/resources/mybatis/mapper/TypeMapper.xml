@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.TypeMapper">
+	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.TypeVO">
+		<id column="type" property="type" jdbcType="CHAR" />
+		<result column="type_code" property="typeCode" jdbcType="CHAR" />
+		<result column="type_name" property="typeName" jdbcType="VARCHAR" />
+		<result column="rate" property="rate" jdbcType="DECIMAL" />
+		<result column="periods" property="periods" jdbcType="INTEGER" />
+		<result column="return_mode" property="returnMode" jdbcType="VARCHAR" />
+		<result column="zb_ratio" property="zbRatio" jdbcType="DECIMAL" />
+		<result column="return_interval" property="returnInterval"
+			jdbcType="INTEGER" />
+		<result column="return_no" property="returnNo" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		type, type_code, type_name, rate, periods,
+		return_mode,
+		zb_ratio,
+		return_interval, return_no
+	</sql>
+
+	<select id="selectTypeByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_type
+		<where>
+			<if test="type != null and type != ''">
+				type =#{type,jdbcType=CHAR}
+			</if>
+		</where>
+	</select>
+
+</mapper>

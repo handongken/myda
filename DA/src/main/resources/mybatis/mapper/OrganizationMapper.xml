@@ -77,14 +77,39 @@
 		<include refid="Organization_Code_Column_List" />
 		FROM t_organization_code
 		<where>
+			DEL_FLG = '0'
 			<if test="oid != null and oid != ''">
-				O_ID =#{oid,jdbcType=VARCHAR}
+				and O_ID =#{oid,jdbcType=VARCHAR}
 			</if>
 			<if test="levelType != null and levelType != ''">
 				and LEVEL_TYPE =#{levelType,jdbcType=INTEGER}
 			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and DEL_FLG = #{delFlg,jdbcType=INTEGER}
+			<if test="vlevel != null and vlevel != ''">
+				and V_LEVEL =#{vlevel,jdbcType=CHAR}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectOrganizationCodeByCondition" resultMap="OrganizationCodeMap">
+		SELECT
+		<include refid="Organization_Code_Column_List" />
+		FROM t_organization_code
+		<where>
+		DEL_FLG = '0'
+			<if test="oid != null and oid != ''">
+				and O_ID =#{oid,jdbcType=VARCHAR}
+			</if>
+			<if test="oname != null and oname != ''">
+				and O_NAME =#{oname,jdbcType=VARCHAR}
+			</if>
+			<if test="mname != null and mname != ''">
+				and M_NAME =#{mname,jdbcType=VARCHAR}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and V_LEVEL =#{vlevel,jdbcType=CHAR}
+			</if>
+			<if test="levelType != null and levelType != ''">
+				and LEVEL_TYPE =#{levelType,jdbcType=INTEGER}
 			</if>
 		</where>
 	</select>
@@ -94,8 +119,36 @@
 		<include refid="Organization_Column_List" />
 		FROM t_organization
 		<where>
+		DEL_FLG = '0'
+			<if test="did != null and did != ''">
+				and D_ID =#{did}
+			</if>
+			<if test="pid != null and pid != ''">
+				and P_ID =#{pid}
+			</if>
+			<if test="fid != null and fid != ''">
+				and F_ID =#{fid}
+			</if>
+			<if test="yid != null and yid != ''">
+				and Y_ID =#{yid}
+			</if>
+			<if test="tid != null and tid != ''">
+				and T_ID =#{tid}
+			</if>
+			<if test="levelType != null and levelType != ''">
+				and LEVEL_TYPE =#{levelType}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectOrByCondition" resultMap="OrganizationMap">
+		SELECT
+		<include refid="Organization_Column_List" />
+		FROM t_organization
+		<where>
+			DEL_FLG = '0'
 			<if test="oidOrgid != null and oidOrgid != ''">
-				OID_ORG_ID =#{oidOrgid}
+				and OID_ORG_ID =#{oidOrgid}
 			</if>
 			<if test="did != null and did != ''">
 				and D_ID =#{did}
@@ -115,9 +168,6 @@
 			<if test="levelType != null and levelType != ''">
 				and LEVEL_TYPE =#{levelType}
 			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and DEL_FLG = #{delFlg}
-			</if>
 		</where>
 	</select>
 
@@ -126,11 +176,15 @@
 		<include refid="Organization_Code_Column_List" />
 		FROM t_organization_code
 		<where>
+		DEL_FLG = '0'
 			<if test="oid != null and oid != ''">
-				O_ID LIKE #{oid}"%"
+				and O_ID LIKE #{oid}"%"
 			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and DEL_FLG = #{delFlg}
+			<if test="vlevel != null and vlevel != ''">
+				and V_LEVEL = #{vlevel}
+			</if>
+			<if test="levelType != null and levelType != ''">
+				and LEVEL_TYPE = #{levelType}
 			</if>
 		</where>
 	</select>
@@ -141,12 +195,8 @@
 		c.O_ID as D_ID,c.O_NAME as dname,c.M_NAME as dmanager
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.D_ID
-		<where>
-				o.LEVEL_TYPE ='0'
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
-			</if>
-		</where>
+		where 
+		o.LEVEL_TYPE ='0' and c.V_LEVEL = '0' and c.O_ID <![CDATA[ <> ]]>'A001' and o.del_flg = '0'
 	</select>
 
 	<!-- 查询某个事业部 -->
@@ -156,12 +206,9 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.D_ID
 		<where>
-				o.LEVEL_TYPE ='0'
+				o.LEVEL_TYPE ='0' and o.del_flg = '0'
 			<if test="D_ID != null and D_ID != ''">
 				and o.D_ID = #{D_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 			<if test="vlevel != null and vlevel != ''">
 				and c.V_LEVEL = #{vlevel}
@@ -176,12 +223,9 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.P_ID
 		<where>
-				o.LEVEL_TYPE ='1'
+				o.LEVEL_TYPE ='1' and c.V_LEVEL = '0' and o.del_flg = '0'
 			<if test="D_ID != null and D_ID != ''">
 				and o.D_ID = #{D_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 		</where>
 	</select>
@@ -193,15 +237,12 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.P_ID
 		<where>
-				o.LEVEL_TYPE ='1'
+				o.LEVEL_TYPE ='1' and o.del_flg = '0'
 			<if test="P_ID != null and P_ID != ''">
 				and o.P_ID = #{P_ID}
 			</if>
 			<if test="D_ID != null and D_ID != ''">
 				and o.D_ID = #{D_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 			<if test="vlevel != null and vlevel != ''">
 				and c.V_LEVEL = #{vlevel}
@@ -216,12 +257,9 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.F_ID
 		<where>
-				o.LEVEL_TYPE ='2'
+				o.LEVEL_TYPE ='2' and c.V_LEVEL = '0' and o.del_flg = '0'
 			<if test="P_ID != null and P_ID != ''">
 				and o.P_ID = #{P_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 		</where>
 	</select>
@@ -233,7 +271,7 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.F_ID
 		<where>
-				o.LEVEL_TYPE ='2'
+				o.LEVEL_TYPE ='2' and o.del_flg = '0'
 			<if test="P_ID != null and P_ID != ''">
 				and o.P_ID = #{P_ID}
 			</if>
@@ -242,9 +280,6 @@
 			</if>
 			<if test="F_ID != null and F_ID != ''">
 				and o.F_ID = #{F_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 			<if test="vlevel != null and vlevel != ''">
 				and c.V_LEVEL = #{vlevel}
@@ -259,12 +294,9 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.Y_ID
 		<where>
-				o.LEVEL_TYPE ='3'
+				o.LEVEL_TYPE ='3' and c.V_LEVEL = '0' and o.del_flg = '0'
 			<if test="F_ID != null and F_ID != ''">
 				and o.F_ID = #{F_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 		</where>
 	</select>
@@ -276,7 +308,7 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.Y_ID
 		<where>
-				o.LEVEL_TYPE ='3'
+				o.LEVEL_TYPE ='3' and o.del_flg = '0'
 			<if test="P_ID != null and P_ID != ''">
 				and o.P_ID = #{P_ID}
 			</if>
@@ -288,9 +320,6 @@
 			</if>
 			<if test="Y_ID != null and Y_ID != ''">
 				and o.Y_ID = #{Y_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 			<if test="vlevel != null and vlevel != ''">
 				and c.V_LEVEL = #{vlevel}
@@ -305,12 +334,9 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.T_ID
 		<where>
-				o.LEVEL_TYPE ='4'
+				o.LEVEL_TYPE ='4' and c.V_LEVEL = '0' and o.del_flg = '0'
 			<if test="Y_ID != null and Y_ID != ''">
 				and o.Y_ID = #{Y_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 		</where>
 	</select>
@@ -322,7 +348,7 @@
 		FROM t_organization as o
 		inner join t_organization_code c on c.O_ID=o.T_ID
 		<where>
-				o.LEVEL_TYPE ='4'
+				o.LEVEL_TYPE ='4' and o.del_flg = '0'
 			<if test="P_ID != null and P_ID != ''">
 				and o.P_ID = #{P_ID}
 			</if>
@@ -337,9 +363,6 @@
 			</if>
 			<if test="T_ID != null and T_ID != ''">
 				and o.T_ID = #{T_ID}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and o.del_flg = #{delFlg}
 			</if>
 			<if test="vlevel != null and vlevel != ''">
 				and c.V_LEVEL = #{vlevel}
@@ -362,8 +385,8 @@
 			<if test="levelType != null and levelType != ''">
 				LEVEL_TYPE,
 			</if>
-			<if test="delFlg != null and delFlg != ''">
-				DEL_FLG
+			<if test="vlevel != null and vlevel != ''">
+				V_LEVEL
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -379,8 +402,8 @@
 			<if test="levelType != null and levelType != ''">
 				#{levelType,jdbcType=VARCHAR},
 			</if>
-			<if test="delFlg != null and delFlg != ''">
-				#{delFlg,jdbcType=VARCHAR}
+			<if test="vlevel != null and vlevel != ''">
+				#{vlevel,jdbcType=VARCHAR}
 			</if>
 		</trim>
 	</insert>
@@ -395,13 +418,10 @@
 				M_NAME = #{mname,jdbcType=VARCHAR},
 			</if>
 			<if test="levelType != null">
-				LEVEL_TYPE = #{levelType,jdbcType=VARCHAR},
-			</if>
-			<if test="delFlg != null">
-				DEL_FLG = #{delFlg,jdbcType=VARCHAR}
+				LEVEL_TYPE = #{levelType,jdbcType=VARCHAR}
 			</if>
 		</set> 
-		where O_ID = #{oid,jdbcType=VARCHAR}
+		where O_ID = #{oid,jdbcType=VARCHAR} and V_LEVEL = #{vlevel,jdbcType=INTEGER}
 	</update>
 	
 	<insert id="insertOrganization" useGeneratedKeys="true" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
@@ -425,9 +445,6 @@
 			<if test="levelType != null and levelType != ''">
 				LEVEL_TYPE,
 			</if>
-			<if test="delFlg != null and delFlg != ''">
-				DEL_FLG
-			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="did != null and did != ''">
@@ -447,9 +464,6 @@
 			</if>
 			<if test="levelType != null and levelType != ''">
 				#{levelType,jdbcType=CHAR},
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				#{delFlg,jdbcType=VARCHAR}
 			</if>
 		</trim>
 	</insert>
@@ -473,10 +487,7 @@
 				T_ID = #{tid,jdbcType=VARCHAR},
 			</if>
 			<if test="levelType != null">
-				LEVEL_TYPE = #{levelType,jdbcType=VARCHAR},
-			</if>
-			<if test="delFlg != null">
-				DEL_FLG = #{delFlg,jdbcType=VARCHAR}
+				LEVEL_TYPE = #{levelType,jdbcType=VARCHAR}
 			</if>
 		</set> 
 		where OID_ORG_ID = #{oidOrgid,jdbcType=VARCHAR}

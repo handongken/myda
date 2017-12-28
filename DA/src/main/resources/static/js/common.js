@@ -15,7 +15,9 @@ var $_GET = (function() { //获取上一页数据
 })(); 
 function downExcelExcel(downUrl){//财务导出表格
 	var statementDateS = document.getElementById('statementDateS').value;
-	if(statementDateS ==''){alert('请输入搜索日期');return false;}
+	if(statementDateS ==''){alert('请输入开始日期');return false;}
+	var statementDateE = document.getElementById('statementDateE').value;
+	if(statementDateE ==''){alert('请输入结束日期');return false;}
 	loading();
 	var success = function(data){
 		alert(data);
@@ -25,9 +27,9 @@ function downExcelExcel(downUrl){//财务导出表格
 	};
 	//取user
 	var user = JSON.parse(sessionStorage.user);
-	ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"startTime":statementDateS},success,faild); 
+	ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"startTime":statementDateS,"endTime":statementDateE},success,faild); 
 } 
-function downDataExcel(downUrl){//数据导出表格 续投 赎回 提前赎回
+function downDataExcel(downUrl){//数据导出表格 续投 赎回 提前赎回 用户
 	loading();
 	var success = function(data){
 		alert(data);
@@ -39,32 +41,31 @@ function downDataExcel(downUrl){//数据导出表格 续投 赎回 提前赎回
 	var user = JSON.parse(sessionStorage.user);
 	ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId},success,faild); 
 } 
-function bindListener(obj,contract){ //删除单行table
+function bindListener(obj,contract){ //数据删除单行table
 	var thisLi = obj.parentNode.parentNode;
 	thisLi.parentNode.removeChild(thisLi);
 	var success = function(data){
-		if(data.code == 1){
+		alert(data);
+	};
+	var faild = function(error){
+		if(error.code == 1){
 			alert("删除成功！");
 			window.location.reload();
 		}else{
 			alert('删除不成功！');
 		}
 	};
-	var faild = function(error){
-		alert(error);
-	};
 	//取user
 	var user = JSON.parse(sessionStorage.user);
 	ajaxPost('/deleteByPrimaryKey',{"contract":contract,"userId":user.userId},success,faild); 
 }
-
 function exit(){ //退出
 	/*var success = function(data){ // data 是服务器返回的
 	};
 	var faild = function(error){ // error 是服务器返回的
 		alert(error);
 	};
-	var user = JSON.parse(localStorage.user);
+	var user = JSON.parse(sessionStorage.user);
 	ajaxPost('/login',{},success,faild); //像服务器发送	*/
 	sessionStorage.clear(); //直接清空
 	location.href = "loginPage.html";
@@ -97,3 +98,6 @@ function seachLoad(){ //搜索条件 财务
 	loading();
 	loaddataList();
 }
+var numReg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
+var idCardReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;

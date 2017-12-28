@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>已赎回列表页</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="/css/dataStyle.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div id="nav" class="sidebar"> </div>
+			<div class="content">
+				<h2>已赎回列表区<i></i></h2>
+				<div class="addExitBox">
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downURL)">导出已赎回表格</a></p>
+				</div>
+				<div id="tableHtml"> </div>
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/common.js"></script>
+		<script src="/js/base-loading.js"></script>
+		<script src="/js/jquery.dataTables.min.js"></script>
+	 	<script src="/js/method.common.js"></script>
+		<script>
+			loading();loaddataStatus1();
+ 			var downURL = '/downloadRedeemedTable';
+			function createTh(data){//读表格
+				var tableTh = [
+					'合同编号','产品名称','出借金额','折标系数','绩效业绩',
+					'客户编号','客户经理','团队经理','营业部名称','营业部经理','分公司名称',
+					'分公司经理','大区名称','大区经理','事业部名称','事业部经理',
+					'期数','年化收益','利息总额','月付利息',
+					'划扣日期','到期日','账单日','初始出借日期','即将到期天数','状态','pos机终端号',
+					'出借人','联系方式','证件类型','身份证号','出借人地址','紧急联系人','紧急联系人电话','与出借人关系','非续投/续投','推广渠道',
+					'汇入银行','银行支行名称','账号','开户人姓名','开卡省份','开卡城市','银行行号',
+					'回款银行','银行支行名称','开户人姓名','账号','开卡省份','开卡城市',
+					'审批者','审批状态'/* ,'删除flg' */,'更插入者','更插入时间','更新者','更新时间','备注'
+				]; //创建th内容
+				var thsHtml = ' '; //为了保存th值
+				for(var i = 0; i < tableTh.length; i++){
+					thsHtml += '<th>' + tableTh[i] + '</th>';
+				}
+				$("#tableBox thead tr").html(thsHtml); //添加到table中 
+				var tableTd = []; //保存td
+				if(data.length>0){
+					for(var i = 0; i<data.length; i++){
+						tableTd[i] = [
+							data[i]['contract'], //合同编号
+							data[i]['type'], //产品名称
+							data[i]['money'], //出借金额
+							data[i]['zbRatio'], //折标系数
+							data[i]['jxAchievement'],//绩效业绩
+							data[i]['lcId'],//客户编号
+							data[i]['lcManager'], //客户经理
+							data[i]['tmanager'], //团队经理
+							data[i]['yyb'], //营业部名称
+							data[i]['yybManager'], //营业部经理
+							data[i]['fgs'], //分公司名称
+							data[i]['fgsManager'], //分公司经理
+							data[i]['dq'],//大区名称
+							data[i]['dqManager'],//大区经理
+							data[i]['syb'],//事业部名称
+							data[i]['sybManager'], //事业部经理
+							data[i]['periods'],//期数
+							data[i]['rate'], //年化收益
+							data[i]['interestAll'], //利息总额
+							data[i]['interestMonth'],//月付利息
+							data[i]['paymentDate'],//划扣日期
+							data[i]['endDate'],//到期日
+							data[i]['statementDate'],//账单日
+							data[i]['startDate'],//初始出借日期
+							data[i]['surplusDate'],//即将到期天数
+							data[i]['status'],//状态
+							data[i]['posNo'],//pos机终端号
+							data[i]['tenderName'],//出借人
+							data[i]['tel'],//联系方式
+							data[i]['idType'],//证件类型
+							data[i]['idNo'],//身份证号
+							data[i]['borrowAddress'],//出借人地址
+							data[i]['contactName'], //紧急联系人
+							data[i]['contactTel'],//紧急联系人电话
+							data[i]['contactRelationship'], //与出借人关系
+							data[i]['continueFlg'],//非续投/续投
+							data[i]['spreadType'],//推广渠道
+							data[i]['bank'],//汇入银行
+							data[i]['branch'],//银行支行名称
+							data[i]['cardName'], //开户人姓名
+							data[i]['cardNo'],//账号
+							data[i]['cardProvince'],//开卡省份
+							data[i]['cardCity'],//开卡城市
+							data[i]['cardLine'],//银行行号
+							data[i]['inBank'],//回款银行
+							data[i]['inBranch'],//银行支行名称
+							data[i]['inCardNo'], //账号
+							data[i]['inCardName'], //开户人姓名
+							data[i]['inCardProvince'],//开卡省份
+							data[i]['inCardCity'],//开卡城市
+							data[i]['managerNo'],//审批者
+							data[i]['managerStatus'],//审批状态
+							/* data[i]['delFlg'],//删除flg */
+							data[i]['insUser'], //更插入者
+							data[i]['insDate'], //更插入时间
+							data[i]['updUser'], //更新者
+							data[i]['updDate'], //更新时间
+							data[i]['remark'], //备注
+						];
+					}
+				}
+				var tables = $("#tableBox").DataTable({
+					'data': tableTd,
+			        'dom': 'tip',
+			        'info': true,
+			        "processing": true,
+                    'scrollX': true,
+					'iDisplayLength': 10,
+					'order': [],
+					"ordering": true,
+			        'columnDefs': [
+			        	{
+							"targets": 0,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html("<p>"+cellData+"</p>");
+						    }
+						},
+						{
+							"targets": 1, 
+							"createdCell": function (td, cellData, rowData, row, col) {
+								if(cellData == 0){$(td).html("<span>聚惠丰</span>")}
+								else if(cellData == 1){$(td).html("<span>聚惠盈</span>");}
+								else if(cellData == 2){$(td).html("<span>聚惠享</span>");}
+								else if(cellData == 3){$(td).html("<span>聚惠丰（50）</span>");}
+								else if(cellData == 4){$(td).html("<span>聚惠盈（50）</span>");}
+								else if(cellData == 5){$(td).html("<span>聚惠享（50）</span>");}
+								else if(cellData == 6){$(td).html("<span>聚惠丰（100）</span>");}
+								else if(cellData == 7){$(td).html("<span>聚惠盈（100）</span>");}
+								else if(cellData == 8){$(td).html("<span>聚惠享（100）</span>");}
+								else if(cellData == 9){$(td).html("<span>聚惠福</span>");}
+								else if(cellData == 10){$(td).html("<span>聚惠鑫</span>");}
+								else if(cellData == 11){$(td).html("<span>聚惠福（50）</span>");}
+								else if(cellData == 12){$(td).html("<span>聚惠福（100）</span>");}
+								else if(cellData == 13){$(td).html("<span>聚惠鑫（50）</span>");}
+								else if(cellData == 14){$(td).html("<span>聚惠鑫（100）</span>");}
+								else if(cellData == 15){$(td).html("<span>惠添利</span>");}
+								else if(cellData == 16){$(td).html("<span>惠添金</span>");}
+								else if(cellData == 17){$(td).html("<span>惠添利（50）</span>");}
+								else if(cellData == 18){$(td).html("<span>惠添利（100）</span>");}
+								else if(cellData == 19){$(td).html("<span>惠添金（50）</span>");}
+								else if(cellData == 20){$(td).html("<span>惠添金（100）</span>");}
+						    }
+						},
+						{
+							"targets": 20,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html(cellData);
+						    }
+						},
+						{
+							"targets": 25,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+								if(cellData == 0){$(td).html("<span>正常</span>");}
+								else if(cellData == 1){$(td).html("<span>已赎回</span>");}
+								else if(cellData == 2){$(td).html("<span>即将到期</span>");}
+								else if(cellData == 3){$(td).html("<span>申请提前赎回</span>");}
+						    	
+						    }
+						},
+						{
+							"targets": 29,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+								if(cellData == 0){$(td).html("<span>身份证</span>");}
+								else if(cellData == 1){$(td).html("<span>军官证</span>");}
+								else if(cellData == 2){$(td).html("<span>户口簿</span>");}
+								else if(cellData == 3){$(td).html("<span>护照</span>");}
+								else if(cellData == 4){$(td).html("<span>港澳台居民往来大陆通行证</span>");}
+						    }
+						},
+						{
+							"targets": 35,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+								if(cellData == 0){$(td).html("<span>续投</span>");}
+								else if(cellData == 1){$(td).html("<span>非续投</span>");}
+						    }
+						},
+						{
+							"targets": 51,"orderable": true,
+							"createdCell": function (td, cellData, rowData, row, col) {
+								if(cellData == 0){$(td).html("<span>未审批</span>");}
+								else if(cellData == 1){$(td).html("<span>审批通过</span>");}
+								else if(cellData == 2){$(td).html("<span>审批失败</span>");}
+						    }
+						},
+						{
+							"targets": 56,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html(cellData);
+						    }
+						}
+					],
+					'language': {
+				    	"emptyTable": "暂无数据",
+				    	"loadingRecords": "读取中请稍候...",
+				    	"zeroRecords": "暂无数据",
+				    	"info": "共 _TOTAL_条记录 显示_START_到 _END_条记录",
+				    	"paginate": {
+					    	"previous": "上一页",
+					    	"next": "下一页",
+					    }
+					}
+			    } );
+				delLoading(); 
+			}
+		</script>
+	</body>
+</html>

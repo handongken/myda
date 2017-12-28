@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>还本信息列表页</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="/css/dataStyle.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div id="nav" class="sidebar"> </div>
+	 		<div class="content">
+				<h2>还本信息<i></i></h2>
+				<div class="SeachBox">
+					<label for="statementDateS" class="time">付款日期： <input type="text" class="Wdate" id="statementDateS" name="statementDateS" value="" placeholder="请输入开始日" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'statementDateE\')||\'2020-10-01\'}'})" required> - <input type="text" class="Wdate" id="statementDateE" name="statementDateE" value="" placeholder="请输入结束日" onClick="WdatePicker({minDate:'#F{$dp.$D(\'statementDateS\')}',maxDate:'2020-10-01'})" required></label>
+					<div style="overflow: hidden;">
+						<p style="text-align: left;float: right;"><a href="javascript:;" onclick="loading();emptySeach();" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="seachLoad()" class="btn seachBtn">搜索</a></p>
+					</div>
+				</div>
+				<div class="addExitBox">
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downExcelExcel(downURl)">导出还本信息表格</a></p>
+				</div>
+				<div class="tableHtml" id="tableHtml"> </div>
+				<div class="sumMoney">合计出借金额：<span id="sumMoney"></span> 元</div>
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/common.js"></script>
+		<script src="/js/base-loading.js"></script>
+		<script src="/js/WdatePicker.js"></script>
+		<script src="/js/jquery.dataTables.min.js"></script>
+		<script>
+			loading();loaddataList();
+			var downURl = '/downloadPrincipal';
+			function loaddataList(){//读取表格
+				document.getElementById('tableHtml').innerHTML ='<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
+				var TSum = 0;
+				var statementDateS = document.getElementById('statementDateS').value;
+				var statementDateE = document.getElementById('statementDateE').value;
+				loading();
+				var success = function(data){
+					createTh(data);
+					for(i=0;i<data.length;i++){
+						TSum += data[i].money;
+					}
+					document.getElementById('sumMoney').innerHTML = TSum;
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				var user = JSON.parse(sessionStorage.user);//取user
+				ajaxPost('/selectPrincipalByCondition',{"startTime":statementDateS,"endTime":statementDateE},false,success,faild); 
+			}
+			function createTh(data){//读表格字段
+				var tableTh = [//创建th内容
+					'序号','合同编号','出借金额','产品名称','理财经理','团队经理',
+					'营业部名称','营业部经理','分公司名称','到期日','出借人姓名'
+				]; 
+				var thsHtml = ' '; //为了保存th值
+				for(var i = 0; i < tableTh.length; i++){
+					thsHtml += '<th>' + tableTh[i] + '</th>';
+				}
+				$("#tableBox thead tr").html(thsHtml); //添加到table中 
+				var tableTd = []; //保存td
+				if(data.length>0){
+					for(var i = 0; i<data.length; i++){
+						tableTd[i] = [
+							i+1,
+							data[i].contract,
+							data[i].money,
+							data[i].typeName,
+							data[i].lcManager,
+							data[i].tmanager,
+							data[i].yyb,
+							data[i].yybManager,
+							data[i].fgs,
+							data[i].endDate,
+							data[i].tenderName
+						];
+					}
+				}
+				var tables = $("#tableBox").DataTable({
+					'data': tableTd,
+			        'dom': 'tip',
+			        'info': true,
+			        "processing": true,
+                    'scrollX': true,
+					'iDisplayLength': 10,
+//					'scrollY': '350px',
+//					"scrollCollapse": true, 
+					'order': [],
+					"ordering": true,
+			        'columnDefs': [
+			        	{
+							"targets": 0,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html("<p>"+cellData+"</p>");
+						    }
+						},
+						{
+							"targets": 3,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+								if(cellData == 0){$(td).html("<span>聚惠丰</span>")}
+								else if(cellData == 1){$(td).html("<span>聚惠盈</span>");}
+								else if(cellData == 2){$(td).html("<span>聚惠享</span>");}
+								else if(cellData == 3){$(td).html("<span>聚惠丰（50）</span>");}
+								else if(cellData == 4){$(td).html("<span>聚惠盈（50）</span>");}
+								else if(cellData == 5){$(td).html("<span>聚惠享（50）</span>");}
+								else if(cellData == 6){$(td).html("<span>聚惠丰（100）</span>");}
+								else if(cellData == 7){$(td).html("<span>聚惠盈（100）</span>");}
+								else if(cellData == 8){$(td).html("<span>聚惠享（100）</span>");}
+								else if(cellData == 9){$(td).html("<span>聚惠福</span>");}
+								else if(cellData == 10){$(td).html("<span>聚惠鑫</span>");}
+								else if(cellData == 11){$(td).html("<span>聚惠福（50）</span>");}
+								else if(cellData == 12){$(td).html("<span>聚惠福（100）</span>");}
+								else if(cellData == 13){$(td).html("<span>聚惠鑫（50）</span>");}
+								else if(cellData == 14){$(td).html("<span>聚惠鑫（100）</span>");}
+								else if(cellData == 15){$(td).html("<span>惠添利</span>");}
+								else if(cellData == 16){$(td).html("<span>惠添金</span>");}
+								else if(cellData == 17){$(td).html("<span>惠添利（50）</span>");}
+								else if(cellData == 18){$(td).html("<span>惠添利（100）</span>");}
+								else if(cellData == 19){$(td).html("<span>惠添金（50）</span>");}
+								else if(cellData == 20){$(td).html("<span>惠添金（100）</span>");}
+						    }
+						}
+					],
+					'language': {
+				    	"emptyTable": "暂无数据",
+				    	"loadingRecords": "读取中请稍候...",
+				    	"zeroRecords": "暂无数据",
+				    	"info": "共 _TOTAL_条记录 显示_START_到 _END_条记录",
+				    	"paginate": {
+					    	"previous": "上一页",
+					    	"next": "下一页",
+					    }
+					}
+			    }); 
+				delLoading();
+			}
+		</script>
+	</body>
+</html>

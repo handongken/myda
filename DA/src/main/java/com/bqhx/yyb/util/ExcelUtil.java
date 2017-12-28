@@ -1,6 +1,7 @@
 package com.bqhx.yyb.util;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -8,8 +9,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.Region;
 
+import com.bqhx.yyb.controller.FileController;
 import com.bqhx.yyb.vo.ResultTypeVO;
 
 import java.io.FileNotFoundException;
@@ -19,13 +20,11 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class ExcelUtil {
 	private static ExcelUtil eu = new ExcelUtil();
-
+	private static Logger logger = Logger.getLogger(FileController.class);
 	private ExcelUtil() {
 	}
 
@@ -57,13 +56,13 @@ public class ExcelUtil {
 			}
 			// 获取模板中要替换的数据行
 			int readLine = et.getDataRowNum();
-			// System.out.println("模板中要替换的数据行在： " + readLine + " 行");//3
+			// logger.info("模板中要替换的数据行在： " + readLine + " 行");//3
 			String[] datas = getDatasByTemplate(et, readLine);
 			// 输出值
 			for (int j = 0; j < objs.size(); j++) {
 				Object obj = objs.get(j);
 				et.createNewRow();
-				// System.out.println("表格最后一行：" + et.getLastRowIndex());
+				// logger.info("表格最后一行：" + et.getLastRowIndex());
 				for (int i = 0; i < datas.length; i++) {
 					// 创建带公式单元格
 					if (datas[i].contains("@")) {
@@ -110,7 +109,7 @@ public class ExcelUtil {
 			sheetModel.setForceFormulaRecalculation(true);
 			int firstrow = sheetModel.getFirstRowNum();
 			int lasttrow = sheetModel.getLastRowNum();
-			// System.out.println("模板第一个sheet第一行： " + firstrow + " , " +
+			// logger.info("模板第一个sheet第一行： " + firstrow + " , " +
 			// "模板第一个sheet最后一行： " + lasttrow);
 			/*
 			 * for(int i = 0;i < sheetNames.length;i++){ Sheet newSheet =
@@ -149,7 +148,7 @@ public class ExcelUtil {
 			}
 			// 获取模板中要替换的数据行
 			int readLine = et.getDataRowNum();
-			// System.out.println("模板中要替换的数据行在： " + readLine + " 行");//3
+			// logger.info("模板中要替换的数据行在： " + readLine + " 行");//3
 			String[] datas = getDatasByTemplate(et, readLine);
 			Sheet sheetModel = et.getWb().getSheetAt(0);
 			sheetModel.setForceFormulaRecalculation(true);
@@ -161,8 +160,10 @@ public class ExcelUtil {
 			for (int j = 0; j < objs.size(); j++) {
 				Object obj = objs.get(j);
 				et.createNewRow();
-				// System.out.println("表格最后一行：" + et.getLastRowIndex());
+				// logger.info("表格最后一行：" + et.getLastRowIndex());
 				for (int i = 0; i < datas.length; i++) {
+					// sybindex
+					int sybindex = getDataIndex(datas, "#{sybname}");
 					// dqindex
 					int index = getDataIndex(datas, "#{dqname}");
 					// 创建带公式单元格
@@ -234,16 +235,32 @@ public class ExcelUtil {
 											dqRowNum = et.getCurRowIndex();
 										} // 不是首行也不是最后一行
 										else if (j + 1 < objs.size()) {
+											// 当前syb
+											String curSyb = getDataValue(obj, datas[sybindex], clz);
+											// 上一行syb
+											String syb = getDataValue(objs.get(j - 1), datas[sybindex], clz);
 											// 上一行dq
 											String dq = getDataValue(objs.get(j - 1), datas[i], clz);
-											if (!curDq.equals(dq)) {
+											if(curSyb.equals(syb)){
+												if (!curDq.equals(dq)) {
+													dqRowNum = et.getCurRowIndex();
+												}	
+											}else{
 												dqRowNum = et.getCurRowIndex();
 											}
 										} // 最后一行
 										else if (j + 1 == objs.size()) {
+											// 当前syb
+											String curSyb = getDataValue(obj, datas[sybindex], clz);
+											// 上一行syb
+											String syb = getDataValue(objs.get(j - 1), datas[sybindex], clz);
 											// 上一行dq
 											String dq = getDataValue(objs.get(j - 1), datas[i], clz);
-											if (!curDq.equals(dq)) {
+											if(curSyb.equals(syb)){
+												if (!curDq.equals(dq)) {
+													dqRowNum = et.getCurRowIndex();
+												}	
+											}else{
 												dqRowNum = et.getCurRowIndex();
 											}
 										}
@@ -290,7 +307,7 @@ public class ExcelUtil {
 									 * DecimalFormat df = new
 									 * DecimalFormat("####.####"); String str =
 									 * df.format(value);
-									 * System.out.println("String: " + rel +
+									 * logger.info("String: " + rel +
 									 * " double: " + value + " string: " + str);
 									 */
 									et.createCell(value);
@@ -311,16 +328,12 @@ public class ExcelUtil {
 						if (objs.size() > 1) {
 							// 首行
 							if (j == 0) {
-								// 下一行dq
-								String nextDq = getDataValue(objs.get(j + 1), datas[index], clz);
-								if (!curDq.equals(nextDq)) {
-									// 大区小计合并
-									cellRangeUtil.firstRowCreateCellRange(et, sheetModel, dqSum, index,
-											et.getCurRowIndex(), et.getCurRowIndex(), index, index + 1);
-								}
 								// 下一行syb
 								String nextSyb = getDataValue(objs.get(j + 1), datas[index - 1], clz);
 								if (!curSyb.equals(nextSyb)) {
+									// 大区小计合并
+									cellRangeUtil.firstRowCreateCellRange(et, sheetModel, dqSum, index,
+											et.getCurRowIndex(), et.getCurRowIndex(), index, index + 1);
 									// 事业部合计合并
 									String sybSum = curSyb + "合计";
 									cellRangeUtil.firstRowCreateCellRange(et, sheetModel, sybSum, index,
@@ -433,7 +446,7 @@ public class ExcelUtil {
 		}
 		// 获取模板中要替换的数据行
 		int readLine = et.getDataRowNumWithDate();
-//		System.out.println("模板中要替换的数据行在： " + readLine + " 行");// 2
+//		logger.info("模板中要替换的数据行在： " + readLine + " 行");// 2
 		// 模板中data
 		String[] datas = getDatasByTemplate(et, readLine);
 		// 时间段
@@ -553,7 +566,7 @@ public class ExcelUtil {
 			}
 		}
 		if (!isExit) {
-			System.out.println("模板中未找到: " + data);
+			logger.info("模板中未找到: " + data);
 		}
 		return index;
 	}
@@ -1086,7 +1099,7 @@ public class ExcelUtil {
 		Row row = sheet.getRow(readLine);
 		// 总列数
 		int colNum = row.getPhysicalNumberOfCells();
-		// System.out.println("colNum:" + colNum);
+		// logger.info("colNum:" + colNum);
 		String[] data = new String[colNum];
 		for (int i = 0; i < colNum; i++) {
 			data[i] = getCellFormatValue(row.getCell((short) i));

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.OrganizationMapper">
+	<resultMap id="OrganizationCodeMap" type="com.bqhx.yyb.vo.OrganizationCodeVO">
+		<id column="O_ID" property="oid" jdbcType="VARCHAR" />
+		<result column="O_NAME" property="oname" jdbcType="VARCHAR" />
+		<result column="M_NAME" property="mname" jdbcType="VARCHAR" />
+		<result column="V_LEVEL" property="vlevel" jdbcType="VARCHAR" />
+		<result column="LEVEL_TYPE" property="levelType" jdbcType="INTEGER" />
+		<result column="DEL_FLG" property="delFlg" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="OrganizationMap" type="com.bqhx.yyb.vo.OrganizationVO">
+		<id column="OID_ORG_ID" property="oidOrgid" jdbcType="INTEGER" />
+		<result column="D_ID" property="did" jdbcType="VARCHAR" />
+		<result column="P_ID" property="pid" jdbcType="VARCHAR" />
+		<result column="F_ID" property="fid" jdbcType="VARCHAR" />
+		<result column="Y_ID" property="yid" jdbcType="VARCHAR" />
+		<result column="T_ID" property="tid" jdbcType="VARCHAR" />
+		<result column="LEVEL_TYPE" property="levelType" jdbcType="CHAR" />
+		<result column="DEL_FLG" property="delFlg" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="OrganizationResultMap" type="com.bqhx.yyb.vo.OrganizationResultVO">
+		<result column="D_ID" property="did" jdbcType="VARCHAR" />
+		<result column="dname" property="dname" jdbcType="VARCHAR" />
+		<result column="dmanager" property="dmanager" jdbcType="VARCHAR" />
+		<result column="P_ID" property="pid" jdbcType="VARCHAR" />
+		<result column="pname" property="pname" jdbcType="VARCHAR" />
+		<result column="pmanager" property="pmanager" jdbcType="VARCHAR" />
+		<result column="F_ID" property="fid" jdbcType="VARCHAR" />
+		<result column="fname" property="fname" jdbcType="VARCHAR" />
+		<result column="fmanager" property="fmanager" jdbcType="VARCHAR" />
+		<result column="Y_ID" property="yid" jdbcType="VARCHAR" />
+		<result column="yname" property="yname" jdbcType="VARCHAR" />
+		<result column="ymanager" property="ymanager" jdbcType="VARCHAR" />
+		<result column="T_ID" property="tid" jdbcType="VARCHAR" />
+		<result column="tname" property="tname" jdbcType="VARCHAR" />
+		<result column="tmanager" property="tmanager" jdbcType="VARCHAR" />
+		<result column="LEVEL_TYPE" property="levelType" jdbcType="CHAR" />
+		<result column="DEL_FLG" property="delFlg" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="DqMap" type="com.bqhx.yyb.vo.DqVO">
+		<result column="P_ID" property="pid" jdbcType="VARCHAR" />
+		<result column="pname" property="pname" jdbcType="VARCHAR" />
+		<result column="pmanager" property="pmanager" jdbcType="VARCHAR" />
+		<result column="did" property="did" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="FgsMap" type="com.bqhx.yyb.vo.FgsVO">
+		<result column="F_ID" property="fid" jdbcType="VARCHAR" />
+		<result column="fname" property="fname" jdbcType="VARCHAR" />
+		<result column="fmanager" property="fmanager" jdbcType="VARCHAR" />
+		<result column="pid" property="pid" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="YybMap" type="com.bqhx.yyb.vo.YybVO">
+		<result column="Y_ID" property="yid" jdbcType="VARCHAR" />
+		<result column="yname" property="yname" jdbcType="VARCHAR" />
+		<result column="ymanager" property="ymanager" jdbcType="VARCHAR" />
+		<result column="fid" property="fid" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="tdMap" type="com.bqhx.yyb.vo.TdVO">
+		<result column="T_ID" property="tid" jdbcType="VARCHAR" />
+		<result column="tname" property="tname" jdbcType="VARCHAR" />
+		<result column="tmanager" property="tmanager" jdbcType="VARCHAR" />
+		<result column="yid" property="yid" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Organization_Code_Column_List">
+		O_ID, O_NAME, M_NAME, LEVEL_TYPE, DEL_FLG, V_LEVEL
+	</sql>
+
+    <sql id="Organization_Column_List">
+		OID_ORG_ID, D_ID, P_ID, F_ID, Y_ID, T_ID, LEVEL_TYPE, DEL_FLG
+	</sql>
+
+	<select id="selectOrganizationCodeByOid" resultMap="OrganizationCodeMap">
+		SELECT
+		<include refid="Organization_Code_Column_List" />
+		FROM t_organization_code
+		<where>
+			<if test="oid != null and oid != ''">
+				O_ID =#{oid,jdbcType=VARCHAR}
+			</if>
+			<if test="levelType != null and levelType != ''">
+				and LEVEL_TYPE =#{levelType,jdbcType=INTEGER}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and DEL_FLG = #{delFlg,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+
+    <select id="selectOrganizationByCondition" resultMap="OrganizationMap">
+		SELECT
+		<include refid="Organization_Column_List" />
+		FROM t_organization
+		<where>
+			<if test="oidOrgid != null and oidOrgid != ''">
+				OID_ORG_ID =#{oidOrgid}
+			</if>
+			<if test="did != null and did != ''">
+				and D_ID =#{did}
+			</if>
+			<if test="pid != null and pid != ''">
+				and P_ID =#{pid}
+			</if>
+			<if test="fid != null and fid != ''">
+				and F_ID =#{fid}
+			</if>
+			<if test="yid != null and yid != ''">
+				and Y_ID =#{yid}
+			</if>
+			<if test="tid != null and tid != ''">
+				and T_ID =#{tid}
+			</if>
+			<if test="levelType != null and levelType != ''">
+				and LEVEL_TYPE =#{levelType}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and DEL_FLG = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+    <select id="fuzzySelectOrganizationCode" resultMap="OrganizationCodeMap">
+		SELECT
+		<include refid="Organization_Code_Column_List" />
+		FROM t_organization_code
+		<where>
+			<if test="oid != null and oid != ''">
+				O_ID LIKE #{oid}"%"
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and DEL_FLG = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询所有事业部 -->
+    <select id="selectAllsybOrganization" resultMap="OrganizationResultMap">
+		SELECT
+		c.O_ID as D_ID,c.O_NAME as dname,c.M_NAME as dmanager
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.D_ID
+		<where>
+				o.LEVEL_TYPE ='0'
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询某个事业部 -->
+	<select id="selectSybByCondition" resultMap="OrganizationResultMap">
+		SELECT
+		c.O_ID as D_ID,c.O_NAME as dname,c.M_NAME as dmanager
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.D_ID
+		<where>
+				o.LEVEL_TYPE ='0'
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 查询所有大区或者在某个事业部下的所有大区 -->
+	<select id="selectAlldqOrganization" resultMap="DqMap">
+		SELECT
+		c.O_ID as P_ID,c.O_NAME as pname,c.M_NAME as pmanager
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.P_ID
+		<where>
+				o.LEVEL_TYPE ='1'
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询某个大区及所在事业部-->
+	<select id="selectDqByCondition" resultMap="DqMap">
+		SELECT
+		c.O_ID as P_ID,c.O_NAME as pname,c.M_NAME as pmanager,o.D_ID as did
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.P_ID
+		<where>
+				o.LEVEL_TYPE ='1'
+			<if test="P_ID != null and P_ID != ''">
+				and o.P_ID = #{P_ID}
+			</if>
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询所有分公司或者在某个大区下的所有分公司 -->
+	<select id="selectAllfgsOrganization" resultMap="FgsMap">
+		SELECT
+		c.O_ID as F_ID,c.O_NAME as fname,c.M_NAME as fmanager
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.F_ID
+		<where>
+				o.LEVEL_TYPE ='2'
+			<if test="P_ID != null and P_ID != ''">
+				and o.P_ID = #{P_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询某个分公司及所在大区 -->
+	<select id="selectFgsByCondition" resultMap="FgsMap">
+		SELECT
+		c.O_ID as F_ID,c.O_NAME as fname,c.M_NAME as fmanager,o.P_ID as pid
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.F_ID
+		<where>
+				o.LEVEL_TYPE ='2'
+			<if test="P_ID != null and P_ID != ''">
+				and o.P_ID = #{P_ID}
+			</if>
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
+			<if test="F_ID != null and F_ID != ''">
+				and o.F_ID = #{F_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询所有营业部或者在某个分公司下的所有营业部 -->
+	<select id="selectAllyybOrganization" resultMap="YybMap">
+		SELECT
+		c.O_ID as Y_ID,c.O_NAME as yname,c.M_NAME as ymanager
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.Y_ID
+		<where>
+				o.LEVEL_TYPE ='3'
+			<if test="F_ID != null and F_ID != ''">
+				and o.F_ID = #{F_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询某个营业部及所在分公司 -->
+	<select id="selectYybByCondition" resultMap="YybMap">
+		SELECT
+		c.O_ID as Y_ID,c.O_NAME as yname,c.M_NAME as ymanager,o.F_ID as fid
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.Y_ID
+		<where>
+				o.LEVEL_TYPE ='3'
+			<if test="P_ID != null and P_ID != ''">
+				and o.P_ID = #{P_ID}
+			</if>
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
+			<if test="F_ID != null and F_ID != ''">
+				and o.F_ID = #{F_ID}
+			</if>
+			<if test="Y_ID != null and Y_ID != ''">
+				and o.Y_ID = #{Y_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询所有团队或者在某个营业部下的所有团队 -->
+	<select id="selectAlltdOrganization" resultMap="tdMap">
+		SELECT
+		c.O_ID as T_ID,c.O_NAME as tname,c.M_NAME as tmanager
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.T_ID
+		<where>
+				o.LEVEL_TYPE ='4'
+			<if test="Y_ID != null and Y_ID != ''">
+				and o.Y_ID = #{Y_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询某个团队及所在营业部 -->
+	<select id="selectTdByCondition" resultMap="tdMap">
+		SELECT
+		c.O_ID as T_ID,c.O_NAME as tname,c.M_NAME as tmanager,o.Y_ID as yid
+		FROM t_organization as o
+		inner join t_organization_code c on c.O_ID=o.T_ID
+		<where>
+				o.LEVEL_TYPE ='4'
+			<if test="P_ID != null and P_ID != ''">
+				and o.P_ID = #{P_ID}
+			</if>
+			<if test="D_ID != null and D_ID != ''">
+				and o.D_ID = #{D_ID}
+			</if>
+			<if test="F_ID != null and F_ID != ''">
+				and o.F_ID = #{F_ID}
+			</if>
+			<if test="Y_ID != null and Y_ID != ''">
+				and o.Y_ID = #{Y_ID}
+			</if>
+			<if test="T_ID != null and T_ID != ''">
+				and o.T_ID = #{T_ID}
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				and o.del_flg = #{delFlg}
+			</if>
+			<if test="vlevel != null and vlevel != ''">
+				and c.V_LEVEL = #{vlevel}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertOrganizationCode" useGeneratedKeys="true" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
+		INSERT INTO t_organization_code
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="oid != null and oid != ''">
+				O_ID,
+			</if>
+			<if test="oname != null and oname != ''">
+				O_NAME,
+			</if>
+			<if test="mname != null and mname != ''">
+				M_NAME,
+			</if>
+			<if test="levelType != null and levelType != ''">
+				LEVEL_TYPE,
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				DEL_FLG
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="oid != null and oid != ''">
+				#{oid,jdbcType=VARCHAR},
+			</if>
+			<if test="oname != null and oname != ''">
+				#{oname,jdbcType=VARCHAR},
+			</if>
+			<if test="mname != null and mname != ''">
+				#{mname,jdbcType=VARCHAR},
+			</if>
+			<if test="levelType != null and levelType != ''">
+				#{levelType,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				#{delFlg,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateOrganizationCode" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
+		update t_organization_code
+		<set>
+			<if test="oname != null">
+				O_NAME = #{oname,jdbcType=VARCHAR},
+			</if>
+			<if test="mname != null">
+				M_NAME = #{mname,jdbcType=VARCHAR},
+			</if>
+			<if test="levelType != null">
+				LEVEL_TYPE = #{levelType,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlg != null">
+				DEL_FLG = #{delFlg,jdbcType=VARCHAR}
+			</if>
+		</set> 
+		where O_ID = #{oid,jdbcType=VARCHAR}
+	</update>
+	
+	<insert id="insertOrganization" useGeneratedKeys="true" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
+		INSERT INTO t_organization
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="did != null and did != ''">
+				D_ID,
+			</if>
+			<if test="pid != null and pid != ''">
+				P_ID,
+			</if>
+			<if test="fid != null and fid != ''">
+				F_ID,
+			</if>
+			<if test="yid != null and yid != ''">
+				Y_ID,
+			</if>
+			<if test="tid != null and tid != ''">
+				T_ID,
+			</if>
+			<if test="levelType != null and levelType != ''">
+				LEVEL_TYPE,
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				DEL_FLG
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="did != null and did != ''">
+				#{did,jdbcType=VARCHAR},
+			</if>
+			<if test="pid != null and pid != ''">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="fid != null and fid != ''">
+				#{fid,jdbcType=VARCHAR},
+			</if>
+			<if test="yid != null and yid != ''">
+				#{yid,jdbcType=VARCHAR},
+			</if>
+			<if test="tid != null and tid != ''">
+				#{tid,jdbcType=VARCHAR},
+			</if>
+			<if test="levelType != null and levelType != ''">
+				#{levelType,jdbcType=CHAR},
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				#{delFlg,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateOrganizationByOid" parameterType="com.bqhx.yyb.vo.OrganizationConditionVO">
+		update t_organization
+		<set>
+			<if test="did != null">
+				D_ID = #{did,jdbcType=VARCHAR},
+			</if>
+			<if test="pid != null">
+				P_ID = #{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="fid != null">
+				F_ID = #{fid,jdbcType=VARCHAR},
+			</if>
+			<if test="yid != null">
+				Y_ID = #{yid,jdbcType=VARCHAR},
+			</if>
+			<if test="tid != null">
+				T_ID = #{tid,jdbcType=VARCHAR},
+			</if>
+			<if test="levelType != null">
+				LEVEL_TYPE = #{levelType,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlg != null">
+				DEL_FLG = #{delFlg,jdbcType=VARCHAR}
+			</if>
+		</set> 
+		where OID_ORG_ID = #{oidOrgid,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.FileMapper">
+	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.FileVO">
+		<id column="contract" property="contract" jdbcType="CHAR" />
+		<id column="file_name" property="fileName" jdbcType="VARCHAR" />
+		<result column="file_path" property="filePath" jdbcType="VARCHAR" />
+		<result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+		<result column="file_type" property="fileType" jdbcType="VARCHAR" />
+		<result column="ins_date" property="insDate" jdbcType="DATE" />
+		<result column="ins_user" property="insUser" jdbcType="CHAR" />
+		<result column="upd_date" property="updDate" jdbcType="DATE" />
+		<result column="upd_user" property="updUser" jdbcType="CHAR" />
+		<result column="del_flg" property="delFlg" jdbcType="CHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		contract, file_path, file_url, file_type, file_name, ins_date, ins_user, upd_date, upd_user, del_flg
+	</sql>
+
+	<select id="selectFilePathByKey" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_file
+		<where>
+			del_flg = '0'
+			<if test="contract != null and contract != ''">
+				and contract = #{contract}
+			</if>
+			<if test="fileName != null and fileName != ''">
+				and file_name = #{fileName}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectFileByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_file
+		<where>
+			del_flg = '0'
+			<if test="contract != null and contract != ''">
+				and contract = #{contract}
+			</if>
+			<if test="fileName != null and fileName != ''">
+				and file_name = #{fileName}
+			</if>
+			<if test="fileType != null and fileType != ''">
+				and file_type = #{fileType}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertFilePath" useGeneratedKeys="true"
+		keyProperty="id" parameterType="java.lang.String">
+		INSERT INTO t_file
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contract != null and contract != ''">
+				contract,
+			</if>
+			<if test="filePath != null and filePath != ''">
+				file_path,
+			</if>
+			<if test="fileUrl != null and fileUrl != ''">
+				file_url,
+			</if>
+			<if test="fileType != null and fileType != ''">
+				file_type,
+			</if>
+			<if test="fileName != null and fileName != ''">
+				file_name,
+			</if>
+			<if test="insDate != null and insDate != ''">
+				ins_date,
+			</if>
+			<if test="insUser != null and insUser != ''">
+				ins_user,
+			</if>
+			<if test="updDate != null and updDate != ''">
+				upd_date,
+			</if>
+			<if test="updUser != null and updUser != ''">
+				upd_user
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contract != null and contract != ''">
+				#{contract,jdbcType=INTEGER},
+			</if>
+			<if test="filePath != null and filePath != ''">
+				#{filePath,jdbcType=VARCHAR},
+			</if>
+			<if test="fileUrl != null and fileUrl != ''">
+				#{fileUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="fileType != null and fileType != ''">
+				#{fileType,jdbcType=VARCHAR},
+			</if>
+			<if test="fileName != null and fileName != ''">
+				#{fileName,jdbcType=VARCHAR},
+			</if>
+			<if test="insDate != null and insDate != ''">
+				#{insDate,jdbcType=DATE},
+			</if>
+			<if test="insUser != null and insUser != ''">
+				#{insUser,jdbcType=CHAR},
+			</if>
+			<if test="updDate != null and updDate != ''">
+				#{updDate,jdbcType=DATE},
+			</if>
+			<if test="updUser != null and updUser != ''">
+				#{updUser,jdbcType=CHAR}
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateFileByPrimaryKey" parameterType="com.bqhx.yyb.vo.FileVO">
+		update t_file
+		<set>
+			<if test="updDate != null and updDate != ''">
+				upd_date = #{updDate,jdbcType=DATE},
+			</if>
+			<if test="updUser != null and updUser != ''">
+				upd_user = #{updUser,jdbcType=CHAR},
+			</if>
+			<if test="delFlg != null and delFlg != ''">
+				del_flg = #{delFlg,jdbcType=CHAR}
+			</if>
+		</set>
+		<where>
+			<if test="contract != null and contract != ''">
+				contract = #{contract,jdbcType=CHAR}
+			</if>
+			<if test="fileName != null and fileName != ''">
+				and file_name = #{fileName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</update>
+</mapper>

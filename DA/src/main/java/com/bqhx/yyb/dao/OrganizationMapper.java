@@ -4,7 +4,6 @@ package com.bqhx.yyb.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.bqhx.yyb.vo.DqVO;
 import com.bqhx.yyb.vo.FgsVO;
@@ -23,6 +22,10 @@ public interface OrganizationMapper {
 	List<OrganizationCodeVO> fuzzySelectOrganizationCode(OrganizationConditionVO organizationConditionVO);
 
 	List<OrganizationVO> selectOrganizationByCondition(OrganizationConditionVO organizationConditionVO);
+	
+	List<OrganizationVO> selectOrByCondition(OrganizationConditionVO organizationConditionVO);
+	
+	List<OrganizationCodeVO> selectOrganizationCodeByCondition(OrganizationCodeVO orcode);
 	
 	void insertOrganization(OrganizationConditionVO organizationConditionVO);
 	

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.UserHistoryMapper">
+	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.UserHistoryVO">
+		<id column="user_his_id" property="userHisId" jdbcType="INTEGER" />
+		<result column="user_change_info" property="userChangeInfo" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="tel" property="tel" jdbcType="VARCHAR" />
+		<result column="type_id" property="typeId" jdbcType="CHAR" />
+		<result column="s_id" property="sid" jdbcType="VARCHAR" />
+		<result column="s_name" property="sname" jdbcType="VARCHAR" />
+		<result column="s_mname" property="smname" jdbcType="VARCHAR" />
+		<result column="d_id" property="did" jdbcType="VARCHAR" />
+		<result column="d_name" property="dname" jdbcType="VARCHAR" />
+		<result column="d_mname" property="dmname" jdbcType="VARCHAR" />
+		<result column="f_id" property="fid" jdbcType="VARCHAR" />
+		<result column="f_name" property="fname" jdbcType="VARCHAR" />
+		<result column="f_mname" property="fmname" jdbcType="VARCHAR" />
+		<result column="y_id" property="yid" jdbcType="VARCHAR" />
+		<result column="y_name" property="yname" jdbcType="VARCHAR" />
+		<result column="y_mname" property="ymname" jdbcType="VARCHAR" />
+		<result column="t_id" property="tid" jdbcType="VARCHAR" />
+		<result column="t_name" property="tname" jdbcType="VARCHAR" />
+		<result column="t_mname" property="tmname" jdbcType="VARCHAR" />
+		<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+		<result column="ins_date" property="insDate" jdbcType="DATE" />
+		<result column="ins_user" property="insUser" jdbcType="CHAR" />
+		<result column="upd_date" property="updDate" jdbcType="DATE" />
+		<result column="upd_user" property="updUser" jdbcType="CHAR" />
+		<result column="del_flg" property="delFlg" jdbcType="CHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		user_his_id, user_change_info, user_id, password, name,tel,type_id,
+		s_id, s_name,s_mname,d_id,d_name,d_mname,f_id,f_name,f_mname,y_id,
+		y_name, y_mname, t_id, t_name,t_mname,id_card,ins_date,ins_user,upd_date,upd_user,del_flg
+	</sql>
+
+	<insert id="insertUserHistory" useGeneratedKeys="true"
+		keyProperty="user_his_id" parameterType="java.lang.String">
+		INSERT INTO user_history
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userHisId != null and userHisId != ''">
+				user_his_id,
+			</if>
+			<if test="userChangeInfo != null and userChangeInfo != ''">
+				user_change_info,
+			</if>
+			<if test="userId != null and userId != ''">
+				user_id,
+			</if>
+			<if test="password != null and password != ''">
+				password,
+			</if>
+			<if test="name != null and name != ''">
+				name,
+			</if>
+			<if test="tel != null and tel != ''">
+				tel,
+			</if>
+			<if test="typeId != null and typeId != ''">
+				type_id,
+			</if>
+			<if test="sid != null and sid != ''">
+				s_id,
+			</if>
+			<if test="sname != null and sname != ''">
+				s_name,
+			</if>
+			<if test="smname != null and smname != ''">
+				s_mname,
+			</if>
+			<if test="did != null and did != ''">
+				d_id,
+			</if>
+			<if test="dname != null and dname != ''">
+				d_name,
+			</if>
+			<if test="dmname != null and dmname != ''">
+				d_mname,
+			</if>
+			<if test="fid != null and fid != ''">
+				f_id,
+			</if>
+			<if test="fname != null and fname != ''">
+				f_name,
+			</if>
+			<if test="fmname != null and fmname != ''">
+				f_mname,
+			</if>
+			<if test="yid != null and yid != ''">
+				y_id,
+			</if>
+			<if test="yname != null and yname != ''">
+				y_name,
+			</if>
+			<if test="ymname != null and ymname != ''">
+				y_mname,
+			</if>
+			<if test="tid != null and tid != ''">
+				t_id,
+			</if>
+			<if test="tname != null and tname != ''">
+				t_name,
+			</if>
+			<if test="tmname != null and tmname != ''">
+				t_mname,
+			</if>
+			<if test="idCard != null and idCard != ''">
+				id_card,
+			</if>
+			<if test="insDate != null and insDate != ''">
+				ins_date,
+			</if>
+			<if test="insUser != null and insUser != ''">
+				ins_user,
+			</if>
+			<if test="updDate != null and updDate != ''">
+				upd_date,
+			</if>
+			<if test="updUser != null and updUser != ''">
+				upd_user
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userHisId != null and userHisId != ''">
+				#{userHisId,jdbcType=INTEGER},
+			</if>
+			<if test="userChangeInfo != null and userChangeInfo != ''">
+				#{userChangeInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null and userId != ''">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null and password != ''">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null and name != ''">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null and tel != ''">
+				#{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="typeId != null and typeId != ''">
+				#{typeId,jdbcType=VARCHAR},
+			</if>
+			<if test="sid != null and sid != ''">
+				#{sid,jdbcType=VARCHAR},
+			</if>
+			<if test="sname != null and sname != ''">
+				#{sname,jdbcType=VARCHAR},
+			</if>
+			<if test="smname != null and smname != ''">
+				#{smname,jdbcType=VARCHAR},
+			</if>
+			<if test="did != null and did != ''">
+				#{did,jdbcType=VARCHAR},
+			</if>
+			<if test="dname != null and dname != ''">
+				#{dname,jdbcType=VARCHAR},
+			</if>
+			<if test="dmname != null and dmname != ''">
+				#{dmname,jdbcType=VARCHAR},
+			</if>
+			<if test="fid != null and fid != ''">
+				#{fid,jdbcType=VARCHAR},
+			</if>
+			<if test="fname != null and fname != ''">
+				#{fname,jdbcType=VARCHAR},
+			</if>
+			<if test="fmname != null and fmname != ''">
+				#{fmname,jdbcType=VARCHAR},
+			</if>
+			<if test="yid != null and yid != ''">
+				#{fid,jdbcType=VARCHAR},
+			</if>
+			<if test="yname != null and yname != ''">
+				#{fid,jdbcType=VARCHAR},
+			</if>
+			<if test="ymname != null and ymname != ''">
+				#{ymname,jdbcType=VARCHAR},
+			</if>
+			<if test="tid != null and tid != ''">
+				#{tid,jdbcType=VARCHAR},
+			</if>
+			<if test="tname != null and tname != ''">
+				#{tname,jdbcType=VARCHAR},
+			</if>
+			<if test="tmname != null and tmname != ''">
+				#{tmname,jdbcType=VARCHAR},
+			</if>
+			<if test="idCard != null and idCard != ''">
+				#{idCard,jdbcType=VARCHAR},
+			</if>
+			<if test="insDate != null and insDate != ''">
+				#{insDate,jdbcType=DATE},
+			</if>
+			<if test="insUser != null and insUser != ''">
+				#{insUser,jdbcType=CHAR},
+			</if>
+			<if test="updDate != null and updDate != ''">
+				#{updDate,jdbcType=DATE},
+			</if>
+			<if test="updUser != null and updUser != ''">
+				#{updUser,jdbcType=CHAR}
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectUserHistoryByCondition" parameterType="java.lang.String" resultMap="BaseResultMap"  >
+       SELECT 
+       <include refid="Base_Column_List" />
+       FROM user_history
+       <where>
+       del_flg = '0'
+       		<if test="sid != null and sid != ''">
+				and s_id = #{sid,jdbcType=VARCHAR}
+			</if>
+			<if test="did != null and did != ''">
+				and d_id = #{did,jdbcType=VARCHAR}
+			</if>
+			<if test="fid != null and fid != ''">
+				and f_id = #{fid,jdbcType=VARCHAR}
+			</if>
+			<if test="yid != null and yid != ''">
+				and y_id = #{yid,jdbcType=VARCHAR}
+			</if>
+			<if test="tid != null and tid != ''">
+				and t_id = #{tid,jdbcType=VARCHAR}
+			</if>
+       		<if test="userChangeInfo != null and userChangeInfo != ''">
+				and user_change_info = #{userChangeInfo,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId,jdbcType=VARCHAR}
+			</if>
+			</where>
+    </select>
+</mapper>

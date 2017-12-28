@@ -1,0 +1,7 @@
+@charset "utf-8";
+.container{width:100%;top:120px;padding:120px 0;background:#966}
+.content{width:302px;height:300px;font:16px "微软雅黑";margin:0 auto;box-shadow:0 0 5px #9CC;padding:10px}
+.content h2{font:20px "微软雅黑";padding:15px 0;color:#9CC;text-align:center}
+.form-group label{font-size:14px;color:#9CC;text-align:left}
+.form-group input{font-size:14px;margin-left:0}
+.btn-submit{height:40px;line-height:40px;background:#9CC}

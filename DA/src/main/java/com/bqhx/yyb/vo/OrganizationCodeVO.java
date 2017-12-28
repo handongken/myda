@@ -4,8 +4,16 @@ public class OrganizationCodeVO {
 	private String oid;
 	private String oname;
 	private String mname;
+	private String vlevel;
 	private String levelType;
 	private String delFlg;
+	
+	public String getVlevel() {
+		return vlevel;
+	}
+	public void setVlevel(String vlevel) {
+		this.vlevel = vlevel;
+	}
 	public String getOid() {
 		return oid;
 	}

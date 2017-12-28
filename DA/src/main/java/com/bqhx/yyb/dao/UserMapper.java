@@ -16,8 +16,6 @@ public interface UserMapper {
 	
 	UserVO selectUserByPrimaryKey(UserConditionVO condition);
 
-	int updateUserByPrimaryKey(UserConditionVO condition);
-
 	int updateUserByPrimaryKeySelective(UserConditionVO condition);
 
 }

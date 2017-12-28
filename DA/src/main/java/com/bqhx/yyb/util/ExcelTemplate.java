@@ -439,12 +439,12 @@ public class ExcelTemplate {
 				} else if (str.contains("@") && !str.startsWith("@")) {
 					if(str.contains("SUM") || str.contains("COUNT")){
 						String formula = getCurColFormula(str, getFormulaRowNum());
-//						System.out.println("公式： " + formula);
+//						logger.info("公式： " + formula);
 						int curFormulaColNum = getFormulaColNum(getFormulaRowNum(),str);
 						createFormulaCell(getFormulaRowNum(),curFormulaColNum , formula);
 					}else{
 						String formula = getCurColFormula(str, getFormulaRowNum()+1);
-//						System.out.println("公式： " + formula);
+//						logger.info("公式： " + formula);
 						int curFormulaColNum = getFormulaColNum(getFormulaRowNum(),str);
 						createFormulaCell(getFormulaRowNum(),curFormulaColNum , formula);
 					}
@@ -535,7 +535,7 @@ public class ExcelTemplate {
 		cs.setFont(font);
 		//sheet所有行
 		int rowNum = sheet.getLastRowNum();
-//		System.out.println("sheet所有行数: " + rowNum);
+//		logger.info("sheet所有行数: " + rowNum);
 		for(int i = 0; i < rowNum+1; i++){
 			Row row = sheet.getRow(i);
 			//遍历一行中的所有的单元格  
@@ -870,7 +870,7 @@ public class ExcelTemplate {
 		if (row != null) {
 //			int cells = row.getPhysicalNumberOfCells();// 是获取不为空的列个数。 
 			int cellNum = row.getLastCellNum();// 是获取最后一个不为空的列是第几个。 
-//			System.out.println("总列数: " + cellNum);
+//			logger.info("总列数: " + cellNum);
 			for (int j = 0; j < cellNum; j++) {
 				// 获取到列的值
 				Cell c = row.getCell(j);

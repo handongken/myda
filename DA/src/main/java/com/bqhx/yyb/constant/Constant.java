@@ -1,7 +1,6 @@
 package com.bqhx.yyb.constant;
 
 import java.math.BigDecimal;
-
 /**
  * 常量类
  *
@@ -15,6 +14,14 @@ public final class Constant {
 	 * pattern:"yyyy-MM-dd"
 	 */
 	public static final String PATTERN = "yyyy-MM-dd";
+	/**
+	 * pattern:"yyyyMMdd"
+	 */
+	public static final String FILEPATTERN = "yyyyMMdd";
+	/**
+	 * pattern:"yyyy年MM月dd日"
+	 */
+	public static final String CHARPATTERN = "yyyy年MM月dd日";
 	/**
 	 * 数字1
 	 */
@@ -327,5 +334,24 @@ public final class Constant {
 	 * 营业部内勤权限typeid
 	 */
 	public static final String YYBOFFICE = "13";
-	
+	/**
+	 * 添加
+	 */
+	public static final String INSERT = "添加";
+	/**
+	 * 更新
+	 */
+	public static final String UPDATE = "更新";
+	/**
+	 * 删除
+	 */
+	public static final String DELETE = "删除";
+	/**
+	 * 审批状态：审批失败
+	 */
+	public static final String APPROVETWO = "审批失败";
+	/**
+	 * 审批状态：审批通过
+	 */
+	public static final String APPROVEONE = "审批通过";
 }

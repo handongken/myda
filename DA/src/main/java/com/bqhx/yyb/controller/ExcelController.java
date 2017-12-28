@@ -12,18 +12,18 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bqhx.yyb.constant.Constant;
-import com.bqhx.yyb.dao.CertificateMapper;
 import com.bqhx.yyb.dao.InformationVOMapper;
-import com.bqhx.yyb.dao.MovableCheckMapper;
-import com.bqhx.yyb.dao.OrganizationMapper;
-//import com.bqhx.yyb.dao.OrganizationMapper;
-import com.bqhx.yyb.dao.PrincipalMapper;
-import com.bqhx.yyb.dao.TypeMapper;
+import com.bqhx.yyb.service.CertificateService;
+import com.bqhx.yyb.service.InformationService;
+import com.bqhx.yyb.service.MovableCheckService;
+import com.bqhx.yyb.service.OrganizationService;
+import com.bqhx.yyb.service.PrincipalService;
 import com.bqhx.yyb.util.ConditionUtil;
 import com.bqhx.yyb.util.ExcelUtil;
 import com.bqhx.yyb.vo.CertificateVO;
@@ -32,15 +32,12 @@ import com.bqhx.yyb.vo.DqVO;
 import com.bqhx.yyb.vo.FgsVO;
 import com.bqhx.yyb.vo.InformationVO;
 import com.bqhx.yyb.vo.MovableCheckVO;
-import com.bqhx.yyb.vo.OrganizationCodeVO;
 import com.bqhx.yyb.vo.OrganizationConditionVO;
 import com.bqhx.yyb.vo.OrganizationResultVO;
 import com.bqhx.yyb.vo.PrincipalVO;
 import com.bqhx.yyb.vo.ResultTypeVO;
-import com.bqhx.yyb.vo.TypeVO;
 import com.bqhx.yyb.vo.UserVO;
 import com.bqhx.yyb.vo.YybVO;
-import com.bqhx.yyb.constant.*;
 
 @RestController
 @RequestMapping("/")
@@ -49,113 +46,37 @@ public class ExcelController {
 	@Autowired
 	private InformationVOMapper informationVOMapper;
 	@Autowired
-	private CertificateMapper certificateMapper;
+	@Qualifier("InformationServiceImpl") 
+	private InformationService informationService;
 	@Autowired
-	private TypeMapper typeMapper;
+	@Qualifier("CertificateServiceImpl") 
+	private CertificateService certificateService;
 	@Autowired
-	private PrincipalMapper principalVOMapper;
+	@Qualifier("PrincipalServiceImpl") 
+	private PrincipalService principalService;
 	@Autowired
-	private MovableCheckMapper movableCheckMapper;
+	@Qualifier("OrganizationServiceImpl") 
+	private OrganizationService organizationService;
 	@Autowired
-	private OrganizationMapper organizationMapper;
+	@Qualifier("MovableCheckServiceImpl") 
+	private MovableCheckService movableCheckService;
+	
 	/**
 	 * 下载总表
 	 *
 	 */
 	@RequestMapping(value="/downloadSummaryTable", method = RequestMethod.POST)
 	protected void downloadSummaryTable(HttpServletResponse res,UserVO user) throws Exception {
-		String typeId = user.getTypeId();
 		ConditionVO conditionVO = new ConditionVO();
 		ConditionVO condition = ConditionUtil.getConditionVOByRole(conditionVO,user);
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.SUMMARYNAME + getDate() + ".xlsx"; 
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		List<InformationVO> list = informationVOMapper.selectByCondition(condition);
-		for(int i = 0;i < list.size();i++){
-			InformationVO info = list.get(i);
-			//type
-			String type = info.getType();
-			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type,Constant.FLAG_ZERO);
-			String typeName = typeVO.getTypeName();
-			if(typeName != null && typeName != ""){
-				info.setType(typeName);
-			}
-			//status
-			String status = info.getStatus();
-			String statusValue = StatusEnum.getValue(status);
-			if(statusValue != ""){
-				info.setStatus(statusValue);
-			}
-			if(typeId != null && !typeId.equals("") && !typeId.equals(Constant.MB)){
-				//continueFlg
-				String continueFlg = info.getContinueFlg();
-				String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
-				if(continueFlgValue != null && continueFlgValue != ""){
-					info.setContinueFlg(continueFlgValue);
-				}
-			}
-			//架构信息显示name
-			OrganizationConditionVO orcon = new OrganizationConditionVO();
-			orcon.setDelFlg(Constant.FLAG_ZERO);
-			orcon.setVlevel(Constant.FLAG_ZERO);
-			//syb
-			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
-				orcon.setD_ID(info.getSyb());
-				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
-				if(syb != null){
-					info.setSybname(syb.getDname());
-//					informationVO.setSybManager(syb.getDmanager());
-				}else{
-					info.setSybname("无");
-				}
-			}else{
-				orcon.setD_ID("A001");
-				info.setSybname("无");
-			}
-			//dq
-			if(info.getDq() != null && !"".equals(info.getDq()) && !"B001".equals(info.getDq())){
-				orcon.setP_ID(info.getDq());
-				DqVO dq = organizationMapper.selectDqByCondition(orcon);
-				if(dq != null){
-					info.setDqname(dq.getPname());
-				}else{
-					info.setDqname("无");
-				}
-			}else{
-				orcon.setP_ID("B001");
-				info.setDqname("无");
-			}
-			//fgs
-			if(info.getFgs() != null && !"".equals(info.getFgs()) && !"C001".equals(info.getFgs())){
-				orcon.setF_ID(info.getFgs());
-				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
-				if(fgs != null){
-					info.setFgsname(fgs.getFname());
-				}else{
-					info.setFgsname("无");
-				}
-			}else{
-				orcon.setF_ID("C001");
-				info.setFgsname("无");
-			}
-			//yyb
-			if(info.getYyb() != null && !"".equals(info.getYyb()) && !"D001".equals(info.getYyb())){
-				orcon.setY_ID(info.getYyb());
-				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
-				if(yyb != null){
-					info.setYybname(yyb.getYname());
-				}else{
-					info.setYybname("无");
-				}
-			}else{
-				orcon.setY_ID("D001");
-				info.setYybname("无");
-			}
-		}
+		List<InformationVO> list = informationService.selectByCondition(condition,user);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${totalCount}", list.size() + " 条");
 		map.put("${date}", getDate());
 		map.put("${title}", Constant.SUMMARYTABLETITLE);
+		String typeId = user.getTypeId();
 		if(typeId != null && !typeId.equals("") && !typeId.equals(Constant.MB)){
 			ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
 					getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
@@ -171,98 +92,24 @@ public class ExcelController {
 	 * status="1"
 	 */
 	@RequestMapping(value="/downloadRedeemedTable", method = RequestMethod.POST)
-	protected void downloadRedeemedTable(HttpServletResponse res) throws Exception {
+	protected void downloadRedeemedTable(HttpServletResponse res,UserVO user) throws Exception {
 		ConditionVO condition = new ConditionVO();
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		condition.setStatus(Constant.FLAG_ONE);
 		String fileName = Constant.REDEEMEDNAME + getDate() + ".xlsx"; 
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		List<InformationVO> list = informationVOMapper.selectByCondition(condition);
-		for(int i = 0;i < list.size();i++){
-			InformationVO info = list.get(i);
-			//type
-			String type = info.getType();
-			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type,Constant.FLAG_ZERO);
-			String typeName = typeVO.getTypeName();
-			if(typeName != null && typeName != ""){
-				info.setType(typeName);
-			}
-			//status
-			String status = info.getStatus();
-			String statusValue = StatusEnum.getValue(status);
-			if(statusValue != ""){
-				info.setStatus(statusValue);
-			}
-			//continueFlg
-			String continueFlg = info.getContinueFlg();
-			String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
-			if(continueFlgValue != null && continueFlgValue != ""){
-				info.setContinueFlg(continueFlgValue);
-			}
-			//架构信息显示name
-			OrganizationConditionVO orcon = new OrganizationConditionVO();
-			orcon.setDelFlg(Constant.FLAG_ZERO);
-			orcon.setVlevel(Constant.FLAG_ZERO);
-			//syb
-			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
-				orcon.setD_ID(info.getSyb());
-				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
-				if(syb != null){
-					info.setSybname(syb.getDname());
-//					informationVO.setSybManager(syb.getDmanager());
-				}else{
-					info.setSybname("无");
-				}
-			}else{
-				orcon.setD_ID("A001");
-				info.setSybname("无");
-			}
-			//dq
-			if(info.getDq() != null && !"".equals(info.getDq()) && !"B001".equals(info.getDq())){
-				orcon.setP_ID(info.getDq());
-				DqVO dq = organizationMapper.selectDqByCondition(orcon);
-				if(dq != null){
-					info.setDqname(dq.getPname());
-				}else{
-					info.setDqname("无");
-				}
-			}else{
-				orcon.setP_ID("B001");
-				info.setDqname("无");
-			}
-			//fgs
-			if(info.getFgs() != null && !"".equals(info.getFgs()) && !"C001".equals(info.getFgs())){
-				orcon.setF_ID(info.getFgs());
-				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
-				if(fgs != null){
-					info.setFgsname(fgs.getFname());
-				}else{
-					info.setFgsname("无");
-				}
-			}else{
-				orcon.setF_ID("C001");
-				info.setFgsname("无");
-			}
-			//yyb
-			if(info.getYyb() != null && !"".equals(info.getYyb()) && !"D001".equals(info.getYyb())){
-				orcon.setY_ID(info.getYyb());
-				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
-				if(yyb != null){
-					info.setYybname(yyb.getYname());
-				}else{
-					info.setYybname("无");
-				}
-			}else{
-				orcon.setY_ID("D001");
-				info.setYybname("无");
-			}
-		}
+		List<InformationVO> list = informationService.selectByCondition(condition,user);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.REDEEMEDTABLETITLE);
 		map.put("${totalCount}", list.size() + " 条");
 		map.put("${date}", getDate());
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
-				getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		String typeId = user.getTypeId();
+		if(typeId != null && !typeId.equals("") && !typeId.equals(Constant.MB)){
+			ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
+					getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		}else{
+			ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.MBTEMPLATE,
+					getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		}
 	}
 	
 	/**
@@ -270,98 +117,24 @@ public class ExcelController {
 	 * status="3"
 	 */
 	@RequestMapping(value="/downloadRedeemableTable", method = RequestMethod.POST)
-	protected void downloadRedeemableTable(HttpServletResponse res) throws Exception {
+	protected void downloadRedeemableTable(HttpServletResponse res,UserVO user) throws Exception {
 		ConditionVO condition = new ConditionVO();
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		condition.setStatus(Constant.FLAG_THREE);
 		String fileName = Constant.REDEEMABLENAME + getDate() + ".xlsx"; 
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		List<InformationVO> list = informationVOMapper.selectByCondition(condition);
-		for(int i = 0;i < list.size();i++){
-			InformationVO info = list.get(i);
-			//type
-			String type = info.getType();
-			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type,Constant.FLAG_ZERO);
-			String typeName = typeVO.getTypeName();
-			if(typeName != null && typeName != ""){
-				info.setType(typeName);
-			}
-			//status
-			String status = info.getStatus();
-			String statusValue = StatusEnum.getValue(status);
-			if(statusValue != ""){
-				info.setStatus(statusValue);
-			}
-			//continueFlg
-			String continueFlg = info.getContinueFlg();
-			String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
-			if(continueFlgValue != null && continueFlgValue != ""){
-				info.setContinueFlg(continueFlgValue);
-			}
-			//架构信息显示name
-			OrganizationConditionVO orcon = new OrganizationConditionVO();
-			orcon.setDelFlg(Constant.FLAG_ZERO);
-			orcon.setVlevel(Constant.FLAG_ZERO);
-			//syb
-			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
-				orcon.setD_ID(info.getSyb());
-				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
-				if(syb != null){
-					info.setSybname(syb.getDname());
-//					informationVO.setSybManager(syb.getDmanager());
-				}else{
-					info.setSybname("无");
-				}
-			}else{
-				orcon.setD_ID("A001");
-				info.setSybname("无");
-			}
-			//dq
-			if(info.getDq() != null && !"".equals(info.getDq()) && !"B001".equals(info.getDq())){
-				orcon.setP_ID(info.getDq());
-				DqVO dq = organizationMapper.selectDqByCondition(orcon);
-				if(dq != null){
-					info.setDqname(dq.getPname());
-				}else{
-					info.setDqname("无");
-				}
-			}else{
-				orcon.setP_ID("B001");
-				info.setDqname("无");
-			}
-			//fgs
-			if(info.getFgs() != null && !"".equals(info.getFgs()) && !"C001".equals(info.getFgs())){
-				orcon.setF_ID(info.getFgs());
-				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
-				if(fgs != null){
-					info.setFgsname(fgs.getFname());
-				}else{
-					info.setFgsname("无");
-				}
-			}else{
-				orcon.setF_ID("C001");
-				info.setFgsname("无");
-			}
-			//yyb
-			if(info.getYyb() != null && !"".equals(info.getYyb()) && !"D001".equals(info.getYyb())){
-				orcon.setY_ID(info.getYyb());
-				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
-				if(yyb != null){
-					info.setYybname(yyb.getYname());
-				}else{
-					info.setYybname("无");
-				}
-			}else{
-				orcon.setY_ID("D001");
-				info.setYybname("无");
-			}
-		}
+		List<InformationVO> list = informationService.selectByCondition(condition,user);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.REDEEMABLETABLETITLE);
 		map.put("${totalCount}", list.size() + " 条");
 		map.put("${date}", getDate());
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
-				getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		String typeId = user.getTypeId();
+		if(typeId != null && !typeId.equals("") && !typeId.equals(Constant.MB)){
+			ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
+					getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		}else{
+			ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.MBTEMPLATE,
+					getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		}
 	}
 	
 	/**
@@ -369,99 +142,24 @@ public class ExcelController {
 	 * continueFlg="0"
 	 */
 	@RequestMapping(value="/downloadInvestmentTable", method = RequestMethod.POST)
-	protected void downloadInvestmentTable(HttpServletResponse res) throws Exception {
+	protected void downloadInvestmentTable(HttpServletResponse res,UserVO user) throws Exception {
 		ConditionVO condition = new ConditionVO();
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		condition.setContinueFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.INVESTMENTNAME + getDate() + ".xlsx"; 
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		List<InformationVO> list = informationVOMapper.selectByCondition(condition);
-		for(int i = 0;i < list.size();i++){
-			InformationVO info = list.get(i);
-			//type
-			String type = info.getType();
-			TypeVO typeVO = typeMapper.selectTypeByPrimaryKey(type,Constant.FLAG_ZERO);
-			String typeName = typeVO.getTypeName();
-			if(typeName != null && typeName != ""){
-				info.setType(typeName);
-			}
-			//status
-			String status = info.getStatus();
-			String statusValue = StatusEnum.getValue(status);
-			if(statusValue != ""){
-				info.setStatus(statusValue);
-			}
-			//continueFlg
-			String continueFlg = info.getContinueFlg();
-			String continueFlgValue = ContinueFlgEnum.getValue(continueFlg);
-			if(continueFlgValue != null && continueFlgValue != ""){
-				info.setContinueFlg(continueFlgValue);
-			}
-			//架构信息显示name
-			OrganizationConditionVO orcon = new OrganizationConditionVO();
-			orcon.setDelFlg(Constant.FLAG_ZERO);
-			orcon.setVlevel(Constant.FLAG_ZERO);
-			//syb
-			if(info.getSyb() != null && !"".equals(info.getSyb()) && !"A001".equals(info.getSyb())){
-				orcon.setD_ID(info.getSyb());
-				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
-				if(syb != null){
-					info.setSybname(syb.getDname());
-//					informationVO.setSybManager(syb.getDmanager());
-				}else{
-					info.setSybname("无");
-				}
-			}else{
-				orcon.setD_ID("A001");
-				info.setSybname("无");
-			}
-			//dq
-			if(info.getDq() != null && !"".equals(info.getDq()) && !"B001".equals(info.getDq())){
-				orcon.setP_ID(info.getDq());
-				DqVO dq = organizationMapper.selectDqByCondition(orcon);
-				if(dq != null){
-					info.setDqname(dq.getPname());
-				}else{
-					info.setDqname("无");
-				}
-			}else{
-				orcon.setP_ID("B001");
-				info.setDqname("无");
-			}
-			//fgs
-			if(info.getFgs() != null && !"".equals(info.getFgs()) && !"C001".equals(info.getFgs())){
-				orcon.setF_ID(info.getFgs());
-				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
-				if(fgs != null){
-					info.setFgsname(fgs.getFname());
-				}else{
-					info.setFgsname("无");
-				}
-			}else{
-				orcon.setF_ID("C001");
-				info.setFgsname("无");
-			}
-			//yyb
-			if(info.getYyb() != null && !"".equals(info.getYyb()) && !"D001".equals(info.getYyb())){
-				orcon.setY_ID(info.getYyb());
-				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
-				if(yyb != null){
-					info.setYybname(yyb.getYname());
-				}else{
-					info.setYybname("无");
-				}
-			}else{
-				orcon.setY_ID("D001");
-				info.setYybname("无");
-			}
-		}
+		List<InformationVO> list = informationService.selectByCondition(condition,user);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.INVESTMENTTABLETITLE);
 		map.put("${totalCount}", list.size() + " 条");
 		map.put("${date}", getDate());
-//		String out = Constant.INVESTMENTTABLE + getDate() + ".xls";new FileOutputStream(out)
-		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
-				getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		String typeId = user.getTypeId();
+		if(typeId != null && !typeId.equals("") && !typeId.equals(Constant.MB)){
+			ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.TOTALTEMPLATE,
+					getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		}else{
+			ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.MBTEMPLATE,
+					getOutputStreamByCondition(excelName,res), list, InformationVO.class, true);
+		}
 	}
 	
 	/**
@@ -473,7 +171,7 @@ public class ExcelController {
 		String fileName = Constant.INTERESTCERTIFICATENAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		String startTime = condition.getStartTime();
-		List<CertificateVO> certificateList = certificateMapper.selectCertificateByCondition(condition);
+		List<CertificateVO> certificateList = certificateService.selectCertificateByCondition(condition);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.INTERESTCERTIFICATETITLE);
 		map.put("${date}", getDate());
@@ -491,7 +189,7 @@ public class ExcelController {
 		String fileName = Constant.RELEASECERTIFICATENAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		String startTime = condition.getStartTime();
-		List<CertificateVO> certificateList = certificateMapper.selectCertificateByCondition(condition);
+		List<CertificateVO> certificateList = certificateService.selectCertificateByCondition(condition);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.RELEASECERTIFICATETITLE);
 		map.put("${date}", getDate());
@@ -509,18 +207,17 @@ public class ExcelController {
 		String fileName = Constant.PRINCIPALNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		String startTime = condition.getStartTime();
-		List<PrincipalVO> principalList = principalVOMapper.selectPrincipalByCondition(condition);
+		List<PrincipalVO> principalList = principalService.selectPrincipalByCondition(condition);
 		for(PrincipalVO principal:principalList){
 			String endDate = principal.getEndDate().replaceAll("-", "/");
 			principal.setEndDate(endDate);
 			//架构信息显示name
 			OrganizationConditionVO orcon = new OrganizationConditionVO();
-			orcon.setDelFlg(Constant.FLAG_ZERO);
 			orcon.setVlevel(Constant.FLAG_ZERO);
 			//syb
 			if(principal.getSyb() != null && !"".equals(principal.getSyb()) && !"A001".equals(principal.getSyb())){
 				orcon.setD_ID(principal.getSyb());
-				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
+				OrganizationResultVO syb = organizationService.selectSybByCondition(orcon);
 				if(syb != null){
 					principal.setSybname(syb.getDname());
 //					informationVO.setSybManager(syb.getDmanager());
@@ -534,7 +231,7 @@ public class ExcelController {
 			//dq
 			if(principal.getDq() != null && !"".equals(principal.getDq()) && !"B001".equals(principal.getDq())){
 				orcon.setP_ID(principal.getDq());
-				DqVO dq = organizationMapper.selectDqByCondition(orcon);
+				DqVO dq = organizationService.selectDqByCondition(orcon);
 				if(dq != null){
 					principal.setDqname(dq.getPname());
 				}else{
@@ -547,7 +244,7 @@ public class ExcelController {
 			//fgs
 			if(principal.getFgs() != null && !"".equals(principal.getFgs()) && !"C001".equals(principal.getFgs())){
 				orcon.setF_ID(principal.getFgs());
-				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
+				FgsVO fgs = organizationService.selectFgsByCondition(orcon);
 				if(fgs != null){
 					principal.setFgsname(fgs.getFname());
 				}else{
@@ -560,7 +257,7 @@ public class ExcelController {
 			//yyb
 			if(principal.getYyb() != null && !"".equals(principal.getYyb()) && !"D001".equals(principal.getYyb())){
 				orcon.setY_ID(principal.getYyb());
-				YybVO yyb = organizationMapper.selectYybByCondition(orcon);	
+				YybVO yyb = organizationService.selectYybByCondition(orcon);	
 				if(yyb != null){
 					principal.setYybname(yyb.getYname());
 				}else{
@@ -584,10 +281,9 @@ public class ExcelController {
 	 */
 	@RequestMapping(value = "/downloadMovableCheck", method = RequestMethod.POST)
 	protected void downloadMovableCheck(ConditionVO condition,HttpServletResponse res) throws Exception {
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.MOVABLECHECKNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		List<MovableCheckVO> movableCheckList = movableCheckMapper.selectMovableCheckByCondition(condition);
+		List<MovableCheckVO> movableCheckList = movableCheckService.selectMovableCheckByCondition(condition);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${date}", getDate());
 		ExcelUtil.getInstance().exportObj2ExcelByTemplate(map, Constant.MOVABLECHECKTEMPLATE,
@@ -600,10 +296,9 @@ public class ExcelController {
 	 */
 	@RequestMapping(value = "/downloadSMSInterest", method = RequestMethod.POST)
 	protected void downloadSMSInterest(ConditionVO condition,HttpServletResponse res) throws Exception {
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.SMSINTERESTNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		List<CertificateVO> certificateList = certificateMapper.selectCertificateByCondition(condition);
+		List<CertificateVO> certificateList = certificateService.selectCertificateByCondition(condition);
 		for(CertificateVO certificate : certificateList){
 			String str = certificate.getInCardNo();
 			if(str.length() > 4){
@@ -625,10 +320,9 @@ public class ExcelController {
 	 */
 	@RequestMapping(value = "/downloadSMSCapital", method = RequestMethod.POST)
 	protected void downloadSMSCapital(ConditionVO condition,HttpServletResponse res) throws Exception {
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.SMSCAPITALNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		List<CertificateVO> certificateList = certificateMapper.selectCertificateByCondition(condition);
+		List<CertificateVO> certificateList = certificateService.selectCertificateByCondition(condition);
 		for(CertificateVO certificate : certificateList){
 			String str = certificate.getInCardNo();
 			if(str.length() > 4){
@@ -647,11 +341,10 @@ public class ExcelController {
 	/**
 	 * 全国汇总表
 	 *
-	 */
+	 *//*
 	@RequestMapping(value="/downloadNationalSummaryTable", method = RequestMethod.POST)
 	protected void downloadNationalSummaryTable(HttpServletResponse res) throws Exception {
 		ConditionVO condition = new ConditionVO();
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.NATIONALSUMMARYNAME + getDate() + ".xlsx"; 
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		List<InformationVO> list = informationVOMapper.selectByCondition(condition);
@@ -660,9 +353,9 @@ public class ExcelController {
 		String[] sheetNames = new String[2];
 		sheetNames[0] = "理财经理";
 		sheetNames[1] = "团队经理";
-//		ExcelUtil.getInstance().exportObj2ExcelByTemplateTest(map, Constant.NATIONALSUMMARYTEMPLATE,
-//				getOutputStreamByCondition(excelName,res), list, InformationVO.class, true,sheetNames);
-	}
+		ExcelUtil.getInstance().exportObj2ExcelByTemplateTest(map, Constant.NATIONALSUMMARYTEMPLATE,
+				getOutputStreamByCondition(excelName,res), list, InformationVO.class, true,sheetNames);
+	}*/
 	
 	/**
 	 * 人力与业绩汇总表
@@ -674,54 +367,7 @@ public class ExcelController {
 		condition.setJxAchievement(new BigDecimal(12500.00));
 		String fileName = Constant.HUMANANDPERFORMANCENAME + getDate() + ".xlsx"; 
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
-		List<ResultTypeVO> list = informationVOMapper.selectHumanAndPerformanceByCondition(condition);
-		//syb,dq,fgs
-		for(ResultTypeVO result : list){
-			//架构信息显示name
-			OrganizationConditionVO orcon = new OrganizationConditionVO();
-			orcon.setDelFlg(Constant.FLAG_ZERO);
-			orcon.setVlevel(Constant.FLAG_ZERO);
-			//syb
-			if(result.getSyb() != null && !"".equals(result.getSyb()) && !"A001".equals(result.getSyb())){
-				orcon.setD_ID(result.getSyb());
-				OrganizationResultVO syb = organizationMapper.selectSybByCondition(orcon);
-				if(syb != null){
-					result.setSybname(syb.getDname());
-//					informationVO.setSybManager(syb.getDmanager());
-				}else{
-					result.setSybname("无");
-				}
-			}else{
-				orcon.setD_ID("A001");
-				result.setSybname("无");
-			}
-			//dq
-			if(result.getDq() != null && !"".equals(result.getDq()) && !"B001".equals(result.getDq())){
-				orcon.setP_ID(result.getDq());
-				DqVO dq = organizationMapper.selectDqByCondition(orcon);
-				if(dq != null){
-					result.setDqname(dq.getPname());
-				}else{
-					result.setDqname("无");
-				}
-			}else{
-				orcon.setP_ID("B001");
-				result.setDqname("无");
-			}
-			//fgs
-			if(result.getFgs() != null && !"".equals(result.getFgs()) && !"C001".equals(result.getFgs())){
-				orcon.setF_ID(result.getFgs());
-				FgsVO fgs = organizationMapper.selectFgsByCondition(orcon);
-				if(fgs != null){
-					result.setFgsname(fgs.getFname());
-				}else{
-					result.setFgsname("无");
-				}
-			}else{
-				orcon.setF_ID("C001");
-				result.setFgsname("无");
-			}
-		}
+		List<ResultTypeVO> list = informationService.selectHumanAndPerformanceByCondition(condition,user);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("${title}", Constant.HUMANANDPERFORMANCETITLE);
 		map.put("${endTime}", condition.getEndTime());
@@ -744,7 +390,6 @@ public class ExcelController {
 	 */
 	@RequestMapping(value="/downloadPerformancePD", method = RequestMethod.POST)
 	protected void downloadPerformancePD(HttpServletResponse res,ConditionVO condition) throws Exception {
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		String fileName = Constant.PERFORMANCEPDNAME + getDate() + ".xlsx";
 		String excelName = new String(fileName.getBytes("gb2312") , "ISO8859-1");
 		String startTime = condition.getStartTime();

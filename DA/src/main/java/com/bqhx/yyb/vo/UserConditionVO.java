@@ -9,14 +9,19 @@ public class UserConditionVO {
 	private String typeId;
 	private String sid;
 	private String sname;
+	private String smname;
 	private String did;
 	private String dname;
+	private String dmname;
 	private String fid;
 	private String fname;
+	private String fmname;
 	private String yid;
 	private String yname;
+	private String ymname;
 	private String tid;
 	private String tname;
+	private String tmname;
 	private String idCard;
 	private String insDate;
 	private String insUser;
@@ -24,7 +29,61 @@ public class UserConditionVO {
 	private String updUser;	
 	private String message;
 	private String delFlg;
+	/**user_his_id  */ 
+	private String userHisId;
+	/**user_change_info  */ 
+	private String userChangeInfo;
+	/** 当前登录userId*/
+	private String localUserId;
 	
+	public String getLocalUserId() {
+		return localUserId;
+	}
+	public void setLocalUserId(String localUserId) {
+		this.localUserId = localUserId;
+	}
+	public String getSmname() {
+		return smname;
+	}
+	public void setSmname(String smname) {
+		this.smname = smname;
+	}
+	public String getDmname() {
+		return dmname;
+	}
+	public void setDmname(String dmname) {
+		this.dmname = dmname;
+	}
+	public String getFmname() {
+		return fmname;
+	}
+	public void setFmname(String fmname) {
+		this.fmname = fmname;
+	}
+	public String getYmname() {
+		return ymname;
+	}
+	public void setYmname(String ymname) {
+		this.ymname = ymname;
+	}
+	public String getTmname() {
+		return tmname;
+	}
+	public void setTmname(String tmname) {
+		this.tmname = tmname;
+	}
+	public String getUserHisId() {
+		return userHisId;
+	}
+	public void setUserHisId(String userHisId) {
+		this.userHisId = userHisId;
+	}
+	public String getUserChangeInfo() {
+		return userChangeInfo;
+	}
+	public void setUserChangeInfo(String userChangeInfo) {
+		this.userChangeInfo = userChangeInfo;
+	}
 	public String getSname() {
 		return sname;
 	}

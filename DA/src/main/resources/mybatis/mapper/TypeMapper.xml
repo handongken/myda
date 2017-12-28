@@ -13,13 +13,14 @@
 		<result column="return_interval" property="returnInterval"
 			jdbcType="INTEGER" />
 		<result column="return_no" property="returnNo" jdbcType="INTEGER" />
+		<result column="del_flg" property="delFlg" jdbcType="CHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		type, type_code, type_name, rate, periods,
 		return_mode,
 		zb_ratio,
-		return_interval, return_no
+		return_interval, return_no, del_flg
 	</sql>
 
 	<select id="selectTypeByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -27,10 +28,46 @@
 		<include refid="Base_Column_List" />
 		FROM t_type
 		<where>
+		del_flg = '0'
 			<if test="type != null and type != ''">
-				type =#{type,jdbcType=CHAR}
+				and type =#{type,jdbcType=CHAR}
 			</if>
 		</where>
 	</select>
 
+	<select id="selectTypeByCondition" parameterType="com.bqhx.yyb.vo.TypeVO" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_type
+		<where>
+		del_flg = '0'
+			<if test="type != null and type != ''">
+				and type =#{type,jdbcType=CHAR}
+			</if>
+			<if test="typeCode != null and typeCode != ''">
+				and type_code =#{typeCode,jdbcType=CHAR}
+			</if>
+			<if test="typeName != null and typeName != ''">
+				and type_name =#{typeName,jdbcType=VARCHAR}
+			</if>
+			<if test="rate != null and rate != ''">
+				and rate =#{rate,jdbcType=DECIMAL}
+			</if>
+			<if test="periods != null and periods != ''">
+				and periods =#{periods,jdbcType=INTEGER}
+			</if>
+			<if test="returnMode != null and returnMode != ''">
+				and return_mode =#{returnMode,jdbcType=VARCHAR}
+			</if>
+			<if test="zbRatio != null and zbRatio != ''">
+				and zb_ratio =#{zbRatio,jdbcType=DECIMAL}
+			</if>
+			<if test="returnInterval != null and returnInterval != ''">
+				and return_interval =#{returnInterval,jdbcType=INTEGER}
+			</if>
+			<if test="returnNo != null and returnNo != ''">
+				and return_no =#{returnNo,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
 </mapper>

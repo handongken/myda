@@ -50,6 +50,7 @@
 				and start_date &lt;=#{endTime}
 			</if>
 		</where>
+		order by postscript
 	</select>
 
 	<insert id="insertMovableCheck" useGeneratedKeys="true"

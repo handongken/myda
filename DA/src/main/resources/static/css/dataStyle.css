@@ -12,9 +12,10 @@ input::-webkit-inner-spin-button {
 /* .downExcelBtn input[type='file']{position: absolute;top:0;left: 0;width: 180px;height: 41px;opacity: 0;z-index: 1;cursor: pointer;} */
 .addList a,.downExcelBtn a,.downLoadBtn a,.exitBtn a,.upLoadBtn a{display:block;font-size:16px;color:#FFF}
 .content{position:absolute;overflow:hidden;width:970px;margin:0 0 0 230px;padding:10px 0 40px;text-align:center}
-.content h2{position:relative;font-size:20px;color:#666;margin-bottom:60px;padding-top:20px}
-.content h2:after{content:'';position:absolute;top:63px;left:42%;width:200px;height:1px;background:#ccc;bottom:0}
-.content h2:before{content:'';position:absolute;top:62px;left:46%;width:100px;height:3px;background:#F96;bottom:0;z-index:2}
+.content h2{font-size:20px;color:#666;margin-bottom:40px;padding-top:20px}
+.content h2 i{position:relative;display: block;width: 200px;height: 1px;margin:20px auto 0;background:#ccc;}
+.content h2 i:before{content:'';position:absolute;top:0;left:50px;width:100px;height:1px;background:#F96;z-index:2}
+/* .content h2:before{content:'';position:absolute;top:62px;left:46%;width:100px;height:3px;background:#F96;bottom:0;z-index:2} */
 /*----------------------- edit -----------------------*/
 .form-group textarea{height:80px;vertical-align:middle;resize:vertical}
 .form-group select{width:302px;height:34px;border-radius:3px;border:1px solid #ccc;margin-bottom:15px}
@@ -38,6 +39,7 @@ input::-webkit-inner-spin-button {
 .C66CC66{color:#6C6}  
 /*------------------------------------------------改 dataTables 样式------------------------------------------------*/
 .dataTables_wrapper.no-footer .dataTables_scrollBody,table.dataTable thead td,table.dataTable thead th,table.dataTable.no-footer{border:none}
+table.dataTable.DTFC_Cloned{background: #FFFFCC}
 .dataTables_wrapper .dataTables_paginate .paginate_button{box-sizing:border-box;display:inline-block;min-width:1.5em;padding:.2em .5em;margin-left:2px;text-align:center;text-decoration:none!important;cursor:pointer;color:#F66!important;border:1px solid transparent;border-radius:2px;box-shadow:none}
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{color:#C66!important;border:1px solid #C66;background:0 0}
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover{color:#F66!important;border:1px solid #F66;background:0 0}
@@ -57,3 +59,11 @@ table tr.sumTr td:last-child{border: none !important;}
 .sumMoney{font-size: 16px;font-weight: bold;color: #FFC;margin: 20px auto;padding: 10px 0;background: #F66}
 
 .addHidden{display: none;}
+
+.thumbnail{display: inline-block;margin-right: 10px;}
+.thumbnail img{width: 120px;height: 120px;}
+
+/* 上传的图片   */
+.img_box,.tz-gallery{position: relative;display: inline-block;}
+.img_box img{overflow: hidden;width: 80px;height: 80px;margin-right: 5px;border: 1px solid #ccc;padding: 2px;}
+.img_box .closeBtn{display: inline-block;background: url(/images/close.png) no-repeat;width: 10px;height: 10px;position: absolute;top: -4px;right: 1px;border: 0;cursor: pointer;}

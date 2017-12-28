@@ -3,22 +3,24 @@ package com.bqhx.yyb.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bqhx.yyb.dao.CertificateMapper;
+import com.bqhx.yyb.service.CertificateService;
 import com.bqhx.yyb.vo.CertificateVO;
 import com.bqhx.yyb.vo.ConditionVO;
 @RestController
 @RequestMapping("/")
 public class CertificateController {
 	@Autowired
-	private CertificateMapper certificateMapper;
+	@Qualifier("CertificateServiceImpl") 
+	private CertificateService certificateService;
 	
 	@RequestMapping(value = "/selectCertificateByCondition", method = RequestMethod.POST)
 	List<CertificateVO> selectCertificateByCondition(ConditionVO conditionVO){
-		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);
+		List<CertificateVO> certificateVOList = certificateService.selectCertificateByCondition(conditionVO);
 		return certificateVOList;
 	}
 	
@@ -27,7 +29,7 @@ public class CertificateController {
 	 */
 	@RequestMapping(value = "/selectSMSInterestByCondition", method = RequestMethod.POST)
 	List<CertificateVO> selectSMSInterestByCondition(ConditionVO conditionVO){
-		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);
+		List<CertificateVO> certificateVOList = certificateService.selectCertificateByCondition(conditionVO);
 		for(int i = 0;i < certificateVOList.size();i++){
 			CertificateVO certificateVO = certificateVOList.get(i);
 			String str = certificateVO.getInCardNo();
@@ -46,7 +48,7 @@ public class CertificateController {
 	 */
 	@RequestMapping(value = "/selectSMSCapitalByCondition", method = RequestMethod.POST)
 	List<CertificateVO> selectSMSCapitalByCondition(ConditionVO conditionVO){
-		List<CertificateVO> certificateVOList = certificateMapper.selectCertificateByCondition(conditionVO);
+		List<CertificateVO> certificateVOList = certificateService.selectCertificateByCondition(conditionVO);
 		for(int i = 0;i < certificateVOList.size();i++){
 			CertificateVO certificateVO = certificateVOList.get(i);
 			String str = certificateVO.getInCardNo();

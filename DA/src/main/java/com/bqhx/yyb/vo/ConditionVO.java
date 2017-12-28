@@ -44,7 +44,7 @@ public class ConditionVO extends BaseVO implements Serializable{
 	/**期数  */ 
 	private Integer periods;
 	/**年化收益  */ 
-	private BigDecimal rate;
+	private String rate;
 	/**利息总额  */ 
 	private BigDecimal interestAll;
 	/**月付利息  */
@@ -77,29 +77,29 @@ public class ConditionVO extends BaseVO implements Serializable{
 	private String spreadType;
 	/**汇入银行  */ 
 	private String bank;
-	/**银行支行名称  */ 
+	/**汇入银行支行名称  */ 
 	private String branch;
-	/**账号  */ 
+	/**汇入银行账号  */ 
 	private String cardNo;
-	/**开户人姓名  */ 
+	/**汇入银行开户人姓名  */ 
 	private String cardName;
-	/**开卡省份  */ 
+	/**汇入银行开卡省份  */ 
 	private String cardProvince;
-	/**开卡城市  */ 
+	/**汇入银行开卡城市  */ 
 	private String cardCity;
-	/**银行行号  */ 
+	/**汇入银行行号  */ 
 	private String cardLine;
 	/**回款银行  */ 
 	private String inBank;
-	/**银行支行名称  */ 
+	/**回款银行支行名称  */ 
 	private String inBranch;
-	/**账号  */ 
+	/**回款银行账号  */ 
 	private String inCardNo;
-	/**开户人姓名  */ 
+	/**回款银行开户人姓名  */ 
 	private String inCardName;
-	/**开卡省份  */ 
+	/**回款银行开卡省份  */ 
 	private String inCardProvince;
-	/**开卡城市  */ 
+	/**回款银行开卡城市  */ 
 	private String inCardCity;
 	/**出借人地址  */ 
 	private String borrowAddress;
@@ -163,7 +163,58 @@ public class ConditionVO extends BaseVO implements Serializable{
 	private BigDecimal jxNum;
 	/**oid */ 
 	private String oid;
+	/**change_flg */ 
+	private String changeInfo;
+	/**汇入银行开卡地址:汇入银行开卡省份+汇入银行开卡城市*/
+	private String cardAddr;
+	/**回款银行开卡地址:回款银行开卡省份+回款银行开卡城市*/
+	private String inCardAddr;
+	/**大区副经理*/
+	private String dqAssistantManager;
+	/**事业部副经理*/
+	private String sybAssistantManager;
 	
+
+	public String getDqAssistantManager() {
+		return dqAssistantManager;
+	}
+
+	public void setDqAssistantManager(String dqAssistantManager) {
+		this.dqAssistantManager = dqAssistantManager;
+	}
+
+	public String getSybAssistantManager() {
+		return sybAssistantManager;
+	}
+
+	public void setSybAssistantManager(String sybAssistantManager) {
+		this.sybAssistantManager = sybAssistantManager;
+	}
+
+	public String getCardAddr() {
+		return cardAddr;
+	}
+
+	public void setCardAddr(String cardAddr) {
+		this.cardAddr = cardAddr;
+	}
+
+	public String getInCardAddr() {
+		return inCardAddr;
+	}
+
+	public void setInCardAddr(String inCardAddr) {
+		this.inCardAddr = inCardAddr;
+	}
+
+	public String getChangeInfo() {
+		return changeInfo;
+	}
+
+	public void setChangeInfo(String changeInfo) {
+		this.changeInfo = changeInfo;
+	}
+
 	public String getOid() {
 		return oid;
 	}
@@ -466,11 +517,11 @@ public class ConditionVO extends BaseVO implements Serializable{
 	}
 
 	@ExcelResources(title="年化收益率",order=18)
-	public BigDecimal getRate() {
+	public String getRate() {
 		return rate;
 	}
 
-	public void setRate(BigDecimal rate) {
+	public void setRate(String rate) {
 		this.rate = rate;
 	}
 

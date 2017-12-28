@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>移动支票列表页</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="/css/dataStyle.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div id="nav" class="sidebar"> </div>
+	 		<div class="content">
+				<h2>移动支票<i></i></h2>
+				<div class="SeachBox">
+					<label for="statementDateS" class="time">付款日期： <input type="text" class="Wdate" id="statementDateS" name="statementDateS" value="" placeholder="请输入开始日" onClick="WdatePicker({maxDate:'#F{$dp.$D(\'statementDateE\')||\'2020-10-01\'}'})" required> - <input type="text" class="Wdate" id="statementDateE" name="statementDateE" value="" placeholder="请输入结束日" onClick="WdatePicker({minDate:'#F{$dp.$D(\'statementDateS\')}',maxDate:'2020-10-01'})" required></label>
+					<div style="overflow: hidden;">
+						<p style="text-align: left;float: right;"><a href="javascript:;" onclick="loading();emptySeach();" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="seachLoad()" class="btn seachBtn">搜索</a></p>
+					</div>
+				</div>
+				<div class="addExitBox">
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downURl)">导出移动支票表格</a></p>
+				</div>
+				<div id="tableHtml" class="tableHtml"> </div>
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/base-loading.js"></script>
+		<script src="/js/common.js"></script>
+		<script src="/js/WdatePicker.js"></script>
+		<script src="/js/jquery.dataTables.min.js"></script>
+		<script>
+			loading();
+			loaddataList();
+			var downURl = '/downloadMovableCheck';
+			function loaddataList(){//读取表格
+				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
+				var statementDateS = document.getElementById('statementDateS').value;
+				var statementDateE = document.getElementById('statementDateE').value;
+				var success = function(data){
+					createTh(data)
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				var user = JSON.parse(sessionStorage.user);//取user
+				ajaxPost('/selectMovableCheckByCondition',{"startTime":statementDateS,"endTime":statementDateE},false,success,faild); 
+			}
+			function createTh(data){//读表格字段
+				var tableTh = [//创建th内容
+					'序号','付方账号','金额上限','生效日期','失效日期',
+					'支票权限','授权使用人','收方信息填写类型','收方账号','收方户名',
+					'汇路类型','收方行名称','收方行行号','收方行地址','附言','收款人手机号码'
+				]; 
+				var thsHtml = ' '; //为了保存th值
+				for(var i = 0; i < tableTh.length; i++){
+					thsHtml += '<th>' + tableTh[i] + '</th>';
+				}
+				$("#tableBox thead tr").html(thsHtml); //添加到table中 
+				var tableTd = []; //保存td
+				if(data.length>0){
+					for(var i = 0; i<data.length; i++){
+						tableTd[i] = [
+							i+1,
+							data[i]["cardNo"],
+							data[i]["amountLimit"],
+							data[i]["effectiveDates"],
+							data[i]["invalidDates"],
+							data[i]["checkAuthority"],
+							data[i]["authorizedUser"],
+							data[i]["receiverType"],
+							data[i]["inCardNo"],
+							data[i]["inCardName"],
+							data[i]["remitType"],
+							data[i]["inBranch"],
+							data[i]["cardLine"],	
+							data[i]["inCardAddress"],
+							data[i]["postscript"],
+							data[i]["inTel"]
+						];
+					}
+				}
+				var tables = $("#tableBox").DataTable({
+					'data': tableTd,
+			        'dom': 'tip',
+			        'info': true,
+			        "processing": true,
+                    'scrollX': true,
+					'iDisplayLength': 10,
+					'order': [],
+					"ordering": true,
+			        'columnDefs': [
+			        	{
+							"targets": 0,"orderable": false,
+							"createdCell": function (td, cellData, rowData, row, col) {
+						    	$(td).html("<p>"+cellData+"</p>");
+						    }
+						}
+					],
+					'language': {
+				    	"emptyTable": "暂无数据",
+				    	"loadingRecords": "读取中请稍候...",
+				    	"zeroRecords": "暂无数据",
+				    	"info": "共 _TOTAL_条记录 显示_START_到 _END_条记录",
+				    	"paginate": {
+					    	"previous": "上一页",
+					    	"next": "下一页",
+					    }
+					}
+			    } );
+				delLoading();
+			}
+		</script>
+	</body>
+</html>

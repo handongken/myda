@@ -9,7 +9,7 @@ $("#sid").change(function(){
 		document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
 		document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
 	}else{
-		queryDq(); queryFid(); queryYid();
+		queryDq();
 	}
 });
 $("#did").change(function(){
@@ -19,7 +19,7 @@ $("#did").change(function(){
 		document.getElementById('fid').innerHTML = '<option value="">请选择</option>';
 		document.getElementById('yid').innerHTML = '<option value="">请选择</option>';
 	}else{
-		queryFid(); queryYid();
+		queryFid();
 	}
 });
 $("#fid").change(function(){
@@ -30,6 +30,7 @@ $("#fid").change(function(){
 		queryYid();
 	}
 });
+
 function querySelect(){ //查事业部	
 	var success = function(data){
 		frameWorkList = data;	
@@ -38,11 +39,11 @@ function querySelect(){ //查事业部
 	var faild = function(error){
  		alert(error);
  	};
- 	var user = JSON.parse(localStorage.user);
+ 	var user = JSON.parse(sessionStorage.user);
  	ajaxPost('/selectOrganizationByCondition',{'typeId':user.typeId,'sid':user.sid,'did':user.did,'fid':user.fid,'yid':user.yid},false,success,faild);
 }
 function createSelect(){ //创建sid
-	var sid = '<option value="0">请选择</option>';
+	var sid = '<option value="">请选择</option>';
 	for(var i=0;i<frameWorkList.length;i++){
 		sid += '<option value="'+frameWorkList[i].did+'">'+ frameWorkList[i].dname +'[' + frameWorkList[i].did +']</option>';
 	}
@@ -61,7 +62,7 @@ function queryDq(){//查大区
      ajaxPost('/getDqListByCondition',{'D_ID':sidList},false,success,faild);
 }
 function createDq(){ //创建did
-	var pid = '<option value="0">请选择</option>';
+	var pid = '<option value="">请选择</option>';
 	for(var i=0;i<frameWorkList.length;i++){
 		pid += '<option value="'+frameWorkList[i].pid+'">'+ frameWorkList[i].pname +'[' + frameWorkList[i].pid +']</option>';
 	}
@@ -80,7 +81,7 @@ function queryFid(){//查分公司
      ajaxPost('/getFgsListByCondition',{'P_ID':didList},false,success,faild);
 }
 function createFgs(){ //创建fid
-	var fid = '<option value="0">请选择</option>';
+	var fid = '<option value="">请选择</option>';
 	for(var i=0;i<frameWorkList.length;i++){
 		fid += '<option value="'+frameWorkList[i].fid+'">'+ frameWorkList[i].fname +'[' + frameWorkList[i].fid +']</option>';
 	}
@@ -99,9 +100,28 @@ function queryYid(){//查营业部
      ajaxPost('/getYybListByCondition',{'F_ID':fidList},false,success,faild);
 }
 function createYyb(){ //创建yid
-	var yid = '<option value="0">请选择</option>';
+	var yid = '<option value="">请选择</option>';
 	for(var i=0;i<frameWorkList.length;i++){
 		yid += '<option value="'+frameWorkList[i].yid+'">'+ frameWorkList[i].yname +'[' + frameWorkList[i].yid +']</option>';
 	}
 	document.getElementById('yid').innerHTML = yid;
+}
+//queryTid();
+function queryTid(){//查团队
+	var YidList = $("#yid").val();
+     var success = function(data){
+    	 frameWorkList = data;
+    	 createTid();
+		};
+		var faild = function(error){
+	 		alert(error);
+	 	};
+     ajaxPost('/getTdListByCondition',{'Y_ID':YidList},false,success,faild);
+}
+function createTid(){ //创建tid
+	var tid = '<option value="">请选择</option>';
+	for(var i=0;i<frameWorkList.length;i++){
+		tid += '<option value="'+frameWorkList[i].tid+'">'+ frameWorkList[i].tname +'[' + frameWorkList[i].tid +']</option>';
+	}
+	document.getElementById('tid').innerHTML = tid;
 }

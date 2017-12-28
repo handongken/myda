@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bqhx.yyb.dao.InformationHistoryMapper">
+	<resultMap id="BaseResultMap" type="com.bqhx.yyb.vo.InformationHistoryVO">
+		<id column="infoId" jdbcType="INTEGER" property="info_id" />
+		<result column="change_info" jdbcType="VARCHAR" property="changeInfo" />
+		<result column="contract" jdbcType="CHAR" property="contract" />
+		<result column="money" jdbcType="INTEGER" property="money" />
+		<result column="type" jdbcType="CHAR" property="type" />
+		<result column="zb_ratio" jdbcType="DECIMAL" property="zbRatio" />
+		<result column="jx_achievement" jdbcType="DECIMAL" property="jxAchievement" />
+		<result column="lc_manager" jdbcType="VARCHAR" property="lcManager" />
+		<result column="lc_id" jdbcType="VARCHAR" property="lcId" />
+		<result column="t_manager" jdbcType="VARCHAR" property="tmanager" />
+		<result column="yyb" jdbcType="VARCHAR" property="yyb" />
+		<result column="yyb_manager" jdbcType="VARCHAR" property="yybManager" />
+		<result column="fgs" jdbcType="VARCHAR" property="fgs" />
+		<result column="fgs_manager" jdbcType="VARCHAR" property="fgsManager" />
+		<result column="dq" jdbcType="VARCHAR" property="dq" />
+		<result column="dq_manager" jdbcType="VARCHAR" property="dqManager" />
+		<result column="syb" jdbcType="VARCHAR" property="syb" />
+		<result column="syb_manager" jdbcType="VARCHAR" property="sybManager" />
+		<result column="periods" jdbcType="INTEGER" property="periods" />
+		<result column="rate" jdbcType="DECIMAL" property="rate" />
+		<result column="interest_all" jdbcType="DECIMAL" property="interestAll" />
+		<result column="interest_month" jdbcType="DECIMAL" property="interestMonth" />
+		<result column="payment_date" jdbcType="VARCHAR" property="paymentDate" />
+		<result column="start_date" jdbcType="DATE" property="startDate" />
+		<result column="end_date" jdbcType="DATE" property="endDate" />
+		<result column="statement_date" jdbcType="CHAR" property="statementDate" />
+		<result column="surplus_date" jdbcType="INTEGER" property="surplusDate" />
+		<result column="status" jdbcType="CHAR" property="status" />
+		<result column="pos_no" jdbcType="CHAR" property="posNo" />
+		<result column="tender_name" jdbcType="CHAR" property="tenderName" />
+		<result column="id_type" jdbcType="CHAR" property="idType" />
+		<result column="id_no" jdbcType="CHAR" property="idNo" />
+		<result column="continue_flg" jdbcType="CHAR" property="continueFlg" />
+		<result column="tel" jdbcType="CHAR" property="tel" />
+		<result column="spread_type" jdbcType="CHAR" property="spreadType" />
+		<result column="bank" jdbcType="CHAR" property="bank" />
+		<result column="branch" jdbcType="CHAR" property="branch" />
+		<result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+		<result column="card_name" jdbcType="VARCHAR" property="cardName" />
+		<result column="card_province" jdbcType="VARCHAR" property="cardProvince" />
+		<result column="card_city" jdbcType="VARCHAR" property="cardCity" />
+		<result column="card_line" jdbcType="VARCHAR" property="cardLine" />
+		<result column="in_bank" jdbcType="VARCHAR" property="inBank" />
+		<result column="in_branch" jdbcType="VARCHAR" property="inBranch" />
+		<result column="in_card_no" jdbcType="VARCHAR" property="inCardNo" />
+		<result column="in_card_name" jdbcType="VARCHAR" property="inCardName" />
+		<result column="in_card_province" jdbcType="VARCHAR" property="inCardProvince" />
+		<result column="in_card_city" jdbcType="VARCHAR" property="inCardCity" />
+		<result column="borrow_address" jdbcType="VARCHAR" property="borrowAddress" />
+		<result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+		<result column="contact_tel" jdbcType="VARCHAR" property="contactTel" />
+		<result column="contact_relationship" jdbcType="VARCHAR"
+			property="contactRelationship" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="manager_no" jdbcType="CHAR" property="managerNo" />
+		<result column="manager_status" jdbcType="CHAR" property="managerStatus" />
+		<result column="ins_user" jdbcType="CHAR" property="insUser" />
+		<result column="ins_date" jdbcType="CHAR" property="insDate" />
+		<result column="upd_user" jdbcType="CHAR" property="updUser" />
+		<result column="upd_date" jdbcType="CHAR" property="updDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		info_id, change_info, contract, money, type, zb_ratio, jx_achievement, lc_manager, lc_id, t_manager, yyb,
+		yyb_manager, fgs, fgs_manager, dq, dq_manager, syb, syb_manager, periods, rate,
+		interest_all,
+		interest_month, payment_date,start_date, end_date, statement_date, surplus_date,
+		status, pos_no, tender_name, id_type, id_no, continue_flg, tel,
+		spread_type, bank,
+		branch, card_no, card_name, card_province, card_city, card_line, in_bank,
+		in_branch,
+		in_card_no, in_card_name, in_card_province, in_card_city, borrow_address,
+		contact_name,
+		contact_tel, contact_relationship, remark, manager_no, manager_status, ins_user,ins_date, upd_user,upd_date
+	</sql>
+
+	<select id="selectInfoHistoryByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM information_history
+		<where>
+			<if test="syb != null and syb != ''">
+				syb = #{syb}
+			</if>
+			<if test="dq != null and dq != ''">
+				and dq = #{dq}
+			</if>
+			<if test="fgs != null and fgs != ''">
+				and fgs = #{fgs}
+			</if>
+			<if test="yyb != null and yyb != ''">
+				and yyb = #{yyb}
+			</if>
+			<if test="changeInfo != null and changeInfo != ''">
+				and change_info = #{changeInfo}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertInfoHistory" useGeneratedKeys="true"
+		keyProperty="infoId" parameterType="com.bqhx.yyb.vo.ConditionVO">
+		INSERT INTO information_history
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="changeInfo != null and changeInfo != ''">
+				change_info,
+			</if>
+			<if test="contract != null and contract != ''">
+				contract,
+			</if>
+			<if test="money != null and money != ''">
+				money,
+			</if>
+			<if test="type != null and type != ''">
+				type,
+			</if>
+			<if test="zbRatio != null and zbRatio != ''">
+				zb_ratio,
+			</if>
+			<if test="jxAchievement != null and jxAchievement != ''">
+				jx_achievement,
+			</if>
+			<if test="lcManager != null and lcManager != ''">
+				lc_manager,
+			</if>
+			<if test="lcId != null and lcId != ''">
+				lc_id,
+			</if>
+			<if test="tmanager != null and tmanager != ''">
+				t_manager,
+			</if>
+			<if test="yyb != null and yyb != ''">
+				yyb,
+			</if>
+			<if test="yybManager != null and yybManager != ''">
+				yyb_manager,
+			</if>
+			<if test="fgs != null and fgs != ''">
+				fgs,
+			</if>
+			<if test="fgsManager != null and fgsManager != ''">
+				fgs_manager,
+			</if>
+			<if test="dq != null and dq != ''">
+				dq,
+			</if>
+			<if test="dqManager != null and dqManager != ''">
+				dq_manager,
+			</if>
+			<if test="syb != null and syb != ''">
+				syb,
+			</if>
+			<if test="sybManager != null and sybManager != ''">
+				syb_manager,
+			</if>
+			<if test="periods != null and periods != ''">
+				periods,
+			</if>
+			<if test="rate != null and rate != ''">
+				rate,
+			</if>
+			<if test="interestAll != null and interestAll != ''">
+				interest_all,
+			</if>
+			<if test="interestMonth != null and interestMonth != ''">
+				interest_month,
+			</if>
+			<if test="paymentDate != null and paymentDate != ''">
+				payment_date,
+			</if>
+			<if test="startDate != null and startDate != ''">
+				start_date,
+			</if>
+			<if test="endDate != null and endDate != ''">
+				end_date,
+			</if>
+			<if test="statementDate != null and statementDate != ''">
+				statement_date,
+			</if>
+			<if test="surplusDate != null and surplusDate != ''">
+				surplus_date,
+			</if>
+			<if test="status != null and status != ''">
+				status,
+			</if>
+			<if test="posNo != null and posNo != ''">
+				pos_no,
+			</if>
+			<if test="tenderName != null and tenderName != ''">
+				tender_name,
+			</if>
+			<if test="idType != null and idType != ''">
+				id_type,
+			</if>
+			<if test="idNo != null and idNo != ''">
+				id_no,
+			</if>
+			<if test="continueFlg != null and continueFlg != ''">
+				continue_flg,
+			</if>
+			<if test="tel != null and tel != ''">
+				tel,
+			</if>
+			<if test="spreadType != null and spreadType != ''">
+				spread_type,
+			</if>
+			<if test="bank != null and bank != ''">
+				bank,
+			</if>
+			<if test="branch != null and branch != ''">
+				branch,
+			</if>
+			<if test="cardNo != null and cardNo != ''">
+				card_no,
+			</if>
+			<if test="cardName != null and cardName != ''">
+				card_name,
+			</if>
+			<if test="cardProvince != null and cardProvince != ''">
+				card_province,
+			</if>
+			<if test="cardCity != null and cardCity != ''">
+				card_city,
+			</if>
+			<if test="cardLine != null and cardLine != ''">
+				card_line,
+			</if>
+			<if test="inBank != null and inBank != ''">
+				in_bank,
+			</if>
+			<if test="inBranch != null and inBranch != ''">
+				in_branch,
+			</if>
+			<if test="inCardNo != null and inCardNo != ''">
+				in_card_no,
+			</if>
+			<if test="inCardName != null and inCardName != ''">
+				in_card_name,
+			</if>
+			<if test="inCardProvince != null and inCardProvince != ''">
+				in_card_province,
+			</if>
+			<if test="inCardCity != null and inCardCity != ''">
+				in_card_city,
+			</if>
+			<if test="borrowAddress != null and borrowAddress != ''">
+				borrow_address,
+			</if>
+			<if test="contactName != null and contactName != ''">
+				contact_name,
+			</if>
+			<if test="contactTel != null and contactTel != ''">
+				contact_tel,
+			</if>
+			<if test="contactRelationship != null and contactRelationship != ''">
+				contact_relationship,
+			</if>
+			<if test="remark != null and remark != ''">
+				remark,
+			</if>
+			<if test="managerNo != null and managerNo != ''">
+				manager_no,
+			</if>
+			<if test="managerStatus != null and managerStatus != ''">
+				manager_status,
+			</if>
+			<if test="insUser != null and insUser != ''">
+				ins_user,
+			</if>
+			<if test="insDate != null and insDate != ''">
+				ins_date,
+			</if>
+			<if test="updUser != null and updUser != ''">
+				upd_user,
+			</if>
+			<if test="updDate != null and updDate != ''">
+				upd_date
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="changeInfo != null and changeInfo != ''">
+				#{changeInfo,jdbcType=CHAR},
+			</if>
+			<if test="contract != null and contract != ''">
+				#{contract,jdbcType=CHAR},
+			</if>
+			<if test="money != null and money != ''">
+				#{money,jdbcType=INTEGER},
+			</if>
+			<if test="type != null and type != ''">
+				#{type,jdbcType=CHAR},
+			</if>
+			<if test="zbRatio != null and zbRatio != ''">
+				#{zbRatio,jdbcType=DECIMAL},
+			</if>
+			<if test="jxAchievement != null and jxAchievement != ''">
+				#{jxAchievement,jdbcType=DECIMAL},
+			</if>
+			<if test="lcManager != null and lcManager != ''">
+				#{lcManager,jdbcType=VARCHAR},
+			</if>
+			<if test="lcId != null and lcId != ''">
+				#{lcId,jdbcType=VARCHAR},
+			</if>
+			<if test="tmanager != null and tmanager != ''">
+				#{tmanager,jdbcType=VARCHAR},
+			</if>
+			<if test="yyb != null and yyb != ''">
+				#{yyb,jdbcType=VARCHAR},
+			</if>
+			<if test="yybManager != null and yybManager != ''">
+				#{yybManager,jdbcType=VARCHAR},
+			</if>
+			<if test="fgs != null and fgs != ''">
+				#{fgs,jdbcType=VARCHAR},
+			</if>
+			<if test="fgsManager != null and fgsManager != ''">
+				#{fgsManager,jdbcType=VARCHAR},
+			</if>
+			<if test="dq != null and dq != ''">
+				#{dq,jdbcType=VARCHAR},
+			</if>
+			<if test="dqManager != null and dqManager != ''">
+				#{dqManager,jdbcType=VARCHAR},
+			</if>
+			<if test="syb != null and syb != ''">
+				#{syb,jdbcType=VARCHAR},
+			</if>
+			<if test="sybManager != null and sybManager != ''">
+				#{sybManager,jdbcType=VARCHAR},
+			</if>
+			<if test="periods != null and periods != ''">
+				#{periods,jdbcType=INTEGER},
+			</if>
+			<if test="rate != null and rate != ''">
+				#{rate,jdbcType=DECIMAL},
+			</if>
+			<if test="interestAll != null and interestAll != ''">
+				#{interestAll,jdbcType=DECIMAL},
+			</if>
+			<if test="interestMonth != null and interestMonth != ''">
+				#{interestMonth,jdbcType=DECIMAL},
+			</if>
+			<if test="paymentDate != null and paymentDate != ''">
+				#{paymentDate,jdbcType=DATE},
+			</if>
+			<if test="startDate != null and startDate != ''">
+				#{startDate,jdbcType=DATE},
+			</if>
+			<if test="endDate != null and endDate != ''">
+				#{endDate,jdbcType=DATE},
+			</if>
+			<if test="statementDate != null and statementDate != ''">
+				#{statementDate,jdbcType=CHAR},
+			</if>
+			<if test="surplusDate != null and surplusDate != ''">
+				#{surplusDate,jdbcType=INTEGER},
+			</if>
+			<if test="status != null and status != ''">
+				#{status,jdbcType=CHAR},
+			</if>
+			<if test="posNo != null and posNo != ''">
+				#{posNo,jdbcType=CHAR},
+			</if>
+			<if test="tenderName != null and tenderName != ''">
+				#{tenderName,jdbcType=CHAR},
+			</if>
+			<if test="idType != null and idType != ''">
+				#{idType,jdbcType=CHAR},
+			</if>
+			<if test="idNo != null and idNo != ''">
+				#{idNo,jdbcType=CHAR},
+			</if>
+			<if test="continueFlg != null and continueFlg != ''">
+				#{continueFlg,jdbcType=CHAR},
+			</if>
+			<if test="tel != null and tel != ''">
+				#{tel,jdbcType=CHAR},
+			</if>
+			<if test="spreadType != null and spreadType != ''">
+				#{spreadType,jdbcType=CHAR},
+			</if>
+			<if test="bank != null and bank != ''">
+				#{bank,jdbcType=CHAR},
+			</if>
+			<if test="branch != null and branch != ''">
+				#{branch,jdbcType=CHAR},
+			</if>
+			<if test="cardNo != null and cardNo != ''">
+				#{cardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="cardName != null and cardName != ''">
+				#{cardName,jdbcType=VARCHAR},
+			</if>
+			<if test="cardProvince != null and cardProvince != ''">
+				#{cardProvince,jdbcType=VARCHAR},
+			</if>
+			<if test="cardCity != null and cardCity != ''">
+				#{cardCity,jdbcType=VARCHAR},
+			</if>
+			<if test="cardLine != null and cardLine != ''">
+				#{cardLine,jdbcType=VARCHAR},
+			</if>
+			<if test="inBank != null and inBank != ''">
+				#{inBank,jdbcType=VARCHAR},
+			</if>
+			<if test="inBranch != null and inBranch != ''">
+				#{inBranch,jdbcType=VARCHAR},
+			</if>
+			<if test="inCardNo != null and inCardNo != ''">
+				#{inCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="inCardName != null and inCardName != ''">
+				#{inCardName,jdbcType=VARCHAR},
+			</if>
+			<if test="inCardProvince != null and inCardProvince != ''">
+				#{inCardProvince,jdbcType=VARCHAR},
+			</if>
+			<if test="inCardCity != null and inCardCity != ''">
+				#{inCardCity,jdbcType=VARCHAR},
+			</if>
+			<if test="borrowAddress != null and borrowAddress != ''">
+				#{borrowAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="contactName != null and contactName != ''">
+				#{contactName,jdbcType=VARCHAR},
+			</if>
+			<if test="contactTel != null and contactTel != ''">
+				#{contactTel,jdbcType=VARCHAR},
+			</if>
+			<if test="contactRelationship != null and contactRelationship != ''">
+				#{contactRelationship,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and remark != ''">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="managerNo != null and managerNo != ''">
+				#{managerNo,jdbcType=CHAR},
+			</if>
+			<if test="managerStatus != null and managerStatus != ''">
+				#{managerStatus,jdbcType=CHAR},
+			</if>
+			<if test="insUser != null and insUser != ''">
+				#{insUser,jdbcType=CHAR},
+			</if>
+			<if test="insDate != null and insDate != ''">
+				#{insDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updUser != null and updUser != ''">
+				#{updUser,jdbcType=CHAR},
+			</if>
+			<if test="updDate != null and updDate != ''">
+				#{updDate,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

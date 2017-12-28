@@ -14,7 +14,7 @@ function loaddataList(){//读取财务表格
 		alert(error);
 	}; 
 	//取user 
-	var user = JSON.parse(localStorage.user);
+	var user = JSON.parse(sessionStorage.user);
 	ajaxPost('/selectCertificateByCondition',{'startTime':statementDateS,'endTime':statementDateE},false,success,faild);
 }
 function loaddataStatus1(){//读取表格
@@ -26,7 +26,7 @@ function loaddataStatus1(){//读取表格
 		alert(error);
 	};
 	//取user
-	var user = JSON.parse(localStorage.user);
+	var user = JSON.parse(sessionStorage.user);
 	var status = 1;
 	ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"status":status},false,success,faild); 
 }
@@ -40,7 +40,7 @@ function loaddataStatus2(){//读取表格
 		alert(error);
 	};
 	//取user
-	var user = JSON.parse(localStorage.user);
+	var user = JSON.parse(sessionStorage.user);
 	var status = 2;
 	ajaxPost('/selectByCondition',{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,"status":status},false,success,faild); 
 }

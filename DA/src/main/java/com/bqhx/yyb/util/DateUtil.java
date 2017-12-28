@@ -10,6 +10,10 @@ import com.bqhx.yyb.constant.Constant;
 
 public class DateUtil {
 
+	public static String getDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat(Constant.PATTERN);
+		return sdf.format(new Date());
+	}
 	/**
 	 * @param date
 	 *            转换的对象
@@ -18,9 +22,9 @@ public class DateUtil {
 	 * @return 参数null的时候返回null
 	 */
 	public static String convertDate(String date, String pattern) {
-		String date_s = null;
+		String date_s = "";
 		if (date == null || "".equals(date)) {
-			return null;
+			return "";
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		try {
@@ -70,7 +74,7 @@ public class DateUtil {
 	 * @return 参数null的时候返回null,string
 	 */
 	public static String formatDate(Date date, String pattern) {
-		String date_s = null;
+		String date_s = "";
 		if (date == null || "".equals(date)) {
 			return null;
 		}
@@ -110,7 +114,7 @@ public class DateUtil {
 	 * @return 参数null的时候返回null
 	 */
 	public static String CalendarConvert2String(Calendar date, String pattern) {
-		String date_s = null;
+		String date_s = "";
 		if (date == null || "".equals(date)) {
 			return null;
 		}

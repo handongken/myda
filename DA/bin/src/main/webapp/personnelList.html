@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>人资列表页</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" href="/css/dataStyle.css" />
+		<style>
+			table.dataTable tbody tr:nth-of-type(even),table.tableBox tbody tr:nth-of-type(even){background: none;}
+			.tableBox td{border-bottom: 1px solid #ccc;border-right: 1px solid #ccc;vertical-align: middle;}
+			.tableBox td:last-child{border-right: none;}
+			#tableBoxTbody tr.tableSum{background: rgba(0,0,0,.2); }
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div id="nav" class="sidebar"> </div>
+			<div class="content">
+				<h2>人力资源管理下载区<i></i></h2>
+				<div class="SeachBox">
+					<div>
+						<label for="statementDateS" class="time">当前日期： <input type="text" class="Wdate" id="dateS" name="dateS" value="" placeholder="请输入开始日" onClick="WdatePicker()" required> - <input type="text" class="Wdate" id="dateE" name="dateE" value="" placeholder="请输入结束日" onClick="WdatePicker()" required></label>
+						<!-- <div style="overflow: hidden;">
+							<p style="text-align: left;float: right;"><a href="javascript:;" onclick="emptySeach();" class="btn emptyBtn">清空</a><a href="javascript:;" onclick="seachLoad()" class="btn seachBtn">搜索</a></p>
+						</div> -->
+					</div>
+				</div>
+				<div class="addExitBox">
+					<p class="downExcelBtn"><a href="javascript:;" onclick="downPersonnelExcel(downURl)">导出人力资源管理Excel表格查看</a></p>
+				</div>
+				<!-- <div id="tableHtml">
+					<table id="tableBox" class="tableBox" width="100%">
+						<thead>
+					     <tr>
+					       <th>序号</th>
+					       <th>事业部</th>
+					       <th>大区</th>
+					       <th>分公司</th>
+					       <th>开单人数</th>
+					       <th>规模业绩(万元)</th>
+					       <th>绩效业绩(万元)</th>
+					     </tr>
+					   </thead>
+					   <tbody id="tableBoxTbody"> </tbody>
+					</table>
+				</div> -->
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/common.js"></script>
+		<script src="/js/base-loading.js"></script>
+		<script src="/js/WdatePicker.js"></script>
+		<!-- <script src="/js/jquery.dataTables.min.js"></script> -->
+		<script>
+			delLoading();
+			var downURl = '/downloadHumanAndPerformance';
+			function downPersonnelExcel(downURl){//数据导出表格
+				var dateS = document.getElementById("dateS").value;
+				if(dateS == ""){alert("开始时间不能为空！");return false;}
+				var dateE = document.getElementById("dateE").value;
+				if(dateE == ""){alert("结束时间不能为空！");return false;}
+				loading();
+				var success = function(data){
+					alert(data);
+					delLoading();
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				var user = JSON.parse(sessionStorage.user);//取user
+				ajaxDownExcel(downURl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId,'startTime':dateS,'endTime':dateE},success,faild);
+			} 
+			/*
+			loading();
+			loaddataList();
+			var tbody = '';
+			function emptySeach(){ //清空搜索框
+				document.getElementById("dateS").value = '';
+				document.getElementById("dateE").value = '';
+				loaddataList();
+			}
+			function loaddataList(){//读取表格
+				//document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
+				var dateS = document.getElementById("dateS").value;
+				var dateE = document.getElementById("dateE").value;
+				var success = function(data){
+					//console.log(data);
+					//createTh(data);
+					for(var i = 0;i<data.length;i++){
+						tbody += '<tr><td rowspan="3">'+(i+1)+'</td><td rowspan="2">'+data[i].syb+'</td><td>'+data[i].dq+'</td>'+
+					       '<td>'+data[i].fgs+'</td><td>'+data[i].lcNum+'</td><td>'+data[i].moneySum+'</td><td>'+data[i].jxSum+'</td></tr>'+
+					     	'<tr class="tableSum"><td colspan="2">大区小计</td><td>10</td><td>181.6</td><td>78.4450</td></tr>'+
+					     	'<tr><td colspan="3">第一事业部合计</td><td>10</td><td>181.6</td><td>78.4450</td></tr>';
+					}
+					tbody += '<tr class="tableSum"><td colspan="3">总计</td><td>10</td><td>10</td><td>181.6</td><td>78.4450</td></tr>';
+					document.getElementById('tableBoxTbody').innerHTML = tbody;
+					delLoading();
+				};
+				var faild = function(error){
+					alert(error);
+				};
+				ajaxPost('/selectHumanAndPerformanceByCondition',{'startTime':dateS,'endTime':dateE},success,faild); 
+			} */
+		</script> 
+	</body>
+</html>

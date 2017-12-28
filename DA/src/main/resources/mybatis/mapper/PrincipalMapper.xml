@@ -33,14 +33,12 @@
 		<include refid="Base_Column_List" />
 		FROM t_principal
 		<where>
+			del_flg = '0'
 			<if test="startTime != null and startTime != ''">
-				start_date &gt;=#{startTime}
+				and start_date &gt;=#{startTime}
 			</if>
 			<if test="endTime != null and endTime != ''">
 				and start_date &lt;=#{endTime}
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				and del_flg = #{delFlg}
 			</if>
 		</where>
 	</select>
@@ -95,10 +93,7 @@
 				end_date,
 			</if>
 			<if test="tenderName != null and tenderName != ''">
-				tender_name,
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				del_flg,
+				tender_name
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -148,10 +143,7 @@
 				#{endDate,jdbcType=DATE},
 			</if>
 			<if test="tenderName != null and tenderName != ''">
-				#{tenderName,jdbcType=CHAR},
-			</if>
-			<if test="delFlg != null and delFlg != ''">
-				#{delFlg,jdbcType=CHAR},
+				#{tenderName,jdbcType=CHAR}
 			</if>
 		</trim>
 	</insert>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>数据登录页</title>
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/login.css" />
+	</head>
+	<body>
+		<div class="container"> 
+			<div class="content">
+				<h2>登录</h2>
+				<form action="">
+					<div class="form-group">
+						<label for="userName">用户名：</label>
+						<input type="text" id="userName" name="userName" placeholder="请输入用户名" autocomplete="off"/>
+					</div>
+					<div class="form-group">
+ 						<label for="userPass">密码：</label>
+						<input type="password" id="userPass" name="userPass" placeholder="请输入密码"/>
+					</div>
+					<a href="javascript:;" class="btn btn-submit" onClick="sbmBtn()">登录</a>
+				</form>
+			</div>
+		</div>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script src="/js/common.js"></script>
+		<script>
+			 if(typeof(Storage) !== "undefined" && sessionStorage.user){
+				window.location.href = 'dataList.html';
+			} 
+			/* if(typeof(Storage) !== "undefined"){console.log('支持存储');} */
+			function sbmBtn(){
+				var userName = document.getElementById("userName").value; // 取出输入的
+				var userPass = document.getElementById("userPass").value; 
+				var success = function(data){// data 是服务器返回的
+					console.log(data);
+					var user = {insDate:data.insDate,insUser:data.insUser,updDate:data.updDate,updUser:data.updUser,message:data.message,userId:data.userId,password:data.password,name:data.name,tel:data.tel,typeId:data.typeId,sid:data.sid,did:data.did,tid:data.tid,fid:data.fid,yid:data.yid,idCard:data.idCard};//存本地
+					sessionStorage.user = JSON.stringify(user);
+					if(data.message == '' || data.message == '用户不存在'){
+						alert('用户不存在');
+						return false;
+					}else if(userPass != data.password){
+						alert('密码与用户不符！');
+						return false;
+					}else{
+						if(user.typeId == '2'){
+							location.href = 'dataBudgetMarketList.html';
+						}else{
+							location.href = 'dataList.html';
+						}
+					}
+				};
+				var faild = function(error){ // error 是服务器返回的
+					alert(error);
+				};
+				ajaxPost('/login',{userId:userName,password:userPass},false,success,faild); //发送
+			}
+		</script>
+	</body>
+</html>

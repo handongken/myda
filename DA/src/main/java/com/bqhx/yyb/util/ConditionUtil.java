@@ -9,7 +9,6 @@ public class ConditionUtil {
 	 * 根据用户角色处理查询条件
 	 */
 	public static ConditionVO getConditionVOByRole(ConditionVO condition, UserVO user){
-		condition.setDelFlg(Constant.FLAG_ZERO);
 		String userId = user.getUserId();
 		String typeId = user.getTypeId();
 		if(typeId != null && !typeId.equals("")){
