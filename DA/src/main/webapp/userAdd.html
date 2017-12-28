@@ -34,8 +34,7 @@
 			            	<option value="9">机构管理人员</option>
 			            	<option value="system">超级管理员</option>
 			            </select>
-			            <!-- <label for="tid">团队编号</label>
-			            <input type="text" id="tid" name="tid" value="" maxlength="5" placeholder="请输入团队编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			            
 			        </div>
 			        <div class="form-group" >
 			        	<label for="sid">事业部编号</label>
@@ -52,6 +51,13 @@
 			            <label for="yid">营业部编号</label>
 			            <select id="yid" required><option value=''>请选择</option></select>
 	 		            <!-- <input type="text" id="yid" name="yid" value="" maxlength="10" placeholder="请输入营业部编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			        </div>
+			        <div class="form-group">
+			        	<label for="tid">团队编号</label>
+			        	<select id="tid" required><option value=''>请选择</option></select>
+			            <!-- <input type="text" id="tid" name="tid" value="" maxlength="5" placeholder="请输入团队编号" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" required/> -->
+			        	<label class="visibilityHidden"></label>
+			            <input type="text" required  class="visibilityHidden"/>
 			        </div>
 			        <div id="passBox" class="form-group">
 			       		<label for="name">用户名</label>
@@ -75,21 +81,21 @@
 		<script src="/js/ajax.js"></script>
 		<script src="/js/common.js"></script>
 		<script src="/js/query.select.js"></script>
+		<script src="/js/user.query.TIDSelect.js"></script>
 		<script>
-			var phoneReg = /^1[1|2|3|4|5|6|7|8|9][0-9]\d{4,8}$/;
-			var idCardReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
 			function addData(){ //新增
 				var userId = document.getElementById("userId").value; 
 				if(userId == ''){alert('用户编号不能为空,请填写正确用户编号!');return false;}
 				var sid = document.getElementById('sid').value; 
-				if(sid == '' || sid == '0'){alert('事业部编号不能为空,请填写正确事业部编号!');return false;}
 				var did = document.getElementById('did').value;
-				if(did == '' || did == '0'){alert('大区编号不能为空,请填写正确大区编号!');return false;}
 				var fid = document.getElementById('fid').value;
-				if(fid == '' || fid == '0'){alert('分公司编号不能为空,请填写正确分公司编号!');return false;}
 				var yid = document.getElementById('yid').value;
-				if(yid == '' || yid == '0'){alert('营业部编号不能为空,请填写正确营业部编号!');return false;}
-				/* var tid = document.getElementById('tid').value;
+				var tid = document.getElementById('tid').value;
+				/*if(yid == '' || yid == '0'){alert('营业部编号不能为空,请填写正确营业部编号!');return false;}
+				if(fid == '' || fid == '0'){alert('分公司编号不能为空,请填写正确分公司编号!');return false;}
+				if(sid == '' || sid == '0'){alert('事业部编号不能为空,请填写正确事业部编号!');return false;}
+				if(did == '' || did == '0'){alert('大区编号不能为空,请填写正确大区编号!');return false;}
+				 var tid = document.getElementById('tid').value;
 				if(tid == ''){alert('团队编号不能为空,请填写正确团队编号!');return false;} */
 				var name = document.getElementById("name").value;
 				if(name == ''){alert('用户名不能为空,请填写正确用户名!');return false;}
@@ -97,10 +103,10 @@
 				if(password == ''){alert('密码不能为空,请填写正确密码!');return false;}
 				var typeName = document.getElementById("typeName").value;
 				if(typeName == '' || typeName == '0'){alert('请选择正确权限类型!');return false;}
-				var tel = document.getElementById('tel').value; 
-				if(tel == "" || !phoneReg.test(tel)){alert("请输入正确电话");return false;}
 				var idCard = document.getElementById('idCard').value;	
 				if(idCard == '' || !idCardReg.test(idCard)){alert('身份证号不能为空,请填写正确身份证号!');return false;}
+				var tel = document.getElementById('tel').value; 
+				if(tel == "" || !phoneReg.test(tel)){alert("请输入正确电话");return false;}
 				var success = function(data){
 					if(data.code == 1){
 						alert('提交成功！');
@@ -113,7 +119,7 @@
 					alert(error);
 				};
 				var user = JSON.parse(sessionStorage.user);
-				ajaxPost('/insertUserSelective',{"userId":userId,"sid":sid,"did":did,"fid":fid,"yid":yid,"tid":tid,
+				ajaxPost('/insertUserSelective',{"localUserId":user.localUserId,"userId":userId,"sid":sid,"did":did,"fid":fid,"yid":yid,"tid":tid,
 												 "name":name,"password":password,"typeId":typeName,"tel":tel,"idCard":idCard},true,success,faild);
 			}
 		</script>

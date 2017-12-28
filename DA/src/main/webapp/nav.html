@@ -35,7 +35,13 @@
 				<li><a href="personnelList.html">人资总表</a></li>
 			</ul>
 		</li>
-		<li><a href="javascript:;"><i class="levelb"></i><span>修改密码</span></a>
+		<li id="historyNavLi"><a href="javascript:;"><i class="leveld"></i><span>历史数据</span></a>
+			<ul class="sidebar-dropdown" id="sidenav">
+				<li><a href="historyUserList.html">用户历史</a></li>
+				<li><a href="historyDataList.html">数据历史</a></li>
+			</ul>
+		</li>
+		<li><a href="javascript:;"><i class="levele"></i><span>修改密码</span></a>
 			<ul class="sidebar-dropdown" id="sidenav">
 				<li><a href="passWordEdit.html">修改密码</a></li>
 			</ul>
@@ -70,13 +76,17 @@
 		document.getElementById('userNavLi').style.display = 'none';
 		document.getElementById('personnelNavLi').style.display = 'none';
 		document.getElementById('financinglNavLi').style.display = 'none';
+		document.getElementById('historyNavLi').style.display = 'none';
 	} else if(user.typeId == '3' || user.typeId == "4" || user.typeId == "5" || user.typeId == "6" || user.typeId == "7" || user.typeId == "8"){ //理财
 		document.getElementById('userNavLi').style.display = 'none';
 		document.getElementById('personnelNavLi').style.display = 'none';
 		document.getElementById('financinglNavLi').style.display = 'none';
+		document.getElementById('historyNavLi').style.display = 'none';
+		
 	} else if(user.typeId == '10' ||  user.typeId == '11' ||  user.typeId == '12' ||  user.typeId == '13'){ //机构管理人员    user.typeId == '9' ||  
 		document.getElementById('userNavLi').style.display = 'none';
 		document.getElementById('personnelNavLi').style.display = 'none';
 		document.getElementById('financinglNavLi').style.display = 'none';
+		document.getElementById('historyNavLi').style.display = 'none';
 	}
 </script>

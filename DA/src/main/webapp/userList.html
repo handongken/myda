@@ -25,11 +25,6 @@
 				</div>
 				<div class="addExitBox">
 					<p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(downloadCodingTemplate)">下载模板</a></p>
-					<!-- <p class="downExcelBtn"><a href="javascript:;" onclick="downDataExcel(uploadExcelFile)">导入数据</a></p> -->
-					<!-- <div id="uploadForm">
-					    <input id="file" type="file" multiple="multiple"/>
-					    <p class="downExcelBtn"><button id="upload" type="button" value="导入数据">upload</button></p>
-					</div> -->
 					<form id="uploadForm">
 					  <p class="downExcelBtn">
 					  	<input type="file" id="file1" name="file1">
@@ -52,6 +47,7 @@
 			$('#upLoad').click(function(){
 			  var files = $('#file1').prop('files');
 			  var data = new FormData();
+			  data.append('userId', user.userId);
 			  data.append('file1', files[0]);
 			  $.ajax({
 			      url: '/uploadOrgExcelFile',
@@ -79,24 +75,27 @@
 				var thisLi = obj.parentNode.parentNode;
 				thisLi.parentNode.removeChild(thisLi);
 				var success = function(data){
-					if(data.code == 1){
+					alert(data);
+				};
+				var faild = function(error){
+					if(error.code == 1){
 						alert("删除成功！");
 						window.location.reload();
 					}else{
 						alert('删除不成功！');
 					}
 				};
-				var faild = function(error){
-					alert(error);
-				};
-				ajaxPost('/deleteUserByPrimaryKey',{"userId":userId},success,faild); 
+				var user = JSON.parse(sessionStorage.user);
+				ajaxPost('/deleteUserByPrimaryKey',{"userId":userId,"localUserId":user.userId,"insDate":user.insDate,"insUser":user.insUser,
+													"message":user.message,"password":user.password,"name":user.name,"tel":user.tel,
+													"typeId":user.typeId,"sid":user.sid,"did":user.did,"tid":user.tid,"fid":user.fid,"yid":user.yid,
+													"idCard":user.idCard,},success,faild); 
 			}
 			function loaddataList(){//读取表格
 				document.getElementById('tableHtml').innerHTML = '<table id="tableBox" class="tableBox" width="100%"><thead><tr></tr></thead></table>';
 				var userId = document.getElementById('userId').value;
 				var name = document.getElementById('name').value;
 				var success = function(data){
-					//console.log(data);
 					createTh(data);
 				};
 				var faild = function(error){
