@@ -408,11 +408,12 @@
 				var user = JSON.parse(sessionStorage.user);
 				ajaxDownExcel(downUrl,{"userId":user.userId,"sid":user.sid,"did":user.did,"fid":user.fid,"yid":user.yid,"typeId":user.typeId},success,faild); 
 			} 
-			//var imgs = document.getElementById('imgs');
 			if($('#imgs').html().length < 0){
 				alert('没有可下载图片!');
 			}
+			//var imgs = document.getElementById('imgs');
 			function downLoadImg(contract){//数据导出表格 续投 赎回 提前赎回 用户
+				
 				loading();
 				var success = function(data){
 					alert(data);
